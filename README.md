@@ -1,4 +1,4 @@
-# Colouring bahrain
+# Colouring Bahrain
 [![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors)
 ![Build status](https://github.com/colouring-bahrain/colouring-bahrain/workflows/Node.js%20CI/badge.svg)
 
