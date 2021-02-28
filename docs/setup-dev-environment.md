@@ -32,7 +32,7 @@ and additional geo-spatial tools
 
 Now clone the colouring bahrain codebase.
 
-`git clone https://github.com/colouring-bahrain/colouring-bahrain.git`
+`git clone https://github.com/colouring-cities/colouring-bahrain.git`
 
 Now install Node. It is helpful to define some local variables.
 
