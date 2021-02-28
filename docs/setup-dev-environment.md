@@ -1,7 +1,7 @@
 # Setting up a local development environment
 
 This document is intended to guide you through setting up a local development environment for
-Colouring London. This guide assumes you already have Ubuntu 18.04 server installed, typically
+Colouring bahrain. This guide assumes you already have Ubuntu 18.04 server installed, typically
 installed in a virtual environment such a Virtual Box and are able to SSH into your Ubuntu
 installation for convenience.
 
@@ -30,9 +30,9 @@ and additional geo-spatial tools
 
 `sudo apt-get install -y gdal-bin libspatialindex-dev libgeos-dev libproj-dev`
 
-Now clone the colouring london codebase.
+Now clone the colouring bahrain codebase.
 
-`git clone https://github.com/colouring-london/colouring-london.git`
+`git clone https://github.com/colouring-bahrain/colouring-bahrain.git`
 
 Now install Node. It is helpful to define some local variables.
 
@@ -95,41 +95,41 @@ password `<pgpassword>` is arbitrary and probably should not be your Ubuntu logi
 
 `sudo -u postgres psql -c "SELECT 1 FROM pg_user WHERE usename = '<username>';" | grep -q 1 || sudo -u postgres psql -c "CREATE ROLE <username> SUPERUSER LOGIN PASSWORD '<pgpassword>';"`
 
-Create a colouring london database if none exists. The name (`<colouringlondondb>`) is arbitrary.
+Create a colouring bahrain database if none exists. The name (`<colouringbahraindb>`) is arbitrary.
 
 ```
-sudo -u postgres psql -c "SELECT 1 FROM pg_database WHERE datname = '<colouringlondondb>';" | grep -q 1 || sudo -u postgres createdb -E UTF8 -T template0 --locale=en_US.utf8 -O <username> <colouringlondondb>
+sudo -u postgres psql -c "SELECT 1 FROM pg_database WHERE datname = '<colouringbahraindb>';" | grep -q 1 || sudo -u postgres createdb -E UTF8 -T template0 --locale=en_US.utf8 -O <username> <colouringbahraindb>
 ```
 
 To test the app user's connection to the database, you could run `psql` interactively:
 
 ```
-psql -d <colouringlondondb> -U <username> -h localhost
+psql -d <colouringbahraindb> -U <username> -h localhost
 ```
 
 Create the necessary postgres extensions.
 
 ```
-psql -d <colouringlondondb> -c "create extension postgis;"
-psql -d <colouringlondondb> -c "create extension pgcrypto;"
-psql -d <colouringlondondb> -c "create extension pg_trgm;"
+psql -d <colouringbahraindb> -c "create extension postgis;"
+psql -d <colouringbahraindb> -c "create extension pgcrypto;"
+psql -d <colouringbahraindb> -c "create extension pg_trgm;"
 ```
 
 Now run all 'up' migrations to create tables, data types, indexes etc. The `.sql` scripts to
 do this are located in the `migrations` folder of your local repository.
 
-`ls ./colouring-london/migrations/*.up.sql 2>/dev/null | while read -r migration; do psql -d <colouringlondondb> < $migration; done;`
+`ls ./colouring-bahrain/migrations/*.up.sql 2>/dev/null | while read -r migration; do psql -d <colouringbahraindb> < $migration; done;`
 
 ## Setting up Python
 
 Now set up a virtual environment for python. In the following example we have named the
-virtual environment *colouringlondon* but it can have any name.
+virtual environment *colouringbahrain* but it can have any name.
 
-`pyvenv colouringlondon`
+`pyvenv colouringbahrain`
 
 Activate the virtual environment so we can install python packages into it.
 
-`source colouringlondon/bin/activate`
+`source colouringbahrain/bin/activate`
 
 Install python pip package manager and related tools.
 
@@ -141,7 +141,7 @@ pip install --upgrade setuptools wheel
 Now install the required python packages. This relies on the `requirements.txt` file located
 in the `etl` folder of your local repository.
 
-`pip install -r ./colouring-london/etl/requirements.txt`
+`pip install -r ./colouring-bahrain/etl/requirements.txt`
 
 ## Setting up Node
 
@@ -160,14 +160,14 @@ exit
 Now install the required Node packages. This needs to done from the `app` directory of your
 local repository, so that it can read from the `package.json` file.
 
-`cd ./colouring-london/app && npm install`
+`cd ./colouring-bahrain/app && npm install`
 
 
 ## Running the application
 
 Now we are ready to run the application. The `APP_COOKIE_SECRET` is arbitrary.
 
-`PGPASSWORD=<pgpassword> PGDATABASE=<colouringlondondb> PGUSER=<username> PGHOST=localhost PGPORT=5432 APP_COOKIE_SECRET=123456 npm start`
+`PGPASSWORD=<pgpassword> PGDATABASE=<colouringbahraindb> PGUSER=<username> PGHOST=localhost PGPORT=5432 APP_COOKIE_SECRET=123456 npm start`
 
 If you a running Ubuntu in a virtual environment you will need to configure networking to
 forward ports from the guest to the host. For Virtual Box the following was configured under
