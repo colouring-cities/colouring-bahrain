@@ -19,7 +19,7 @@ osmnx.config(log_console=True, use_cache=True)
 size = 256
 
 # load buildings from about 1.5km² around UCL
-point = (26.2235, 50.5876)
+point = (50.5876, 26.2235)
 dist = 612
 gdf = osmnx.footprints_from_point(point=point, dist=dist)
 
