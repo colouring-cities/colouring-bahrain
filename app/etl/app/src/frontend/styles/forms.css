@@ -1,0 +1,43 @@
+/**
+ * Forms
+ */
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="email"] {
+    border-color: #999;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0;
+}
+input[type="number"] {
+    padding-right: 0.25rem;
+}
+form .alert {
+    margin: 0.5rem 0;
+}
+.form-check-input {
+    margin-top: 0.6rem;
+    margin-left: 0;
+    left: 0;
+}
+label {
+    margin: 0.5em 0 0;
+}
+.buttons-container {
+    margin-bottom: 0.75rem;
+}
+.buttons-container.with-space {
+    margin-top: 1rem;
+    /* padding: 0 0.75rem; */
+}
+.buttons-container .btn {
+    margin-bottom: 0.25rem;
+    margin-right: 0.25rem;
+}
+form .btn {
+    margin-bottom: 0.25rem;
+}
+.buttons-container.btn-center {
+    margin-right: 0;
+    text-align: center;
+}

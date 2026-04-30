@@ -1,0 +1,21 @@
+/**
+ * Typography
+ */
+html,
+body {
+    background: #fff;
+    color: #222;
+}
+.h2 {
+    font-weight: normal;
+}
+.h3, .h4, .h5 {
+    font-weight: normal;
+    font-size: 1.2rem;
+}
+p {
+    font-size: 1.1rem;
+}
+pre {
+    white-space: pre-wrap;
+}

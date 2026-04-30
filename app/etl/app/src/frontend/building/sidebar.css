@@ -1,0 +1,174 @@
+/**
+ * Sidebar layout
+ */
+.info-container {
+    position: absolute;
+    top: 75px;
+    left: 0;
+    bottom: 0;
+    z-index: 1001;
+    transition: transform 0.3s;
+    transform: translateX(0);
+    
+    width: 65%;
+    min-width: 280px;
+    max-width: 95%;
+    max-width: calc(100vw - 40px);
+
+    border-right: 1px solid #000;
+}
+
+.info-container.offscreen {
+    transform: translateX(-100%);
+}
+
+.info-container-collapse {
+    position: absolute;
+    left: 100%;
+    top: 4rem;
+
+    width: 2rem;
+    padding: 2.5rem 0rem;
+    
+    border-radius: 0 .25rem .25rem 0;
+}
+
+@media (min-width: 510px) {
+    .info-container {
+        max-width: 470px;
+    }
+}
+@media (min-width: 734px){
+    .info-container {
+        width: 470px;
+    }
+}
+
+@media (min-width: 990px){
+    .info-container.offscreen {
+        transform: translateX(0);
+    }
+
+    .info-container-collapse {
+        display: none;
+    }
+}
+
+.info-container-inner {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+
+    background: #fff;
+}
+
+
+/**
+ * Icon buttons
+ */
+.icon-button {    
+    padding: 0;
+
+    display: inline-block;
+    background-color: transparent;
+
+    outline: none;
+    border: none;
+
+    color: #222;
+}
+.icon-button:hover {
+    color: #222;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.icon-button svg {
+    margin-left: 0.3em;
+    background-color: transparent;
+    transition: background-color color 0.2s;
+    font-size: 1.2em;
+
+    color: #222;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+/**
+ * Data list sections
+ */
+.section-body {
+    margin-top: 0.75em;
+    padding: 0 0.75em 5em 0.75em;
+    min-height: 80vh;
+}
+.data-section .h3 {
+    margin: 0;
+}
+.data-intro {
+    padding: 0 0.5rem 0 0;
+    margin-top: 0.5rem;
+}
+.data-section p {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+.data-section ul {
+    padding-left: 1.333rem;
+    font-size: 1rem;
+}
+.data-section li {
+    margin-bottom: 0.3rem;
+}
+.data-list {
+    margin: 0;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+.data-list a {
+    color: #555;
+}
+.data-list a:focus,
+.data-list a:active,
+.data-list a:hover {
+    color: #222;
+}
+.data-list dt,
+.data-section label {
+    font-size: 0.8333rem;
+    font-weight: normal;
+    color: #555;
+}
+.data-section input,
+.data-section textarea,
+.data-section select {
+    margin: 0 0 0.5em 0;
+}
+.data-section input[type="checkbox"] {
+    position: static;
+    margin-right: 0.5em;
+}
+.data-list dd {
+    margin: 0 0 0.5rem;
+    line-height: 1.5;
+    white-space: pre;
+}
+.data-list .no-data {
+    color: #999;
+}
+.data-list dd ul {
+    list-style: none;
+    padding-left: 0;
+}
+.data-section .data-link-list {
+    padding: 0;
+    list-style: none;
+    margin-bottom: 0;
+    margin-top: 0.5rem;
+}
+.data-link-list li {
+    border-color: #6c757d;
+    border-radius: 0;
+}

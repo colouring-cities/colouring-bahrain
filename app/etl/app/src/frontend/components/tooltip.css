@@ -1,0 +1,31 @@
+.tooltip-hint {
+    cursor: pointer;
+}
+.tooltip-wrap {
+    float: right;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    padding-right: 0.3em;
+}
+
+.tooltip {
+    text-transform: none;
+    text-align: left;
+    width: 11em;
+    right: 0;
+    top: 100%;
+    opacity: 1;
+}
+.tooltip .arrow {
+    right: 0.4em;
+}
+
+.tooltip a {
+    color: rgb(255, 11, 245);
+}
+
+.icon-button.tooltip-hint.active svg,
+.icon-button.tooltip-hint:hover svg {
+    color: rgb(255, 11, 245);
+}

@@ -1,0 +1,85 @@
+{
+  "projectName": "colouring-london",
+  "projectOwner": "tomalrussell",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "polly64",
+      "name": "polly64",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/42236514?v=4",
+      "profile": "https://github.com/polly64",
+      "contributions": [
+        "design",
+        "ideas",
+        "content",
+        "fundingFinding"
+      ]
+    },
+    {
+      "login": "tomalrussell",
+      "name": "Tom Russell",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/2762769?v=4",
+      "profile": "https://github.com/tomalrussell",
+      "contributions": [
+        "design",
+        "ideas",
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "dominijk",
+      "name": "dominic",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/6041913?v=4",
+      "profile": "https://dghumphrey.co.uk/",
+      "contributions": [
+        "ideas",
+        "content"
+      ]
+    },
+    {
+      "login": "adamdennett",
+      "name": "Adam Dennett",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/5138911?v=4",
+      "profile": "https://github.com/adamdennett",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
+      "login": "duncan2001",
+      "name": "Duncan Smith",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/19817528?v=4",
+      "profile": "https://github.com/duncan2001",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
+      "login": "martin-dj",
+      "name": "martin-dj",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/7262550?v=4",
+      "profile": "https://github.com/martin-dj",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "mz8i",
+      "name": "mz8i",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/36160844?v=4",
+      "profile": "https://github.com/mz8i",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}

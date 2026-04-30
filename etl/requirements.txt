@@ -1,7 +1,7 @@
 # Python packages for etl
-fiona==1.7.13
-osmnx==0.8.1
-psycopg2==2.7.5
-shapely==1.6.4
-retrying==1.3.3
-requests==2.23.0
+fiona>=1.8.21
+osmnx>=1.6.0
+psycopg2>=2.9.6
+shapely>=1.8.0
+retrying>=1.3.3
+requests>=2.31.0
