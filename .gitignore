@@ -10,7 +10,6 @@ html/norton*.html
 .vscode
 
 # Data
-etl/
 etl/cache/*
 etl/images/*
 etl/*.geojson
@@ -19,11 +18,6 @@ etl/**/*.txt
 etl/**/*.xls
 etl/**/*.xlsx
 etl/**/*.zip
-etl/**/*.gml
-etl/**/*.gz
-etl/**/5690395*
-postgresdata
-*/__pycache__/*
 
 .DS_Store
 
