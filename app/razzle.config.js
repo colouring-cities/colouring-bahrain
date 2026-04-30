@@ -1,28 +1,31 @@
+const CopyPlugin = require('copy-webpack-plugin');
+
 module.exports = {
     plugins: [
         {
-            name: "typescript",
+            name: 'typescript',
             options: {
-                useBabel: true,
-                useEslint: true,
                 forkTsChecker: {
-                    tsconfig: "./tsconfig.json",
-                    tslint: undefined,
-                    watch: "./src",
-                    typeCheck: true,
+                    eslint: undefined // { files: './src/**/*.{ts,tsx,js,jsx}' }
                 },
             },
         },
     ],
-    modify: (config, { target, dev }, webpack) => {
+    modifyWebpackConfig({ env: { target, dev }, webpackConfig }) {
         // load webfonts
-        rules = config.module.rules || [];
-        rules.push({
+        webpackConfig.module.rules = webpackConfig.module.rules || [];
+        webpackConfig.module.rules.push({
             test: /\.(eot|svg|ttf|woff|woff2)$/,
-            loader: 'file-loader?name=public/fonts/[name].[ext]'
-        })
-        config.module.rules = rules;
+            type: 'asset/resource'
+        });
 
-        return config;
+        // add the map_styles directory to the build output
+        const plugins = webpackConfig.plugins || [];
+        plugins.push(new CopyPlugin({
+            patterns: [ {from: 'map_styles', to: 'map_styles'}]
+        }));
+        webpackConfig.plugins = plugins;
+
+        return webpackConfig;
     },
 };

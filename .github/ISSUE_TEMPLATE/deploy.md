@@ -1,5 +1,5 @@
 ---
-name: Deploy Colouring Bahrain
+name: Deploy Colouring London
 about: Checklist for deploying an update
 title: ''
 labels: ''
