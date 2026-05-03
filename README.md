@@ -102,10 +102,113 @@ erDiagram
 ## Setup and run
 
 1. Provision database (see `migrations`)
+   - Validation: `sudo -u postgres psql -c "SELECT version();"`
+   - Validation: `sudo -u postgres psql -c "SELECT PostGIS_Version();"`
 1. Load buildings and geometries to database (see `etl`)
+   - Validation: `sudo -u postgres psql -d dbname -c "SELECT count(*) FROM buildings;"`
 1. Install app dependencies: `cd app && npm i`
+   - Validation: `npm --version && node --version && npm ls --depth=0`
 1. Run tests: `npm test`
+   - Validation: test command passes and returns no failures
 1. Run app: `npm start`
+   - Validation: `curl -I http://localhost:3000` should return `HTTP/1.1 200 OK`
+
+### Ubuntu 26.04 deployment
+
+For an Ubuntu 26.04 server, install required system packages before running the app:
+
+```bash
+sudo apt update
+sudo apt install -y git curl build-essential python3 python3-venv python3-dev \
+  nodejs npm postgresql postgresql-contrib postgis postgresql-17-postgis-3 \
+  libpq-dev libvips-dev
+```
+
+Validate the install before continuing:
+
+```bash
+python3 --version
+node --version
+npm --version
+sudo -u postgres psql --version
+sudo -u postgres psql -c "SELECT PostGIS_Version();"
+```
+
+If Ubuntu 26.04 does not provide the right Node.js version, install Node.js from NodeSource:
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+```
+
+Validate Node after installation:
+
+```bash
+node --version
+npm --version
+```
+
+Then clone the repository and install the app:
+
+```bash
+git clone git@github.com:colouring-cities/colouring-bahrain.git
+cd colouring-bahrain/app
+npm install
+```
+
+Validate app installation:
+
+```bash
+npm ls --depth=0
+npm test -- --runInBand
+```
+
+Create a database and enable PostGIS:
+
+```bash
+sudo -u postgres createdb colouring_bahrain
+sudo -u postgres psql -d colouring_bahrain -c "CREATE EXTENSION postgis;"
+```
+
+Validate the database and extension:
+
+```bash
+sudo -u postgres psql -d colouring_bahrain -c "SELECT 1;"
+sudo -u postgres psql -d colouring_bahrain -c "SELECT PostGIS_Version();"
+```
+
+Copy environment variables and start the app:
+
+```bash
+export APP_COOKIE_SECRET=test_secret
+export PGHOST=localhost
+export PGUSER=postgres
+export PGDATABASE=colouring_bahrain
+export PGPASSWORD=""
+export PGPORT=5432
+export TILECACHE_PATH=/path/to/tilecache/directory
+npm start
+```
+
+Validate the running server:
+
+```bash
+curl -I http://localhost:3000
+```
+
+For production use, run the built server:
+
+```bash
+cd app
+npm run build
+NODE_ENV=production node build/server.js
+```
+
+Validate the production build:
+
+```bash
+node -e "require('./build/server'); console.log('build ok');"
+```
 
 In development, run with environment variables:
 
@@ -123,7 +226,7 @@ TILECACHE_PATH=/path/to/tilecache/directory \
 ## Acknowledgements
 
 Colouring Bahrain was set up at the Centre for Advanced Spatial
-Analysis (CASA), University College London and is now based at The Alan Turing Institute.
+Analysis (CASA), University College Bahrain and is now based at The Alan Turing Institute.
 Ordnance Survey is providing building footprints required to collect the data,
 facilitated by the Greater Bahrain Authority (GLA), and giving access to its API
 and technical support.
@@ -131,7 +234,7 @@ and technical support.
 ## License
 
     Colouring Bahrain
-    Copyright (C) 2018 Tom Russell and Colouring London contributors
+    Copyright (C) 2018 Tom Russell and Colouring Bahrain contributors
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
