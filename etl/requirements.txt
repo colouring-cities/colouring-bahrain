@@ -2,6 +2,6 @@
 fiona>=1.8.21
 osmnx>=1.6.0
 psycopg2>=2.9.6
-shapely>=1.8.0
+shapely>=2.1.2
 retrying>=1.3.3
 requests>=2.31.0
