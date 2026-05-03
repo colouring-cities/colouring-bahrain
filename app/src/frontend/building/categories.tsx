@@ -15,7 +15,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
         <CategoryLink
             title="Location"
             slug="location"
-            help="https://pages.colouring.london/location"
+            help="https://pages.colouring.bahrain/location"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}
@@ -23,7 +23,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
         <CategoryLink
             title="Current Use"
             slug="use"
-            help="https://pages.colouring.london/use"
+            help="https://pages.colouring.bahrain/use"
             inactive={true}
             mode={props.mode}
             building_id={props.building_id}
@@ -31,7 +31,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
         <CategoryLink
             title="Type"
             slug="type"
-            help="https://pages.colouring.london/buildingtypology"
+            help="https://pages.colouring.bahrain/buildingtypology"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}
@@ -39,7 +39,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
         <CategoryLink
             title="Age"
             slug="age"
-            help="https://pages.colouring.london/age"
+            help="https://pages.colouring.bahrain/age"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}
@@ -47,7 +47,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
         <CategoryLink
             title="Size &amp; Shape"
             slug="size"
-            help="https://pages.colouring.london/shapeandsize"
+            help="https://pages.colouring.bahrain/shapeandsize"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}
@@ -55,7 +55,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
         <CategoryLink
             title="Construction"
             slug="construction"
-            help="https://pages.colouring.london/construction"
+            help="https://pages.colouring.bahrain/construction"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}
@@ -63,7 +63,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
         <CategoryLink
             title="Streetscape"
             slug="streetscape"
-            help="https://pages.colouring.london/greenery"
+            help="https://pages.colouring.bahrain/greenery"
             inactive={true}
             mode={props.mode}
             building_id={props.building_id}
@@ -71,7 +71,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
         <CategoryLink
             title="Team"
             slug="team"
-            help="https://pages.colouring.london/team"
+            help="https://pages.colouring.bahrain/team"
             inactive={true}
             mode={props.mode}
             building_id={props.building_id}
@@ -79,7 +79,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
         <CategoryLink
             title="Planning"
             slug="planning"
-            help="https://pages.colouring.london/planning"
+            help="https://pages.colouring.bahrain/planning"
             inactive={true}
             mode={props.mode}
             building_id={props.building_id}
@@ -87,7 +87,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
         <CategoryLink
             title="Sustainability"
             slug="sustainability"
-            help="https://pages.colouring.london/sustainability"
+            help="https://pages.colouring.bahrain/sustainability"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}
@@ -95,7 +95,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
         <CategoryLink
             title="Dynamics"
             slug="dynamics"
-            help="https://pages.colouring.london/dynamics"
+            help="https://pages.colouring.bahrain/dynamics"
             inactive={true}
             mode={props.mode}
             building_id={props.building_id}
@@ -103,7 +103,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
         <CategoryLink
             title="Community"
             slug="community"
-            help="https://pages.colouring.london/community"
+            help="https://pages.colouring.bahrain/community"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}

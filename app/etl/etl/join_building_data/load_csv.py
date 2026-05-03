@@ -6,7 +6,7 @@ Example usage (replace URL with test/staging/localhost as necessary, API key wit
 the appropriate site):
 
     python load_csv.py \
-        https://colouring.london \
+        https://colouring.bahrain \
         a0a00000-0a00-0aaa-a0a0-0000aaaa0000 \
         data.csv
 
@@ -16,7 +16,7 @@ Otherwise, those values would be treated as a string and not an array.
 
 An example usage with the json_columns argument (other values in the example are placeholders):
     python load_csv.py \
-        https://colouring.london \
+        https://colouring.bahrain \
         a0a00000-0a00-0aaa-a0a0-0000aaaa0000 \
         data.csv \
         current_landuse_group,date_url

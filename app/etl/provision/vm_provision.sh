@@ -101,8 +101,8 @@ su vagrant -c "ls /vagrant/migrations/*.up.sql 2>/dev/null | while read -r migra
 #
 
 # set up env
-pyvenv colouringlondon
-source colouringlondon/bin/activate
+pyvenv colouringbahrain
+source colouringbahrain/bin/activate
 
 # Install smif
 pip install --upgrade pip
@@ -110,7 +110,7 @@ pip install --upgrade setuptools wheel
 pip install -r /vagrant/etl/requirements.txt
 
 # Make virtualenv user-editable
-chown -R vagrant:vagrant /home/vagrant/colouringlondon
+chown -R vagrant:vagrant /home/vagrant/colouringbahrain
 
 
 #

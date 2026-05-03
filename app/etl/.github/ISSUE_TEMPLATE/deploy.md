@@ -13,9 +13,9 @@ Deploy checklist:
 - [ ] log on to VPN
 - [ ] log in to staging, pull changes and build
 
-        ssh staging.colouring.london
-        sudo su - colouringlondonstaging
-        cd /var/www/colouring-london
+        ssh staging.colouring.bahrain
+        sudo su - colouringbahrainstaging
+        cd /var/www/colouring-bahrain
         git pull
         npm ci
         npm run build

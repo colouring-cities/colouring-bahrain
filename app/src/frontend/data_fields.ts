@@ -371,12 +371,12 @@ export const dataFields = {
     },
     planning_in_glher: {
         category: Category.Planning,
-        title: "In the Greater London Historic Environment Record?",
+        title: "In the Greater Bahrain Historic Environment Record?",
         //tooltip: ,
     },
     planning_glher_url: {
         category: Category.Planning,
-        title: "Greater London Historic Environment Record link",
+        title: "Greater Bahrain Historic Environment Record link",
         //tooltip: ,
     },
     planning_in_apa: {

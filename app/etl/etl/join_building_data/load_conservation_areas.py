@@ -1,7 +1,7 @@
 """Load CSV data to API
 
 This is effectively an example script using the HTTP API, tailored to particular collected
-datasets for conservation areas around London.
+datasets for conservation areas around Bahrain.
 
 Preprocess to filter down to unique buildings:
 

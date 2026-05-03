@@ -15,7 +15,7 @@ const SupporterLogos = () => (
             <li>
                 <a href="https://www.ucl.ac.uk/">
                     <img src="images/logo-ucl.png"
-                        alt="University College London" />
+                        alt="University College Bahrain" />
                 </a>
             </li>
             <li>
@@ -31,9 +31,9 @@ const SupporterLogos = () => (
                 </a>
             </li>
             <li>
-                <a href="https://www.london.gov.uk/">
+                <a href="https://www.bahrain.gov.uk/">
                     <img src="images/logo-gla.png"
-                        alt="Supported by the Mayor of London" />
+                        alt="Supported by the Mayor of Bahrain" />
                 </a>
             </li>
         </ul>

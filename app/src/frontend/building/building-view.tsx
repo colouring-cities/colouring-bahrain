@@ -38,7 +38,7 @@ const BuildingView: React.FunctionComponent<BuildingViewProps> = (props) => {
             return <LocationContainer
                 {...props}
                 title="Location"
-                help="https://pages.colouring.london/location"
+                help="https://pages.colouring.bahrain/location"
                 intro="Where are the buildings? Address, location and cross-references."
             />;
         case 'use':
@@ -47,7 +47,7 @@ const BuildingView: React.FunctionComponent<BuildingViewProps> = (props) => {
                 inactive={false}
                 title="Current Use"
                 intro="How are buildings used, and how does use change over time? Coming soon…"
-                help="https://pages.colouring.london/use"
+                help="https://pages.colouring.bahrain/use"
             />;
         case 'type':
             return <TypeContainer
@@ -55,13 +55,13 @@ const BuildingView: React.FunctionComponent<BuildingViewProps> = (props) => {
                 inactive={false}
                 title="Type"
                 intro="How were buildings previously used?"
-                help="https://www.pages.colouring.london/buildingtypology"
+                help="https://www.pages.colouring.bahrain/buildingtypology"
             />;
         case 'age':
             return <AgeContainer
                 {...props}
                 title="Age"
-                help="https://pages.colouring.london/age"
+                help="https://pages.colouring.bahrain/age"
                 intro="Building age data can support energy analysis and help predict long-term change."
             />;
         case 'size':
@@ -69,21 +69,21 @@ const BuildingView: React.FunctionComponent<BuildingViewProps> = (props) => {
                 {...props}
                 title="Size &amp; Shape"
                 intro="How big are buildings?"
-                help="https://pages.colouring.london/shapeandsize"
+                help="https://pages.colouring.bahrain/shapeandsize"
             />;
         case 'construction':
             return <ConstructionContainer
                 {...props}
                 title="Construction"
                 intro="How are buildings built?"
-                help="https://pages.colouring.london/construction"
+                help="https://pages.colouring.bahrain/construction"
             />;
         case 'team':
             return <TeamContainer
                 {...props}
                 title="Team"
                 intro="Who built the buildings? Coming soon…"
-                help="https://pages.colouring.london/team"
+                help="https://pages.colouring.bahrain/team"
                 inactive={true}
             />;
         case 'sustainability':
@@ -91,7 +91,7 @@ const BuildingView: React.FunctionComponent<BuildingViewProps> = (props) => {
                 {...props}
                 title="Sustainability"
                 intro="Are buildings energy efficient?"
-                help="https://pages.colouring.london/sustainability"
+                help="https://pages.colouring.bahrain/sustainability"
                 inactive={false}
             />;
         case 'streetscape':
@@ -99,7 +99,7 @@ const BuildingView: React.FunctionComponent<BuildingViewProps> = (props) => {
                 {...props}
                 title="Streetscape"
                 intro="What's the building's context? Coming soon…"
-                help="https://pages.colouring.london/streetscape"
+                help="https://pages.colouring.bahrain/streetscape"
                 inactive={true}
             />;
         case 'community':
@@ -107,21 +107,21 @@ const BuildingView: React.FunctionComponent<BuildingViewProps> = (props) => {
                 {...props}
                 title="Community"
                 intro="How does this building work for the local community?"
-                help="https://pages.colouring.london/community"
+                help="https://pages.colouring.bahrain/community"
             />;
         case 'planning':
             return <PlanningContainer
                 {...props}
                 title="Planning"
                 intro="Planning controls relating to protection and reuse."
-                help="https://pages.colouring.london/planning"
+                help="https://pages.colouring.bahrain/planning"
             />;
         case 'dynamics':
             return <DynamicsContainer
                 {...props}
                 title="Dynamics"
                 intro="How has the site of this building changed over time?"
-                help="https://pages.colouring.london/buildingcategories"
+                help="https://pages.colouring.bahrain/buildingcategories"
                 inactive={true}
             />;
         default:

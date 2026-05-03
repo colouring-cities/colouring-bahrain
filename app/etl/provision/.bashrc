@@ -117,7 +117,7 @@ if ! shopt -oq posix; then
 fi
 
 # use virtual env
-source ~/colouringlondon/bin/activate
+source ~/colouringbahrain/bin/activate
 
 # start in vagrant dir on login
 cd /vagrant

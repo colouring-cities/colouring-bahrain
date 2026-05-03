@@ -6,7 +6,7 @@
 module.exports = {
     apps: [
         {
-            name: "colouringlondon",
+            name: "colouringbahrain",
             script: "./app/build/server.js",
             instances: 2,
             env: {
@@ -22,7 +22,7 @@ module.exports = {
                 MAIL_SERVER_PORT: 587,
                 MAIL_SERVER_USER: "mail_username",
                 MAIL_SERVER_PASSWORD: "longrandompassword",
-                WEBAPP_ORIGIN: "https://beta.colouring.london",
+                WEBAPP_ORIGIN: "https://beta.colouring.bahrain",
                 EXTRACTS_DIRECTORY:"/path/to/extracts",
             }
         }
