@@ -1,0 +1,94 @@
+/**
+ * Colours
+ */
+.white {
+    background-color: #fff;
+}
+.bold-yellow {
+    background-color: #ffad00;
+}
+.bright-yellow {
+    background-color: #f0d106;
+}
+.pale-yellow {
+    background-color: #fff021;
+}
+.bold-orange {
+    background-color: #eb7905;
+}
+.pale-orange {
+    background-color: #ffc04e;
+}
+.red {
+    background-color: #e96762;
+}
+.pastel-pink {
+    background-color: #e099c1;
+}
+.pale-pink {
+    background-color: #ffcde5;
+}
+.pastel-purple {
+    background-color: #7d6f94;
+}
+.blue-grey {
+    background-color: #6f879c;
+}
+.bright-green {
+    background-color: #5ec233;
+}
+.pastel-green {
+    background-color: #72b889;
+}
+.pale-green {
+    background-color: #73ebaf;
+}
+.bright-blue {
+    background-color: #72b2fe;
+}
+.pale-grey {
+    background-color: #a6a6a7;
+}
+.pale-brown {
+    background-color: #918e6e;
+}
+
+/**
+ * Category colours
+ */
+.background-location {
+    background-color: #f7c625;
+}
+.background-use {
+    background-color: #f7ec25;
+}
+.background-type {
+    background-color: #f77d11;
+}
+.background-age {
+    background-color: #ff6161;
+}
+.background-size {
+    background-color: #f2a2b9;
+}
+.background-construction {
+    background-color: #ab8fb0;
+}
+.background-streetscape {
+    background-color: #718899;
+}
+.background-team {
+    background-color: #7cbf39;
+}
+.background-planning {
+    background-color: #57c28e;
+}
+.background-sustainability {
+    background-color: #6bb1e3;
+}
+.background-dynamics {
+    background-color: #aaaaaa;
+}
+.background-community {
+    background-color: #a3916f;
+}

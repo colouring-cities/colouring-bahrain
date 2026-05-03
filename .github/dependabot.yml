@@ -1,0 +1,53 @@
+version: 2
+updates:
+  # Node.js / npm
+  - package-ecosystem: "npm"
+    directory: "/app"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "colouring-cities/maintainers"
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "chore(npm):"
+      prefix-development: "chore(npm-dev):"
+      include: "scope"
+    pull-request-branch-name:
+      separator: "/"
+
+  # Python / pip
+  - package-ecosystem: "pip"
+    directory: "/etl"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "colouring-cities/maintainers"
+    labels:
+      - "dependencies"
+      - "python"
+    commit-message:
+      prefix: "chore(python):"
+      include: "scope"
+    pull-request-branch-name:
+      separator: "/"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    reviewers:
+      - "colouring-cities/maintainers"
+    labels:
+      - "dependencies"
+      - "ci"
