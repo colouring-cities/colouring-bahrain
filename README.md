@@ -23,6 +23,82 @@ Building attribute data collected as part of the project will be made available
 for download under a liberal open data license
 ([ODbL](https://opendatacommons.org/licenses/odbl/1.0/)).
 
+## Database diagram
+
+The core database stores building geometry and attribute data in PostgreSQL/PostGIS.
+The main tables are:
+- `geometries`: building footprint polygons and source metadata
+- `buildings`: building attributes and references to geometries
+- `building_properties`: UPRN/property data linked to buildings
+- `logs`: edit history and change tracking
+- `building_user_likes`: per-user likes on buildings
+- `reference_tables.*`: classification and land-use reference data
+
+```mermaid
+erDiagram
+    GEOMETRIES {
+        serial geometry_id PK
+        varchar source_id
+        geometry geometry_geom
+    }
+    BUILDINGS {
+        serial building_id PK
+        varchar ref_toid
+        bigint ref_osm_id
+        integer geometry_id FK
+        bigint revision_id FK
+        integer likes_total
+    }
+    BUILDING_PROPERTIES {
+        serial building_property_id PK
+        bigint uprn
+        bigint parent_uprn
+        integer building_id FK
+        varchar toid
+    }
+    USER_CATEGORIES {
+        serial category_id PK
+        varchar category
+    }
+    USER_ACCESS_LEVELS {
+        serial access_level_id PK
+        varchar access_level
+    }
+    USERS {
+        uuid user_id PK
+        varchar username
+        varchar email
+        varchar pass
+        integer category FK
+        integer access_level FK
+        uuid api_key
+        boolean is_deleted
+    }
+    LOGS {
+        bigserial log_id PK
+        timestamptz log_timestamp
+        jsonb forward_patch
+        jsonb reverse_patch
+        uuid user_id FK
+        integer building_id FK
+    }
+    BUILDING_USER_LIKES {
+        serial building_like_id PK
+        integer building_id FK
+        uuid user_id FK
+    }
+
+    GEOMETRIES ||--o{ BUILDINGS : "geometry_id"
+    BUILDINGS ||--o{ BUILDING_PROPERTIES : "building_id"
+    USER_CATEGORIES ||--o{ USERS : "category"
+    USER_ACCESS_LEVELS ||--o{ USERS : "access_level"
+    USERS ||--o{ LOGS : "user_id"
+    BUILDINGS ||--o{ LOGS : "building_id"
+    LOGS ||--o{ BUILDINGS : "revision_id"
+    USERS ||--o{ BUILDING_USER_LIKES : "user_id"
+    BUILDINGS ||--o{ BUILDING_USER_LIKES : "building_id"
+```
+
 ## Setup and run
 
 1. Provision database (see `migrations`)
