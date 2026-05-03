@@ -4,4 +4,4 @@ osmnx>=1.6.0
 psycopg2>=2.9.6
 shapely>=1.8.0
 retrying>=1.3.3
-requests>=2.31.0
+requests>=2.33.1
