@@ -12,7 +12,7 @@ import * as userService from './user';
 /**
  * Generate a password reset token for the specified account and send the password reset link by email
  * @param email the email address for which to generate a password reset token
- * @param siteOrigin the origin of the website, without a path element - e.g. https://beta.colouring.bahrain
+ * @param siteOrigin the origin of the website, without a path element - e.g. https://beta.colouring.bh
  */
 async function sendPasswordResetToken(email: string, siteOrigin: string): Promise<void> {
     const user = await userService.getUserByEmail(email);
@@ -62,7 +62,7 @@ function getPasswordResetEmail(email: string, token: string, siteOrigin: string)
         text: messageBody,
         subject: 'Reset your Colouring Bahrain password',
         to: email,
-        from: 'no-reply@colouring.bahrain'
+        from: 'no-reply@colouring.bh'
     };
 }
 

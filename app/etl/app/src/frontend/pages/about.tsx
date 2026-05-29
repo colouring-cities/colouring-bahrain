@@ -54,7 +54,7 @@ const AboutPage = () => (
             <p>
 
         Colouring Bahrain is being designed and built by the Centre for Advanced Spatial
-        Analysis (CASA), University College Bahrain and funded by Historic England.
+        Analysis (CASA), University of Bahrain and funded by Historic England.
         Ordnance Survey is providing building footprints required to collect the data,
         facilitated by the GLA, and giving access to its API and technical support. It
         will launch in 2019.

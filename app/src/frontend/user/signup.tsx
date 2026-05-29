@@ -31,7 +31,7 @@ export const SignUp: React.FC = () => {
             <section className="main-col">
                 <h1 className="h2">Sign up</h1>
                 <InfoBox msg="Welcome to Colouring Bahrain. You're one of the first people to sign up!  ">
-                    <br/>Please <a href="https://discuss.colouring.bahrain/">discuss
+                    <br/>Please <a href="https://discuss.colouring.bh/">discuss
                     suggestions for improvements</a> and <a
                         href="https://github.com/colouring-bahrain/colouring-bahrain/issues">
                     report issues or problems</a>.
@@ -106,7 +106,7 @@ export const SignUp: React.FC = () => {
                         {isLoading && <span><SpinnerIcon/>Sending sign up data...</span>}
                     </div>
                     <InfoBox msg="">
-                        Please also read our <a href="https://www.pages.colouring.bahrain/data-ethics">data ethics policy</a> before using or sharing our data
+                        Please also read our <a href="https://www.pages.colouring.bh/data-ethics">data ethics policy</a> before using or sharing our data
                     </InfoBox>
 
                     Do you already have an account?

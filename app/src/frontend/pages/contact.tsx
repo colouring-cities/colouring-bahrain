@@ -11,7 +11,7 @@ const ContactPage = () => (
 
             <p> It is being developed by a small, dedicated team at The Alan Turing Institute. We are unable to answer individual queries but welcome constructive comments on how to improve the site, and on other types of data and new features you might like to see.</p>
 
-            <p> You can send us comments or ask questions on our discussion threads at <a href="https://discuss.colouring.bahrain/">https://discuss.colouring.bahrain/</a>.</p>
+            <p> You can send us comments or ask questions on our discussion threads at <a href="https://discuss.colouring.bh/">https://discuss.colouring.bh/</a>.</p>
 
             <p> To view our technical site and platform code please visit Github at: <a href="https://github.com/colouring-bahrain/colouring-bahrain">https://github.com/colouring-bahrain/colouring-bahrain</a>.</p>
 
@@ -24,7 +24,7 @@ const ContactPage = () => (
             </p>
             <p>
             <pre><code>
-            Colouring Bahrain https://colouring.bahrain Building attribute data is © Colouring Bahrain contributors. Maps contain OS data © Crown copyright: OS Maps baselayers and building outlines.
+            Colouring Bahrain https://colouring.bh Building attribute data is © Colouring Bahrain contributors. Maps contain OS data © Crown copyright: OS Maps baselayers and building outlines.
             </code></pre>
             </p>
             <hr />

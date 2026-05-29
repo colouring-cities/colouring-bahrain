@@ -92,12 +92,12 @@ function renderHTML(context, data, req, res) {
         <meta name="twitter:card"              content="summary" />
         <meta name="twitter:site"              content="@colouringbahrain" />
 
-        <meta property="og:url"                content="https://colouring.bahrain" />
+        <meta property="og:url"                content="https://colouring.bh" />
         <meta property="og:type"               content="website" />
         <meta property="og:title"              content="Colouring Bahrain" />
-        <meta property="og:description"        content="Colouring Bahrain is a knowledge exchange platform collecting information on every building in Bahrain, to help make the city more sustainable. We’re building it at The Bartlett Centre for Advanced Spatial Analysis, University College Bahrain." />
+        <meta property="og:description"        content="Colouring Bahrain is a knowledge exchange platform collecting information on every building in Bahrain, to help make the city more sustainable. We’re building it at The Bartlett Centre for Advanced Spatial Analysis, University of Bahrain." />
         <meta property="og:locale"             content="en_GB" />
-        <meta property="og:image"              content="https://colouring.bahrain/images/logo-cl-square.png" />
+        <meta property="og:image"              content="https://colouring.bh/images/logo-cl-square.png" />
 
         <link rel="manifest" href="site.webmanifest">
 

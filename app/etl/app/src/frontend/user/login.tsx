@@ -28,7 +28,7 @@ export const Login: React.FC = () => {
             <section className="main-col">
                 <h1 className="h2">Log in</h1>
                 <InfoBox msg="Welcome to Colouring Bahrain. You're one of the first people to use the site!  ">
-                    <br/>Please <a href="https://discuss.colouring.bahrain/">discuss
+                    <br/>Please <a href="https://discuss.colouring.bh/">discuss
                     suggestions for improvements</a> and <a
                         href="https://github.com/colouring-bahrain/colouring-bahrain/issues">
                     report issues or problems</a>.

@@ -27,7 +27,7 @@ const ContributorAgreementPage : React.SFC<any> = () => (
                 We are unable to accept any data derived from copyright or restricted sources, other than as covered by fair use.
             </p>
             <p>
-                We encourage full attribution of data sources where appropriate - more details on potential sources are documented with suggestions for each <a href="https://www.pages.colouring.bahrain/buildingcategories">data category</a>.
+                We encourage full attribution of data sources where appropriate - more details on potential sources are documented with suggestions for each <a href="https://www.pages.colouring.bh/buildingcategories">data category</a>.
             </p>
             <p>
                 When you make a contribution to Colouring Bahrain, you are creating a permanent, public record of all data added, removed, or changed by you.The database records the username and ID of the user making the edit, along with the time and date of the change.All of this information is also made publicly available through the website and through bulk downloads of the edit history.

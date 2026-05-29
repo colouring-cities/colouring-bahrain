@@ -15,7 +15,7 @@ const SupporterLogos = () => (
             <li>
                 <a href="https://www.ucl.ac.uk/">
                     <img src="images/logo-ucl.png"
-                        alt="University College Bahrain" />
+                        alt="University of Bahrain" />
                 </a>
             </li>
             <li>

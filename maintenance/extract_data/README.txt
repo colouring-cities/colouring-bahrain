@@ -1,7 +1,7 @@
 # Colouring Bahrain Data Extract
 
 This extract contains a snapshot of contributions to Colouring Bahrain
-(https://colouring.bahrain).
+(https://colouring.bh).
 
 Colouring Bahrain is a citizen science platform collecting information on every building in
 Bahrain, to help make the city more sustainable.

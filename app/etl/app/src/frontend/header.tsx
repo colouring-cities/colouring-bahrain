@@ -46,27 +46,27 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
         ],
         [
             {
-                to: "https://pages.colouring.bahrain",
+                to: "https://pages.colouring.bh",
                 text: "About",
                 external: true
             },
             {
-                to: "https://pages.colouring.bahrain/buildingcategories",
+                to: "https://pages.colouring.bh/buildingcategories",
                 text: "Data Categories",
                 external: true
             },
             {
-                to: "https://pages.colouring.bahrain/whoisinvolved",
+                to: "https://pages.colouring.bh/whoisinvolved",
                 text: "Who's Involved?",
                 external: true
             },
             {
-                to: "https://pages.colouring.bahrain/data-ethics",
+                to: "https://pages.colouring.bh/data-ethics",
                 text: "Data Ethics",
                 external: true
             },
             {
-                to: "https://pages.colouring.bahrain/colouring-cities",
+                to: "https://pages.colouring.bh/colouring-cities",
                 text: "Colouring Cities Research Programme",
                 external: true
             },
@@ -77,7 +77,7 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
                 text: "Top Contributors"
             },
             {
-                to: "https://discuss.colouring.bahrain",
+                to: "https://discuss.colouring.bh",
                 text: "Discussion Forum",
                 external: true
             },

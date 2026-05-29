@@ -4,7 +4,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: https://colouring.bahrain/api
+  - url: https://colouring.bh/api
     description: Production server (uses live data)
 
 paths:

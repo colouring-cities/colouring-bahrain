@@ -47,7 +47,7 @@ export const MyAccountPage: React.FC = () => {
                     <h1 className="h1">Welcome, {user.username}!</h1>
                     <p>
                         Colouring Bahrain is under active development. Please
-                        <a href="https://discuss.colouring.bahrain/">discuss suggestions for improvements</a> and
+                        <a href="https://discuss.colouring.bh/">discuss suggestions for improvements</a> and
                         <a href="https://github.com/colouring-bahrain/colouring-bahrain/issues"> report issues or problems</a>.
                     </p>
                     <p>
