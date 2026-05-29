@@ -27,6 +27,3 @@ app/tilecache/**/*.mbtiles
 
 # Notes
 TODO
-
-# VM
-.vagrant

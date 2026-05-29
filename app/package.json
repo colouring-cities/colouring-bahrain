@@ -4,13 +4,18 @@
   "description": "Render frontend (server- and client-side)",
   "private": true,
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "clean": "rm -rf build",
     "start": "razzle start",
     "build": "razzle build",
     "test": "razzle test --env=jsdom",
     "lint": "eslint --ext .tsx --ext .ts .",
-    "start:prod": "NODE_ENV=production node build/server.js"
+    "start:prod": "NODE_ENV=production node build/server.js",
+    "audit": "npm audit --audit-level=moderate",
+    "audit:fix": "npm audit fix"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
@@ -25,7 +30,7 @@
     "express-session": "^1.17.3",
     "leaflet": "^1.9.4",
     "lodash.isequal": "^4.5.0",
-    "mapnik": "^4.5.8",
+    "mapnik": "^4.14.0",
     "nodemailer": "^6.9.6",
     "pg-promise": "^11.5.4",
     "query-string": "^8.1.0",
