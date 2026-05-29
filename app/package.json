@@ -64,7 +64,7 @@
     "razzle": "^4.2.18",
     "razzle-plugin-typescript": "^4.2.18",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.2.2"
+    "typescript": "^6.0.3"
   },
   "jest": {
     "transform": {
