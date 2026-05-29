@@ -27,3 +27,6 @@ app/tilecache/**/*.mbtiles
 
 # Notes
 TODO
+
+# Vulnerability reporting
+VULNERABILITY_REPORT.md
