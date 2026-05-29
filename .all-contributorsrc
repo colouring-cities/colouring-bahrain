@@ -79,6 +79,15 @@
         "code",
         "ideas"
       ]
+    },
+    {
+      "login": "313a1i",
+      "name": "Ali Naser",
+      "avatar_url": "https://avatars.githubusercontent.com/u/313a1i?v=4",
+      "profile": "https://github.com/313a1i",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
