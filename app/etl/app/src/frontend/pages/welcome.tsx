@@ -16,6 +16,7 @@ const Welcome = () => (
 
             Colouring Bahrain is also the prototype for the Colouring Cities Research programme
             based at the Alan Turing Institute (the UK's national Institute for data science and artificial intelligence).
+            This project is funded and directed by the Bahrain Authority for Culture and Antiquities.
             The programme works with local, regional, national and international partners to develop
             open platform code also of relevance to other cities.
         </p>
@@ -33,10 +34,10 @@ const Welcome = () => (
         </Link>
         <div className="image-row">
             <img className="cl-logo" src="images/logo-cc.jpg" alt="Colouring Cities Research Programme"></img>
-            <img className="turing-logo" src="images/logo-turing.jpg" alt="Alan Turing Institute"></img>
+            <img className="turing-logo" src="images/logo-turing.jpg" alt="Alan Turing Institute (project funded and directed by the Bahrain Authority for Culture and Antiquities)"></img>
         </div>
         <div className="image-row">
-            <img src="images/supporter-logos.png" alt="Colouring Bahrain collaborating organisations: The Bartlett UCL, Ordnance Survey, Historic England, Greater Bahrain Authority" />
+            <img src="images/supporter-logos.png" alt="Colouring Bahrain collaborating organisations: BIG IT Technology, University of Bahrain, Bahrain Authority for Culture and Antiquities" />
         </div>
     </div>
 );

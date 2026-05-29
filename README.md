@@ -227,6 +227,7 @@ TILECACHE_PATH=/path/to/tilecache/directory \
 
 Colouring Bahrain was set up at the Centre for Advanced Spatial
 Analysis (CASA), University of Bahrain and is now based at The Alan Turing Institute.
+This project is funded and directed by the Bahrain Authority for Culture and Antiquities.
 Ordnance Survey is providing building footprints required to collect the data,
 facilitated by the Greater Bahrain Authority (GLA), and giving access to its API
 and technical support.

@@ -9,13 +9,13 @@ const ContactPage = () => (
             </h1>
             <p> Colouring Bahrain has been designed as a sustainable, low-cost model for knowledge exchange/open data platforms able to be reproduced by other towns and cities using our open platform code.</p>
 
-            <p> It is being developed by a small, dedicated team at The Alan Turing Institute. We are unable to answer individual queries but welcome constructive comments on how to improve the site, and on other types of data and new features you might like to see.</p>
+            <p> It is being developed by a small, dedicated team at The Alan Turing Institute. This project is funded and directed by the Bahrain Authority for Culture and Antiquities. We are unable to answer individual queries but welcome constructive comments on how to improve the site, and on other types of data and new features you might like to see.</p>
 
             <p> You can send us comments or ask questions on our discussion threads at <a href="https://discuss.colouring.bh/">https://discuss.colouring.bh/</a>.</p>
 
             <p> To view our technical site and platform code please visit Github at: <a href="https://github.com/colouring-bahrain/colouring-bahrain">https://github.com/colouring-bahrain/colouring-bahrain</a>.</p>
 
-            <p>For press enquiries please contact <a href="https://www.turing.ac.uk/contact-us/press-office">The Alan Turing Institute press office</a></p>
+            <p>For press enquiries please contact <a href="https://www.turing.ac.uk/contact-us/press-office">The Alan Turing Institute press office</a>. This project is funded and directed by the Bahrain Authority for Culture and Antiquities.</p>
 
             <p>
             If you capture images from the maps on Colouring Bahrain, please credit our

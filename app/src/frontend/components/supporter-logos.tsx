@@ -6,36 +6,9 @@ const SupporterLogos = () => (
     <Fragment>
         <h2 className="h3">Lead Organisation and Project Partners</h2>
         <ul className="logo-list">
-            <li>
-                <a href="https://www.ucl.ac.uk/bartlett/casa/">
-                    <img src="images/logo-casa.png"
-                        alt="Centre for Advanced Spatial Analysis (CASA)" />
-                </a>
-            </li>
-            <li>
-                <a href="https://www.ucl.ac.uk/">
-                    <img src="images/logo-ucl.png"
-                        alt="University of Bahrain" />
-                </a>
-            </li>
-            <li>
-                <a href="https://www.historicengland.org.uk/">
-                    <img src="images/logo-he.png"
-                        alt="Historic England" />
-                </a>
-            </li>
-            <li>
-                <a href="https://www.ordnancesurvey.co.uk/">
-                    <img src="images/logo-os.png"
-                        alt="Ordnance Survey" />
-                </a>
-            </li>
-            <li>
-                <a href="https://www.bahrain.gov.uk/">
-                    <img src="images/logo-gla.png"
-                        alt="Supported by the Mayor of Bahrain" />
-                </a>
-            </li>
+            <li><a href="https://bigitmadesimple.com/" target="_blank" rel="noreferrer">BIG IT Technology</a></li>
+            <li><a href="https://www.uob.edu.bh/" target="_blank" rel="noreferrer">University of Bahrain</a></li>
+            <li><a href="https://culture.gov.bh" target="_blank" rel="noreferrer">Bahrain Authority for Culture and Antiquities</a></li>
         </ul>
     </Fragment>
 );
