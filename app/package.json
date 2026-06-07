@@ -39,7 +39,7 @@
     "react-leaflet": "^4.2.1",
     "react-leaflet-universal": "^2.2.1",
     "react-router-dom": "^6.16.0",
-    "serialize-javascript": "^6.0.1",
+    "serialize-javascript": "^7.0.5",
     "sharp": "^0.33.0"
   },
   "devDependencies": {
