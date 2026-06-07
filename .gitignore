@@ -30,3 +30,5 @@ TODO
 
 # Vulnerability reporting
 VULNERABILITY_REPORT.md
+npm-audit*.json
+pip-audit*.json

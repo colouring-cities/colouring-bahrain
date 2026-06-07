@@ -30,7 +30,7 @@
     "express-session": "^1.17.3",
     "leaflet": "^1.9.4",
     "lodash.isequal": "^4.5.0",
-    "mapnik": "^4.14.0",
+    "mapnik": "^4.4.0",
     "nodemailer": "^6.9.6",
     "pg-promise": "^11.5.4",
     "query-string": "^8.1.0",

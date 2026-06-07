@@ -18,7 +18,7 @@ export enum Category {
 export const categories = {
     [Category.Location]: {
         slug: 'location',
-        name: 'Location'
+        name: 'Mapping'
     },
     [Category.LandUse]: {
         slug: 'use',
@@ -26,39 +26,39 @@ export const categories = {
     },
     [Category.Type]: {
         slug: 'type',
-        name: 'Type'
+        name: 'Commerce & Activity'
     },
     [Category.Age]: {
         slug: 'age',
-        name: 'Age'
+        name: 'Age & History'
     },
     [Category.SizeShape]: {
         slug: 'size',
-        name: 'Size & Shape'
+        name: 'Morphology'
     },
     [Category.Construction]: {
         slug: 'construction',
-        name: 'Construction'
+        name: 'Construction & Design'
     },
     [Category.Streetscape]: {
         slug: 'streetscape',
-        name: 'Streetscape'
+        name: 'Green / Urban Infrastructure'
     },
     [Category.Team]: {
         slug: 'team',
-        name: 'Team'
+        name: 'Investment & Engagement'
     },
     [Category.Sustainability]: {
         slug: 'sustainability',
-        name: 'Sustainability'
+        name: 'Assessment'
     },
     [Category.Community]: {
         slug: 'community',
-        name: 'Community'
+        name: 'Social'
     },
     [Category.Planning]: {
         slug: 'planning',
-        name: 'Planning'
+        name: 'Conservation'
     },
     [Category.Like]: {
         slug: 'like',
@@ -115,12 +115,12 @@ export const dataFields = {
     },
     location_town: {
         category: Category.Location,
-        title: "Town",
+        title: "Town / City",
         //tooltip: ,
     },
     location_postcode: {
         category: Category.Location,
-        title: "Postcode",
+        title: "Area code / Postcode",
         //tooltip: ,
     },
     ref_toid: {
@@ -155,7 +155,7 @@ export const dataFields = {
 
     current_landuse_group: {
         category: Category.LandUse,
-        title: "Current Land Use (Group)",
+        title: "Current Land Use",
         tooltip: "Land use Groups as classified by [NLUD](https://www.gov.uk/government/statistics/national-land-use-database-land-use-and-land-cover-classification)"
     },
     current_landuse_order: {
@@ -180,32 +180,27 @@ export const dataFields = {
      */
     original_building_use: {
         category: Category.Type,
-        title: "Original building use",
-        tooltip: "What was the building originally used for when it was built? I.e. If it was Victorian warehouse which is now an office this would be warehouse",
+        title: "Original (Historical) Use",
+        tooltip: "What was the building originally used for when it was built? I.e. if it was a Victorian warehouse now used as an office, this would be warehouse.",
     },
 
     date_year: {
         category: Category.Age,
-        title: "Year built (best estimate)"
+        title: "Year construction started (best estimate)"
     },
     date_lower : {
         category: Category.Age,
         title: "Earliest possible start date",
-        tooltip: "This should be the earliest year in which building could have started."
+        tooltip: "This should be the earliest year in which the building could have started."
     },
     date_upper: {
         category: Category.Age,
         title: "Latest possible start year",
-        tooltip: "This should be the latest year in which building could have started."
-    },
-    facade_year: {
-        category: Category.Age,
-        title: "Facade year",
-        tooltip: "Best estimate"
+        tooltip: "This should be the latest year in which the building could have started."
     },
     date_source: {
         category: Category.Age,
-        title: "Source of information",
+        title: "Source type",
         tooltip: "Source for the main start date"
     },
     date_source_detail: {
@@ -215,7 +210,7 @@ export const dataFields = {
     },
     date_link: {
         category: Category.Age,
-        title: "Text and Image Links",
+        title: "Source link(s)",
         tooltip: "URL for age and date reference",
     },
 
@@ -236,7 +231,7 @@ export const dataFields = {
     },
     size_height_apex: {
         category: Category.SizeShape,
-        title: "Height to apex (m)",
+        title: "Total building height (m)",
         //tooltip: ,
     },
     size_height_eaves: {
@@ -320,7 +315,7 @@ export const dataFields = {
     },
     sust_life_expectancy: {
         category: Category.Sustainability,
-        title: "Expected lifespan for typology",
+        title: "Lifespan & Site History",
         //tooltip: ,
     },
 
@@ -331,17 +326,17 @@ export const dataFields = {
     },
     planning_in_conservation_area: {
         category: Category.Planning,
-        title: "In a conservation area?",
+        title: "Is the building in a conservation area?",
         //tooltip: ,
     },
     planning_conservation_area_name: {
         category: Category.Planning,
-        title: "Conservation area name",
+        title: "Conservation area or zone name",
         //tooltip: ,
     },
     planning_in_list: {
         category: Category.Planning,
-        title: "Is listed on the National Heritage List for England?",
+        title: "Is this a listed building?",
         //tooltip: ,
     },
     planning_list_id: {
@@ -351,12 +346,12 @@ export const dataFields = {
     },
     planning_list_cat: {
         category: Category.Planning,
-        title: "National Heritage List for England list type",
+        title: "Designation / Protection type",
         //tooltip: ,
     },
     planning_list_grade: {
         category: Category.Planning,
-        title: "Listing grade",
+        title: "Protection rating",
         //tooltip: ,
     },
     planning_heritage_at_risk_id: {

@@ -57,38 +57,38 @@
  * Category colours
  */
 .background-location {
-    background-color: #f7c625;
+    background-color: #f3c940;
 }
 .background-use {
-    background-color: #f7ec25;
+    background-color: #f0f048;
 }
 .background-type {
-    background-color: #f77d11;
+    background-color: #72afe0;
 }
 .background-age {
-    background-color: #ff6161;
+    background-color: #ff5f64;
 }
 .background-size {
-    background-color: #f2a2b9;
+    background-color: #f4a0b9;
 }
 .background-construction {
-    background-color: #ab8fb0;
+    background-color: #f77e2a;
 }
 .background-streetscape {
-    background-color: #718899;
+    background-color: #4ac491;
 }
 .background-team {
-    background-color: #7cbf39;
-}
-.background-planning {
-    background-color: #57c28e;
-}
-.background-sustainability {
-    background-color: #6bb1e3;
-}
-.background-dynamics {
     background-color: #aaaaaa;
 }
+.background-planning {
+    background-color: #ae8daf;
+}
+.background-sustainability {
+    background-color: #6fc348;
+}
+.background-dynamics {
+    background-color: #728798;
+}
 .background-community {
-    background-color: #a3916f;
+    background-color: #a19271;
 }

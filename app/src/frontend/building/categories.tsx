@@ -13,7 +13,7 @@ interface CategoriesProps {
 const Categories: React.FC<CategoriesProps> = (props) => (
     <ListWrapper className='data-category-list'>
         <CategoryLink
-            title="Location"
+            title="Mapping"
             slug="location"
             help="https://pages.colouring.bh/location"
             inactive={false}
@@ -21,7 +21,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Current Use"
+            title="Land Use"
             slug="use"
             help="https://pages.colouring.bh/use"
             inactive={true}
@@ -29,7 +29,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Type"
+            title="Commerce & Activity"
             slug="type"
             help="https://pages.colouring.bh/buildingtypology"
             inactive={false}
@@ -37,7 +37,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Age"
+            title="Age & History"
             slug="age"
             help="https://pages.colouring.bh/age"
             inactive={false}
@@ -45,7 +45,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Size &amp; Shape"
+            title="Morphology"
             slug="size"
             help="https://pages.colouring.bh/shapeandsize"
             inactive={false}
@@ -53,7 +53,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Construction"
+            title="Construction & Design"
             slug="construction"
             help="https://pages.colouring.bh/construction"
             inactive={false}
@@ -61,7 +61,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Streetscape"
+            title="Green / Urban Infrastructure"
             slug="streetscape"
             help="https://pages.colouring.bh/greenery"
             inactive={true}
@@ -69,7 +69,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Team"
+            title="Investment & Engagement"
             slug="team"
             help="https://pages.colouring.bh/team"
             inactive={true}
@@ -77,15 +77,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Planning"
-            slug="planning"
-            help="https://pages.colouring.bh/planning"
-            inactive={true}
-            mode={props.mode}
-            building_id={props.building_id}
-        />
-        <CategoryLink
-            title="Sustainability"
+            title="Assessment"
             slug="sustainability"
             help="https://pages.colouring.bh/sustainability"
             inactive={false}
@@ -93,7 +85,15 @@ const Categories: React.FC<CategoriesProps> = (props) => (
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Dynamics"
+            title="Conservation"
+            slug="planning"
+            help="https://pages.colouring.bh/planning"
+            inactive={true}
+            mode={props.mode}
+            building_id={props.building_id}
+        />
+        <CategoryLink
+            title="Disaster Management"
             slug="dynamics"
             help="https://pages.colouring.bh/dynamics"
             inactive={true}
@@ -101,7 +101,7 @@ const Categories: React.FC<CategoriesProps> = (props) => (
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Community"
+            title="Social"
             slug="community"
             help="https://pages.colouring.bh/community"
             inactive={false}
