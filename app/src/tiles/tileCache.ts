@@ -13,11 +13,9 @@
  *
  */
 
-// Using node-fs package to patch fs
-// for node >10 we could drop this in favour of fs.mkdir (which has recursive option)
-// and then use stdlib `import fs from 'fs';`
+// Use the Node.js builtin fs module for server-side tile caching
 import { Image } from 'mapnik';
-import fs from 'node-fs';
+import fs from 'fs';
 import { promisify } from 'util';
 
 import { BoundingBox, TileParams } from './types';
