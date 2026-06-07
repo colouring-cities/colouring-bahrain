@@ -33,7 +33,7 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
                 text: "Download data"
             },
             {
-                to: "https://github.com/colouring-bahrain/colouring-bahrain",
+                to: "https://github.com/colouring-cities/colouring-bahrain",
                 text: "Access open code",
                 external: true
             },
@@ -53,11 +53,6 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
             {
                 to: "https://pages.colouring.bh/buildingcategories",
                 text: "Data Categories",
-                external: true
-            },
-            {
-                to: "https://pages.colouring.bh/whoisinvolved",
-                text: "Who's Involved?",
                 external: true
             },
             {

@@ -4,116 +4,73 @@ import { Link } from 'react-router-dom';
 const PrivacyPolicyPage: React.SFC<any> = () => (
     <article>
         <section className='main-col'>
-            <h1 className='h1'>Colouring Bahrain Privacy Policy </ h1>
+            <h1 className='h1'>Colouring Bahrain Privacy Policy</h1>
+
+            <h2 className='h2'>1. Introduction</h2>
             <p>
-                This privacy policy explains how Colouring Bahrain uses the personal data we collect from you when you use our website. Colouring Bahrain is a research project developed by the Bartlett Centre for Advanced Spatial Analysis (CASA) at UCL. Colouring Bahrain is registered for data protection purposes with the UCL data protection office.
+                This privacy policy explains how Colouring Bahrain uses the personal data we collect from you when you use our website. Colouring Bahrain is an open-source research project and part of the Colouring Cities Research Programme (CCRP) The project is developed by the Bahrain Authority for Culture and Antiquities, which acts as the data controller for the purposes of applicable data protection legislation. We are committed to protecting your privacy in accordance with the Bahrain Personal Data Protection Law (PDPL).
             </p>
 
-            <h2 className='h2'>What data do we collect?</h2>
+            <h2 className='h2'>2. What Data Do We Collect?</h2>
             <p>
-                Colouring Bahrain collects the following personal data:
+                We actively discourage the provision of personal data. To use the site for viewing, no data is required. For contributors, we collect:
             </p>
-            <p>
-                A username and email address. We recommend you do not use your actual name for your username. We also collect your password, which is stored as a cryptographic hash unique to Colouring Bahrain.
-            </p>
-
-            <h2 className='h2'>How do we collect your data?</h2>
-            <p>
-                You provide Colouring Bahrain with a minimal amount of personal data when you register with the website and accepts the terms and conditions including this privacy policy.
-            </p>
-
-            <h2 className='h2'>What purposes do we use your data?</h2>
-            <p>
-                Colouring Bahrain uses your personal data to enable you to login to access and contribute to the Colouring Bahrain project and to provide a personalised user experience when you are logged in. We will not share your personal data (such as your email address) with any other parties or use your personal data for any purposes other than the Colouring Bahrain project.
-            </p>
-            <p>
-                If you request a password reset, an automated email will be sent using <a href="https://www.mailgun.com/">Mailgun</a>, who process the email in order to deliver it to your email address. Mailgun retain personal data they process on behalf of Colouring Bahrain for as long as is needed to provide email services. Mailgun will retain the personal information as necessary to comply with their legal obligations, resolve disputes, and enforce their agreements.
-            </p>
-
-            <h2 className='h2'>What is the legal basis for processing your data?</h2>
-            <p>
-                Data protection laws require us to meet certain conditions before we are allowed to use your data in the manner described in this notice, including having a ‘legal basis’ for the processing. Colouring Bahrain, as a research project, is processing your personal data in pursuance of performing a task in the public interest. For further details on the ‘public task’ legal basis for processing, please see UCL’s Statement of Tasks in the Public Interest, available <a href='https://www.ucl.ac.uk/legal-services/sites/legal-services/files/ucl_statement_of_tasks_in_the_public_interest_-_august_2018.pdf'>here</a>
-            </p>
-
-            <h2 className='h2'>How do we store your data?</h2>
-            <p>
-                Colouring Bahrain stores your data at UCL in Bahrain behind the organisation’s firewall in a secure database using industry standard practices.
-            </p>
-
-            <h2 className='h2'>How do we use cookies?</h2>
-            <p>
-                Colouring Bahrain only uses cookies to improve the user experience of users of the website, for example we use cookies to keep you signed in. We do not use cookies for marketing or advertising purposes.
-            </p>
-
-            <h2 className='h2'>What are your data protection rights?</h2>
-            <p>
-                Under the General Data Protection Regulation, you have certain individual rights in relation to the personal information we hold about you. For the purposes of research where such individual rights would seriously impair research outcomes, such rights are limited. However, subject to certain conditions, you have the following rights in relation to your personal data:
-            </p>
-
             <ul>
-                <li>
-                    A right to access personal data held by us about you.
-                </ li>
-
-                <li>
-                    A right to require us to rectify any inaccurate personal data held by us about you.
-                </ li>
-
-                <li>
-                    A right to require us to erase personal data held by us about you. This right will only apply where, for example, we no longer need to use the personal data to achieve the purpose we collected it for.
-                </ li>
-
-                <li>
-                    A right to restrict our processing of personal data held by us about you. This right will only apply where, for example, you dispute the accuracy of the personal data held by us; or where you would have the right to require us to erase the personal data but would prefer that our processing is restricted instead; or where we no longer need to use the personal data to achieve the purpose we collected it for, but we require the data for the purposes of dealing with legal claims.
-                </ li>
-
-                <li>
-                    A right to receive personal data, which you have provided to us, in a structured, commonly used and machine-readable format. You also have the right to require us to transfer this personal data to another organisation.
-                </ li>
-
-                <li>
-                    A right to object to our processing of personal data held by us about you.
-                </ li>
-
-                <li>
-                    A right to withdraw your consent, where we are relying on it to use your personal data.
-                </ li>
-
-                <li>
-                    A right to ask us not to use information about you in a way that allows computers to make decisions about you and ask us to stop.
-                </ li>
-
+                <li><strong>Username:</strong> We recommend you do not use your actual name.</li>
+                <li><strong>Password:</strong> Stored as a secure cryptographic hash.</li>
+                <li><strong>Email Address (Optional):</strong> Used only for password resets or in exceptional circumstances regarding account misuse.</li>
+                <li><strong>Usage Data:</strong> We use third-party digital tools for traffic analysis and performance measurement to improve the user experience.</li>
             </ul>
 
+            <h2 className='h2'>3. Purpose and Legal Basis for Processing</h2>
+            <p>We process your data for the following purposes:</p>
+            <ul>
+                <li>To enable secure login and contributions to the project.</li>
+                <li>To provide a personalized user experience.</li>
+                <li>To maintain a public record of contributions.</li>
+            </ul>
             <p>
-                It is important to understand that the extent to which these rights apply to research will vary and that in some circumstances your rights may be restricted. If you notify us (using the contact details set out below) that you wish to exercise any of the above rights and it is considered necessary to refuse to comply with any of your individual rights, you will be informed of the decision within one month and you also have the right to complain about our decision to the Information Commissioner’s Office.
+                <strong>Legal Basis:</strong> We process data based on your explicit consent provided upon registration and for our legitimate interests as a research project, provided these do not conflict with your fundamental rights.
+            </p>
+            <p>
+                <strong>Engagement Data:</strong> Certain personal data may be required to monitor user engagement for purposes related to historical or scientific research. This data is not stored within, nor automatically processed by, the Colouring Bahrain platform. It is accessed and used solely by project administrators when necessary, for the purposes of information protection, verification, and maintaining the integrity of contributions.
             </p>
 
+            <h2 className='h2'>4. Data Storage and Security</h2>
             <p>
-                Please also note that we can only comply with a request to exercise your rights during the period for which we hold personal information about you. If that information has been irreversibly anonymised and has become part of the research data set, it will no longer be possible for us to access your personal information.
+                Your data is stored in secure databases using industry-standard practices. We implement technical and organizational measures to protect against unauthorized access or disclosure. Data is transmitted over secure HTTPS connections.
             </p>
 
-            <h2 className='h2'>Changes to this privacy policy</h2>
+            <h2 className='h2'>5. International Data Transfers</h2>
             <p>
-                Changes to this privacy policy will be notified via the Colouring Bahrain website. This privacy policy was last updated on 2 October 2019 to add a paragraph on password reset emails. The previous update was on 13 August 2019.
+                As part of an international research network, your data may be transferred to and stored on servers located outside the Kingdom of Bahrain. By providing your data and consenting to this policy, you acknowledge and agree to this transfer.
             </p>
 
-            <h2 className='h2'>Who do I contact with questions?</h2>
+            <h2 className='h2'>6. Performance and Traffic Analysis</h2>
             <p>
-                If you have any questions about your personal data and Colouring Bahrain that are not answered by this privacy notice then please consult UCL's data protection web pages here, where further guidance and relevant UCL policy documentation can be found.
+                We utilize third-party analytics services to understand how users interact with our platform. These tools collect information sent by your browser, such as pages visited and time spent on the site, to help us measure and improve project performance. This data is processed in an aggregate form that does not identify individual users.
             </p>
 
+            <h2 className='h2'>7. Your Data Protection Rights</h2>
+            <p>Under the Bahrain PDPL, you have the following rights:</p>
+            <ul>
+                <li><strong>Right to Access:</strong> You may request notification of whether your data is being processed and receive a copy of that data.</li>
+                <li><strong>Right to Rectification:</strong> You may request the correction of inaccurate or incomplete data.</li>
+                <li><strong>Right to Erasure:</strong> You may request the deletion of your data if it is no longer necessary for the project or if processing is illegal.</li>
+                <li><strong>Right to Object:</strong> You may object to processing that causes material or moral damage or for direct marketing purposes.</li>
+            </ul>
+
+            <h2 className='h2'>8. Public Contributions</h2>
             <p>
-                If you need further assistance in the first instance, please email <a href='mailto:casa@ucl.ac.uk'>casa@ucl.ac.uk</a>. If you wish to complain about our use of your personal data or exercise any of your rights, please contact UCL's Data Protection Officer: <a href='mailto:data-protection@ucl.ac.uk'>data-protection@ucl.ac.uk</a> or Data Protection Officer, UCL Gower Street, Bahrain WC1E 6BT.
+                Please note that when you contribute to Colouring Bahrain, you create a permanent, public record of all data added or changed. The database records your username and the timestamp of the edit, which is made publicly available.
             </p>
 
+            <h2 className='h2'>9. Contact Information</h2>
             <p>
-                If we are unable to adequately address any concerns you may have about the way in which we use your data, you have the right to lodge a formal complaint with the UK Information Commissioner's Office. Full details may be accessed on the complaints section of the Information Commissioner's Office <a href='https://ico.org.uk'>website</a>.
+                If you have questions regarding this policy or wish to exercise your rights, please contact our Data Protection representative ( email address or BACA address ). If we cannot address your concerns, you have the right to lodge a complaint with the Bahrain Personal Data Protection Authority.
             </p>
 
-            <div className="buttons-container">
-                <Link to="sign-up.html" className="btn btn-outline-dark">Back to sign up</Link>
-            </div>
+            <p>Last Updated: March 26, 2026.</p>
         </section>
     </article>
 );

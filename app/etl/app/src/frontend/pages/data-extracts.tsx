@@ -58,37 +58,13 @@ export default class DataExtracts extends React.Component<{}, DataExtractsState>
                     </p>
 
                     {
-                        this.state.extracts == undefined ?
-                            <p>Loading extracts...</p> :
-                            (
-                                this.state.extracts.length === 0 ?
-                                    <p>No extracts available</p> :
-                                    null
-                            )
-                    }
-                    {
-                        this.state.latestExtract != undefined ?
-                            <div>
-                                <h1 className="h3">Latest extract</h1>
-                                <ExtractDownloadLink {...this.state.latestExtract} />
-                            </div> :
-                            null
-                    }
-                    {
-                        this.state.previousExtracts && this.state.previousExtracts.length > 0 ?
-                            (<div>
-                                <h1 className="h3">Older extracts</h1>
-                                <ul>
-                                {
-                                    this.state.previousExtracts.map(e =>
-                                        <li>
-                                            <ExtractDownloadLink {...e} />
-                                        </li>
-                                    )
-                                }
-                                </ul>
-                            </div>) :
-                            null
+                        this.state.extracts === undefined ?
+                            <p>Loading extracts...</p>
+                            : this.state.extracts.length === 0 ?
+                                <p>No extracts available.</p>
+                                : this.state.extracts.map(e => (
+                                    <ExtractDownloadLink key={e.extract_id} {...e} />
+                                ))
                     }
 
                 </section>

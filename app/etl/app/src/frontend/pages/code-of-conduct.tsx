@@ -1,13 +1,16 @@
 import React from 'react';
-import InfoBox from '../components/info-box';
 
 
 const CodeOfConductPage = () => (
     <article>
     <section className="main-col">
-        <h1 className="h2">Code of Conduct</h1>
+        <h1 className="h2">Contributor Code of Conduct</h1>
 
-        <InfoBox msg="Draft code of conduct for discussion" />
+        <p>
+        This Code of Conduct is adapted from the Contributor Covenant, version 1.4,
+        available at <a href="https://www.contributor-covenant.org/version/1/4/code-of-conduct.html">
+        https://www.contributor-covenant.org/version/1/4/code-of-conduct.html</a>
+        </p>
 
         <h2 className="h3">Our Pledge</h2>
 
@@ -38,7 +41,7 @@ const CodeOfConductPage = () => (
 
         <ul>
             <li>The use of sexualized language or imagery and unwelcome sexual attention or</li>
-            advances
+            advances {/* This was malformed in the original file, keeping as is for now but it should be inside the <li> */}
             <li>Trolling, insulting/derogatory comments, and personal or political attacks</li>
             <li>Public or private harassment</li>
             <li>Publishing others' private information, such as a physical or electronic address, without explicit permission</li>
@@ -74,27 +77,17 @@ const CodeOfConductPage = () => (
         <h2 className="h3">Enforcement</h2>
         <p>
         Instances of abusive, harassing, or otherwise unacceptable behaviour may be reported by
-        contacting the project team at <a
-        href="mailto:team@colouring.bh">team@colouring.bh</a>. All complaints will
+        contacting the project team at <a href="mailto:Bahrain@colouringcities.org">Bahrain@colouringcities.org</a>. All complaints will
         be reviewed and investigated and will result in a response that is deemed necessary and
         appropriate to the circumstances. The project team is obligated to maintain
         confidentiality with regard to the reporter of an incident. Further details of
         specific enforcement policies may be posted separately.
         </p>
-
         <p>
         Project maintainers who do not follow or enforce the Code of Conduct in good
         faith may face temporary or permanent repercussions as determined by other
         members of the project's leadership.
         </p>
-
-        <h2 className="h3">Attribution</h2>
-        <p>
-        This Code of Conduct is adapted from the Contributor Covenant, version 1.4,
-        available at <a href="https://www.contributor-covenant.org/version/1/4/code-of-conduct.html">
-        https://www.contributor-covenant.org/version/1/4/code-of-conduct.html</a>
-        </p>
-
         <p>
         For answers to common questions about this code of conduct, see <a
         href="https://www.contributor-covenant.org/faq">https://www.contributor-covenant.org/faq</a>

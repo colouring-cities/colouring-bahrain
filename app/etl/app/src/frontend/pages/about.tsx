@@ -1,7 +1,5 @@
 import React from 'react';
 
-import './about.css';
-
 import Categories from '../building/categories';
 import SupporterLogos from '../components/supporter-logos';
 
