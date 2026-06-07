@@ -1,27 +1,24 @@
 import isEqual from 'lodash.isequal';
-import urlapi from 'url';
 
-function sanitiseURL(string){
-  let url_;
+function sanitiseURL(string: string): string | null {
+  let url: URL;
 
   // http or https
   if (!(string.substring(0, 7) === 'http://' || string.substring(0, 8) === 'https://')){
       return null;
   }
 
+  // The WHATWG URL API is standard in both modern browsers and Node.js.
+  // This avoids using browser-specific objects like `document` on the server.
   try {
-      url_ = document.createElement('a');
-      url_.href = string;
+    url = new URL(string);
   } catch (error) {
-      try {
-          url_ = urlapi.parse(string);
-      } catch (error) {
-          return null;
-      }
+    // The URL constructor will throw if the URL is malformed.
+    return null;
   }
 
   // required (www.example.com)
-  if (!url_.hostname || url_.hostname === '' || url_.hostname === 'localhost'){
+  if (!url.hostname || url.hostname === '' || url.hostname === 'localhost'){
       return null;
   }
 
@@ -34,7 +31,7 @@ function sanitiseURL(string){
   // optional (#anchor)
   // url_.hash;
 
-  return `${url_.protocol}//${url_.hostname}${url_.pathname || ''}${url_.search || ''}${url_.hash || ''}`;
+  return url.href;
 }
 
 /**
@@ -57,18 +54,26 @@ function arrayToDictionary<T>(arr: T[], keyAccessor: (obj: T) => string): {[key:
  * @returns a JS Date object with the UTC time encoded
  */
 function parseDate(isoUtcDate: string): Date {
-    const [year, month, day, hour, minute, second, millisecond] = isoUtcDate.match(/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d).(\d{3})Z$/)
-        .splice(1)
-        .map(x => parseInt(x, 10));
-    return new Date(Date.UTC(year, month-1, day, hour, minute, second, millisecond));
+    // The Date constructor can parse ISO 8601 strings directly.
+    // This is more robust than a regex and handles variations in the format.
+    const date = new Date(isoUtcDate);
+
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+        // Or throw an error, depending on desired behavior
+        return null;
+    }
+
+    return date;
 }
 
-function compareObjects(objA: object, objB: object): [object, object] {
-    const reverse = {};
-    const forward = {};
+function compareObjects<T extends Record<string, any>>(objA: T, objB: T): [Partial<T>, Partial<T>] {
+    const reverse: Partial<T> = {};
+    const forward: Partial<T> = {};
     for (const [key, value] of Object.entries(objB)) {
-        if (!isEqual(objA[key], value)) {
-            reverse[key] = objA[key];
+        const keyTyped = key as keyof T;
+        if (!isEqual(objA[keyTyped], value)) {
+            reverse[keyTyped] = objA[keyTyped];
             forward[key] = value;
         }
     }

@@ -1,4 +1,4 @@
-import { parse as parseQuery } from 'query-string';
+import qs from 'query-string';
 import React, { Fragment } from 'react';
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
 
@@ -117,7 +117,7 @@ class MapApp extends React.Component<MapAppProps, MapAppState> {
     }
 
     getMultiEditDataString(): string {
-        const q = parseQuery(this.props.location.search);
+        const q = qs.parse(this.props.location.search);
         if(Array.isArray(q.data)) {
             throw new Error('Invalid format');
         } else return q.data;
