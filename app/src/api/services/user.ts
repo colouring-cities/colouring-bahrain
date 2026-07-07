@@ -9,6 +9,8 @@ import db from '../../db';
 import { validatePassword, validateUsername, ValidationError } from '../validation';
 
 
+// --- user.ts (Backend File) ---
+
 async function createUser(user) {
     try {
         validateUsername(user.username);
@@ -32,26 +34,31 @@ async function createUser(user) {
                 $1,
                 $2,
                 crypt($3, gen_salt('bf'))
-            ) RETURNING user_id
-            `, [
+            ) RETURNING user_id, username, email, date_trunc('minute', registered) as registered, api_key
+            `, [ // <-- CRITICAL CHANGE IS ON THE RETURNING LINE ABOVE
                 user.username,
                 user.email,
                 user.password
             ]
         );
     } catch(error) {
-        console.error('Error:', error);
+        // Log the raw error for debugging
+        console.error('Error:', error); 
 
-        if (error.detail.includes('already exists')) {
-            if (error.detail.includes('username')) {
-                return { error: 'Username already registered' };
-            } else if (error.detail.includes('email')) {
-                return { error: 'Email already registered' };
+        // Check for the specific unique constraint violation code (23505)
+        if (error.code === '23505') {
+            if (error.detail && error.detail.includes('already exists')) {
+                if (error.detail.includes('username')) {
+                    return { error: 'Username already registered' };
+                } else if (error.detail.includes('email')) {
+                    return { error: 'Email already registered' };
+                }
             }
         }
         return { error: 'Database error' };
     }
 }
+// ... (rest of the file remains the same)
 
 async function authUser(username: string, password: string) {
     const user = await db.oneOrNone(
@@ -142,9 +149,9 @@ async function getNewUserAPIKey(id: string) {
     }
 }
 
-async function authAPIUser(key: string) {
+async function authAPIUser(key: string): Promise<string> {
     try {
-        return await db.one(
+        const { user_id } = await db.one(
             `SELECT
                 user_id
             FROM
@@ -155,6 +162,8 @@ async function authAPIUser(key: string) {
                 key
             ]
         );
+
+        return user_id;
     } catch(error) {
         console.error('Error:', error);
         return undefined;

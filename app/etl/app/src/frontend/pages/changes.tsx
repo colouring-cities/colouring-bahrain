@@ -1,4 +1,4 @@
-import qs from 'query-string';
+import { parse } from 'query-string';
 import React, { useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 
@@ -34,7 +34,7 @@ function getNavigationUrl(options: {
 }
 
 const ChangesPage = (props: RouteComponentProps) => {
-    let { after_id, before_id, deletions } = qs.parse(props.location.search);
+    let { after_id, before_id, deletions } = parse(props.location.search);
 
     if(deletions instanceof Array) deletions = deletions[0];
 

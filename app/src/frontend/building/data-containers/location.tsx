@@ -1,155 +1,130 @@
 import React, { Fragment } from 'react';
-
-import InfoBox from '../../components/info-box';
-import { dataFields } from '../../data_fields';
+import { dataFields } from '../../config/data-fields-config';
 import DataEntry from '../data-components/data-entry';
-import NumericDataEntry from '../data-components/numeric-data-entry';
-import UPRNsDataEntry from '../data-components/uprns-data-entry';
-import Verification from '../data-components/verification';
 import withCopyEdit from '../data-container';
-
+import { PatternDataEntry } from '../data-components/pattern-data-entry';
 import { CategoryViewProps } from './category-view-props';
+import { DataEntryGroup } from '../data-components/data-entry-group';
+import Verification from '../data-components/verification';
+import InfoBox from '../../components/info-box';
 
-const LocationView: React.FunctionComponent<CategoryViewProps> = (props) => (
-    <Fragment>
-        <InfoBox msg="Text-based address fields are disabled at the moment. We're looking into how best to collect this data." />
-        <DataEntry
-            title={dataFields.location_name.title}
-            slug="location_name"
-            value={props.building.location_name}
-            mode={props.mode}
-            copy={props.copy}
-            onChange={props.onChange}
-            tooltip={dataFields.location_name.tooltip}
-            placeholder="Building name (if any)"
-            disabled={true}
-            />
-        <Verification
-            slug="location_name"
-            allow_verify={props.user !== undefined && props.building.location_name !== null && !props.edited}
-            onVerify={props.onVerify}
-            user_verified={props.user_verified.hasOwnProperty("location_name")}
-            user_verified_as={props.user_verified.location_name}
-            verified_count={props.building.verified.location_name}
-            />
+const locationNumberPattern = "[1-9]\\d*[a-z]?(-([1-9]\\d*))?";
+const postcodeCharacterPattern = "^[A-Z]{1,2}[0-9]{1,2}[A-Z]?(\\s*[0-9][A-Z]{1,2})?$";
 
-        <NumericDataEntry
-            title={dataFields.location_number.title}
-            slug="location_number"
-            value={props.building.location_number}
-            mode={props.mode}
-            copy={props.copy}
-            onChange={props.onChange}
-            step={1}
-            min={1}
-            />
-        <Verification
-            slug="location_number"
-            allow_verify={props.user !== undefined && props.building.location_number !== null && !props.edited}
-            onVerify={props.onVerify}
-            user_verified={props.user_verified.hasOwnProperty("location_number")}
-            user_verified_as={props.user_verified.location_number}
-            verified_count={props.building.verified.location_number}
-            />
+const LocationView: React.FunctionComponent<CategoryViewProps> = (props) => {
+    const queryParameters = new URLSearchParams(window.location.search);
+    const subcat = queryParameters.get("sc");
 
-        <DataEntry
-            title={dataFields.location_street.title}
-            slug="location_street"
-            value={props.building.location_street}
-            mode={props.mode}
-            copy={props.copy}
-            onChange={props.onChange}
-            disabled={true}
-            />
-        <Verification
-            slug="location_street"
-            allow_verify={props.user !== undefined && props.building.location_street !== null && !props.edited}
-            onVerify={props.onVerify}
-            user_verified={props.user_verified.hasOwnProperty("location_street")}
-            user_verified_as={props.user_verified.location_street}
-            verified_count={props.building.verified.location_street}
-            />
-
-        <DataEntry
-            title={dataFields.location_line_two.title}
-            slug="location_line_two"
-            value={props.building.location_line_two}
-            mode={props.mode}
-            copy={props.copy}
-            onChange={props.onChange}
-            disabled={true}
-            />
-        <DataEntry
-            title={dataFields.location_town.title}
-            slug="location_town"
-            value={props.building.location_town}
-            mode={props.mode}
-            copy={props.copy}
-            onChange={props.onChange}
-            disabled={true}
-            />
-        <DataEntry
-            title={dataFields.location_postcode.title}
-            slug="location_postcode"
-            value={props.building.location_postcode}
-            mode={props.mode}
-            copy={props.copy}
-            onChange={props.onChange}
-            maxLength={8}
-            valueTransform={x=>x.toUpperCase()}
-            disabled={true}
-            />
-        <DataEntry
-            title={dataFields.ref_toid.title}
-            slug="ref_toid"
-            value={props.building.ref_toid}
-            mode={props.mode}
-            copy={props.copy}
-            tooltip={dataFields.ref_toid.tooltip}
-            onChange={props.onChange}
-            disabled={true}
-            />
-        <UPRNsDataEntry
-            title={dataFields.uprns.title}
-            value={props.building.uprns}
-            tooltip={dataFields.uprns.tooltip}
-            />
-        <DataEntry
-            title={dataFields.ref_osm_id.title}
-            slug="ref_osm_id"
-            value={props.building.ref_osm_id}
-            mode={props.mode}
-            copy={props.copy}
-            tooltip={dataFields.ref_osm_id.tooltip}
-            maxLength={20}
-            onChange={props.onChange}
-            />
-        <NumericDataEntry
-            title={dataFields.location_latitude.title}
-            slug="location_latitude"
-            value={props.building.location_latitude}
-            mode={props.mode}
-            copy={props.copy}
-            step={0.00001}
-            min={-90}
-            max={90}
-            placeholder="Latitude, e.g. 51.5467"
-            onChange={props.onChange}
-            />
-        <NumericDataEntry
-            title={dataFields.location_longitude.title}
-            slug="location_longitude"
-            value={props.building.location_longitude}
-            mode={props.mode}
-            copy={props.copy}
-            step={0.00001}
-            min={-180}
-            max={180}
-            placeholder="Longitude, e.g. -0.0586"
-            onChange={props.onChange}
-            />
-    </Fragment>
-);
+    return (
+        <Fragment>
+            <DataEntryGroup name="Individual Building/Property Address" collapsed={subcat==null || subcat!="1"}>
+                <PatternDataEntry
+                    title={dataFields.location_number.title}
+                    slug="location_number"
+                    value={props.building.location_number}
+                    pattern={locationNumberPattern}
+                    mode={props.mode}
+                    copy={props.copy}
+                    onChange={props.onChange}
+                    tooltip={dataFields.location_number.tooltip}
+                    maxLength={5}
+                />
+                <Verification
+                    slug="location_number"
+                    allow_verify={props.user !== undefined && props.building.location_number !== null && !props.edited}
+                    onVerify={props.onVerify}
+                    user_verified={props.user_verified.hasOwnProperty("location_number")}
+                    user_verified_as={props.user_verified.location_number}
+                    verified_count={props.building.verified.location_number}
+                />
+                <DataEntry
+                    title={dataFields.location_street.title}
+                    slug="location_street"
+                    value={props.building.location_street}
+                    tooltip={dataFields.location_street.tooltip}
+                    mode={props.mode}
+                    copy={props.copy}
+                    onChange={props.onChange}
+                    maxLength={30}
+                    disabled={true}
+                />
+                <Verification
+                    slug="location_street"
+                    allow_verify={props.user !== undefined && props.building.location_street !== null && !props.edited}
+                    onVerify={props.onVerify}
+                    user_verified={props.user_verified.hasOwnProperty("location_street")}
+                    user_verified_as={props.user_verified.location_street}
+                    verified_count={props.building.verified.location_street}
+                />
+                <DataEntry
+                    title={dataFields.location_town.title}
+                    slug="location_town"
+                    value={props.building.location_town}
+                    tooltip={dataFields.location_town.tooltip}
+                    mode={props.mode}
+                    copy={props.copy}
+                    onChange={props.onChange}
+                    disabled={true}
+                />
+                <Verification
+                    slug="location_town"
+                    allow_verify={props.user !== undefined && props.building.location_town !== null && !props.edited}
+                    onVerify={props.onVerify}
+                    user_verified={props.user_verified.hasOwnProperty("location_town")}
+                    user_verified_as={props.user_verified.location_town}
+                    verified_count={props.building.verified.location_town}
+                />
+                <PatternDataEntry
+                    title={dataFields.location_postcode.title}
+                    slug="location_postcode"
+                    value={props.building.location_postcode}
+                    pattern={postcodeCharacterPattern}
+                    mode={props.mode}
+                    copy={props.copy}
+                    onChange={props.onChange}
+                    maxLength={8}
+                    valueTransform={x=>x.toUpperCase()}
+                    tooltip={dataFields.location_postcode.tooltip}
+                />
+                <Verification
+                    slug="location_postcode"
+                    allow_verify={props.user !== undefined && props.building.location_postcode !== null && !props.edited}
+                    onVerify={props.onVerify}
+                    user_verified={props.user_verified.hasOwnProperty("location_postcode")}
+                    user_verified_as={props.user_verified.location_postcode}
+                    verified_count={props.building.verified.location_postcode}
+                />
+                <DataEntry
+                    title={dataFields.size_parcel_geometry.title}
+                    slug="size_parcel_geometry"
+                    value={props.building.size_parcel_geometry}
+                    mode={props.mode}
+                    copy={props.copy}
+                    onChange={props.onChange}
+                    tooltip={dataFields.size_parcel_geometry.tooltip}
+                    placeholder="https://..."
+                    isUrl={true}
+                />
+                <Verification
+                    slug="size_parcel_geometry"
+                    allow_verify={props.user !== undefined && props.building.size_parcel_geometry !== null && !props.edited}
+                    onVerify={props.onVerify}
+                    user_verified={props.user_verified.hasOwnProperty("size_parcel_geometry")}
+                    user_verified_as={props.user_verified.size_parcel_geometry}
+                    verified_count={props.building.verified.size_parcel_geometry}
+                />
+            </DataEntryGroup>
+            <DataEntryGroup name="Building Footprint Issues" collapsed={subcat==null || subcat!="2"}>
+                <InfoBox>
+                    Please let us know of any inaccuracies here. Select what is wrong with the building footprint.
+                </InfoBox>
+                <InfoBox type='warning'>
+                    This section is under development. Options will follow the footprint issues legend (Slide 7).
+                </InfoBox>
+            </DataEntryGroup>
+        </Fragment>
+    );
+};
 const LocationContainer = withCopyEdit(LocationView);
 
 export default LocationContainer;

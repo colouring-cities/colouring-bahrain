@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Route, RouteProps, Redirect } from 'react-router-dom';
+import { SpinnerIcon } from './components/icons';
 
 import { useAuth } from './auth-context';
 
 export const PrivateRoute: React.FC<RouteProps> = ({component: Component, children, ...rest}) => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, isLoading } = useAuth();
 
     return <Route
         {...rest}
@@ -15,14 +16,17 @@ export const PrivateRoute: React.FC<RouteProps> = ({component: Component, childr
                 } else if(children) {
                     return <>{children}</>;
                 }
-                
+
             } else {
+                if (isLoading) {
+                    return <Fragment><SpinnerIcon spin={true} /> Loading user info...</Fragment>
+                }
                 return <Redirect to={{
                     pathname: "/login.html",
                     state: { from: props.location.pathname }
                 }} />;
             }
-        }} 
+        }}
     />
 };
 
@@ -33,7 +37,12 @@ export const AuthRoute: React.FC<RouteProps> = ({ component: Component, children
         {...rest}
         render={props => {
             if(isAuthenticated) {
-                const { from } = props.location.state ?? { from: '/my-account.html'};
+                let state = props.location.state as any;
+                let from = '/my-account.html';
+                if (typeof state == 'object' && state !== null && 'from' in state) {
+                    from = state.from;
+                }
+
                 return <Redirect to={{pathname: from }} />;
             } else {
                 if(Component) {
@@ -42,6 +51,6 @@ export const AuthRoute: React.FC<RouteProps> = ({ component: Component, children
                     return <>{children}</>;
                 }
             }
-        }} 
+        }}
     />
 };

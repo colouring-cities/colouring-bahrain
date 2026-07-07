@@ -4,8 +4,8 @@ Initial setup, on first connection (replacing hostname, username, port, dbname a
 
 ```bash
 $ psql "host={hostname} user={username} port={port} sslmode=require dbname=postgres"
-> create database colouringbahrain;
-> \c colouringbahrain
+> create database colouringlondon;
+> \c colouringlondon
 > create extension postgis;
 > create extension pgcrypto;
 > create extension pg_trgm;

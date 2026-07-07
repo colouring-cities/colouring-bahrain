@@ -1,10 +1,10 @@
 openapi: 3.0.0
 info:
-  title: Colouring Bahrain API
+  title: Colouring London API
   version: 1.0.0
 
 servers:
-  - url: https://colouring.bh/api
+  - url: https://colouring.london/api
     description: Production server (uses live data)
 
 paths:

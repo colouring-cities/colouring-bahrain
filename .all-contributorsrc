@@ -1,6 +1,6 @@
 {
-  "projectName": "colouring-bahrain",
-  "projectOwner": "tomalrussell",
+  "projectName": "colouring-london",
+  "projectOwner": "colouring-cities",
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
@@ -31,6 +31,16 @@
         "ideas",
         "code",
         "doc"
+      ]
+    },
+    {
+      "login": "mz8i",
+      "name": "mz8i",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/36160844?v=4",
+      "profile": "https://github.com/mz8i",
+      "contributions": [
+        "code",
+        "ideas"
       ]
     },
     {
@@ -71,24 +81,63 @@
       ]
     },
     {
-      "login": "mz8i",
-      "name": "mz8i",
-      "avatar_url": "https://avatars2.githubusercontent.com/u/36160844?v=4",
-      "profile": "https://github.com/mz8i",
-      "contributions": [
-        "code",
-        "ideas"
-      ]
-    },
-    {
-      "login": "313a1i",
-      "name": "Ali Naser",
-      "avatar_url": "https://avatars.githubusercontent.com/u/313a1i?v=4",
-      "profile": "https://github.com/313a1i",
+      "login": "MeldaS",
+      "name": "MeldaS",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/33935846?v=4",
+      "profile": "https://github.com/MeldaS",
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "",
+      "name": "Tarn Hamilton",
+      "avatar_url": "docs/images/green.png",
+      "profile": "#",
+      "contributions": [
+        "design"
+      ]
+    },
+    {
+      "login": "",
+      "name": "Louis Jobst",
+      "avatar_url": "docs/images/yellow.png",
+      "profile": "http://www.louisjobst.com/index.php/about/",
+      "contributions": [
+        "design"
+      ]
+    },
+    {
+      "login": "edwardchalstrey1",
+      "name": "Ed Chalstrey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5486164?v=4",
+      "profile": "http://edchalstrey.com/",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "matkoniecz",
+      "name": "Mateusz Konieczny",
+      "avatar_url": "https://avatars.githubusercontent.com/u/899988?v=4",
+      "profile": "https://mapsaregreat.com/",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "mdsimpson42",
+      "name": "Mike Simpson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21125422?v=4",
+      "profile": "https://github.com/mdsimpson42",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true
 }

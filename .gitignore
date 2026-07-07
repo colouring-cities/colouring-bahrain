@@ -10,6 +10,7 @@ html/norton*.html
 .vscode
 
 # Data
+etl/
 etl/cache/*
 etl/images/*
 etl/*.geojson
@@ -18,6 +19,11 @@ etl/**/*.txt
 etl/**/*.xls
 etl/**/*.xlsx
 etl/**/*.zip
+etl/**/*.gml
+etl/**/*.gz
+etl/**/5690395*
+postgresdata
+*/__pycache__/*
 
 .DS_Store
 
@@ -28,7 +34,5 @@ app/tilecache/**/*.mbtiles
 # Notes
 TODO
 
-# Vulnerability reporting
-VULNERABILITY_REPORT.md
-npm-audit*.json
-pip-audit*.json
+# VM
+.vagrant

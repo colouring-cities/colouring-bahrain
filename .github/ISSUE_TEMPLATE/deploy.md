@@ -1,5 +1,5 @@
 ---
-name: Deploy Colouring Bahrain
+name: Deploy Colouring London
 about: Checklist for deploying an update
 title: ''
 labels: ''
@@ -13,9 +13,9 @@ Deploy checklist:
 - [ ] log on to VPN
 - [ ] log in to staging, pull changes and build
 
-        ssh staging.colouring.bh
-        sudo su - colouringbahrainstaging
-        cd /var/www/colouring-bahrain
+        ssh staging.colouring.london
+        sudo su - colouringlondonstaging
+        cd /var/www/colouring-london
         git pull
         npm ci
         npm run build

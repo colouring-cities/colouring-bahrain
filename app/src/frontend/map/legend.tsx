@@ -1,249 +1,115 @@
-import React from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import './legend.css';
 
 import { DownIcon, UpIcon } from '../components/icons';
 import { Logo } from '../components/logo';
-
-const LEGEND_CONFIG = {
-    location: {
-        title: 'Mapping',
-        description: '% data collected',
-        elements: [
-            { color: '#084081', text: '≥80%' },
-            { color: '#0868ac', text: '60–80%' },
-            { color: '#43a2ca', text: '40–60%' },
-            { color: '#7bccc4', text: '20–40%' },
-            { color: '#bae4bc', text: '<20%' }
-        ]
-    },
-    use: {
-        title: 'Land Use',
-        elements: [
-            { color: '#e5050d', text: 'Mixed Use' },
-            { subtitle: 'Single use:'},
-            { color: '#4a54a6', text: 'Residential' },
-            { color: '#ff8c00', text: 'Retail' },
-            { color: '#f5f58f', text: 'Industry & Business' },
-            { color: '#73ccd1', text: 'Community Services' },
-            { color: '#ffbfbf', text: 'Recreation & Leisure' },
-            { color: '#b3de69', text: 'Transport' },
-            { color: '#cccccc', text: 'Utilities & Infrastructure' },
-            { color: '#898944', text: 'Defence' },
-            { color: '#fa667d', text: 'Agriculture' },
-            { color: '#53f5dd', text: 'Minerals' },
-            { color: '#ffffff', text: 'Vacant & Derelict' }
-        ]
-    },
-    type: {
-        title: 'Commerce & Activity',
-        elements: [
-            { color: "#f2a2b9", text: "Detached" },
-            { color: "#ab8fb0", text: "Semi-Detached" },
-            { color: "#3891d1", text: "End-Terrace" },
-            { color: "#226291", text: "Mid-Terrace" }
-        ]
-    },
-    age: {
-        title: 'Age & History',
-        elements: [
-            { color: '#fff9b8', text: '>2020' },
-            { color: '#fae269', text: '2000-2019' },
-            { color: '#fbaf27', text: '1980-1999' },
-            { color: '#e6711d', text: '1960-1979' },
-            { color: '#cc1212', text: '1940-1959' },
-            { color: '#8f0303', text: '1920-1939' },
-            { color: '#8f5385', text: '1900-1919' },
-            { color: '#c3e1eb', text: '1880-1899' },
-            { color: '#6a9dba', text: '1860-1879' },
-            { color: '#3b74a3', text: '1840-1859' },
-            { color: '#95ded8', text: '1820-1839' },
-            { color: '#68aba5', text: '1800-1819' },
-            { color: '#acc98f', text: '1750-1799' },
-            { color: '#6d8a51', text: '1700-1749' },
-            { color: '#d0c291', text: '<1700' },
-        ]
-    },
-    size: {
-        title: 'Morphology',
-        description: 'Height to apex',
-        elements: [
-            { color: '#f7f4f9', text: '0-5.55'},
-            { color: '#e7e1ef', text: '5.55-7.73'},
-            { color: '#d4b9da', text: '7.73-11.38'},
-            { color: '#c994c7', text: '11.38-18.45'},
-            { color: '#df65b0', text: '18.45-35.05'},
-            { color: '#e7298a', text: '35.05-89.30'},
-            { color: '#ce1256', text: '89.30-152'},
-            { color: '#980043', text: '≥152'}
-        ]
-    },
-    construction: {
-        title: 'Construction & Design',
-        elements: [
-            { color: "#96613b", text: "Wood" },
-            { color: "#ffffe3", text: "Stone" },
-            { color: "#f5d96b", text: "Brick" },
-            { color: "#beffe8", text: "Steel" },
-            { color: "#fca89d", text: "Reinforced Concrete" },
-            { color: "#5c8970", text: "Other Metal" },
-            { color: "#b5a859", text: "Other Natural Material" },
-            { color: "#c48a85", text: "Other Man-Made Material" }
-        ]
-    },
-    team: {
-        title: 'Investment & Engagement',
-        elements: []
-    },
-    sustainability: {
-        title: 'Assessment',
-        description: 'DEC Rating',
-        elements: [
-            { color: "#007f3d", text: 'A' },
-            { color: "#2c9f29", text: 'B' },
-            { color: "#9dcb3c", text: 'C' },
-            { color: "#fff200", text: 'D' },
-            { color: "#f7af1d", text: 'E' },
-            { color: "#ed6823", text: 'F' },
-            { color: "#e31d23", text: 'G' },
-        ]
-    },
-    streetscape: {
-        title: 'Green / Urban Infrastructure',
-        elements: []
-    },
-    planning: {
-        title: 'Conservation',
-        disclaimer: 'All data relating to designated buildings should be checked on the National Heritage List for England or local authority websites where used for planning or development purposes',
-        elements: [
-            { color: '#95beba', text: 'In conservation area'},
-            { color: '#c72e08', text: 'Grade I listed'},
-            { color: '#e75b42', text: 'Grade II* listed'},
-            { color: '#ffbea1', text: 'Grade II listed'},
-            { color: '#858ed4', text: 'Locally listed'},
-        ]
-    },
-    dynamics: {
-        title: 'Disaster Management',
-        elements: []
-    },
-    community: {
-        title: 'Social',
-        elements: [
-            { color: '#bd0026', text: '👍👍👍👍 100+' },
-            { color: '#e31a1c', text: '👍👍👍 50–99' },
-            { color: '#fc4e2a', text: '👍👍 20–49' },
-            { color: '#fd8d3c', text: '👍👍 10–19' },
-            { color: '#feb24c', text: '👍 3–9' },
-            { color: '#fed976', text: '👍 2' },
-            { color: '#ffe8a9', text: '👍 1'}
-        ]
-    }
-};
-
+import { CategoryMapDefinition, LegendConfig } from '../config/category-maps-config';
+import { BuildingMapTileset } from '../config/tileserver-config';
 
 interface LegendProps {
-    slug: string;
+    mapColourScaleDefinitions: CategoryMapDefinition[];
+    mapColourScale: BuildingMapTileset;
+    onMapColourScale: (x: BuildingMapTileset) => void;
 }
 
-interface LegendState {
-    collapseList: boolean;
-}
+export const Legend : FC<LegendProps> = ({
+    mapColourScaleDefinitions,
+    mapColourScale,
+    onMapColourScale
+}) => {
+    const [collapseList, setCollapseList] = useState(false);
 
-class Legend extends React.Component<LegendProps, LegendState> {
-    constructor(props) {
-        super(props);
-        this.state = {collapseList: false};
-        this.handleClick = this.handleClick.bind(this);
-        this.onResize= this.onResize.bind(this);
-    }
+    const handleToggle = useCallback(() => {
+        setCollapseList(!collapseList);
+    }, [collapseList]);
 
+    const onResize = useCallback(({target}) => {
+        setCollapseList((target.outerHeight < 670 || target.outerWidth < 768))
+    }, []);
 
-    handleClick() {
-        this.setState(state => ({
-            collapseList: !state.collapseList
-        }));
-    }
+    useEffect(() => {
+        window.addEventListener('resize', onResize);
 
+        if(window?.outerHeight) {
 
-    componentDidMount() {
-        window.addEventListener('resize', this.onResize);
-        if (window && window.outerHeight) {
             // if we're in the browser, pass in as though from event to initialise
-            this.onResize({target: window});
+            onResize({target: window});
         }
-    }
+
+        return () => {
+            window.removeEventListener('resize', onResize);
+        }
+    }, [onResize]);
+
+    const legendConfig = mapColourScaleDefinitions.find(def => def.mapStyle === mapColourScale)?.legend;
 
 
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.onResize);
-    }
+    const {
+        title = undefined,
+        elements = [],
+        description = undefined,
+        disclaimer = undefined
+    } = legendConfig ?? {};
 
-
-    onResize(e) {
-        this.setState({collapseList: (e.target.outerHeight < 670 || e.target.outerWidth < 768)});  // magic number needs to be consistent with CSS expander-button media query
-    }
-
-    render() {
-        const details = LEGEND_CONFIG[this.props.slug] || {};
-        const title = details.title || "";
-        const elements = details.elements || [];
-
-        return (
-            <div className="map-legend">
-                <Logo variant="default" />
-                <h4 className="h4">
-                    { title }
-                </h4>
-                {
-                    elements.length > 0 ?
-                        <button className="expander-button btn btn-outline-secondary btn-sm" type="button" onClick={this.handleClick} >
-                            {
-                                this.state.collapseList ?
-                                    <UpIcon /> :
-                                    <DownIcon />
-                            }
-                        </button> :
-                        null
-                }
-                {
-                    details.description?
-                        <p>{details.description} </p>
-                        : null
-                }
-                {
-                    elements.length?
-                        <ul className={this.state.collapseList ? 'collapse data-legend' : 'data-legend'} >
-                            {
-                                details.disclaimer &&
-                                    <p className='legend-disclaimer'>{details.disclaimer}</p>
-                            }
-                            {
-                                elements.map((item) => {
-                                    if(item.subtitle != undefined) {
-                                        return (<li key={item.subtitle}>
-                                            <h6>{item.subtitle}</h6>
-                                        </li>);
-                                    }
-
-                                    return (
-
-                                       <li key={item.color} >
-                                            <div className="key" style={ { background: item.color, border: item.border } }></div>
-                                            { item.text }
-                                       </li>
-
-                                    );
-                                })
-                            }
-                        </ul>
-                        : <p className="data-intro">Coming soon…</p>
-                }
-            </div>
-        );
-
-    }
-
+    return (
+        <div className="map-legend">
+            <Logo variant="default" />
+            {
+                mapColourScaleDefinitions.length > 1 ?
+                    <select className='style-select' onChange={e => onMapColourScale(e.target.value as BuildingMapTileset)} value={mapColourScale}>
+                        {
+                            mapColourScaleDefinitions.map(def => 
+                                <option key={def.mapStyle} value={def.mapStyle}>{def.legend.title}</option>    
+                            )
+                        }
+                    </select> :
+                    title && <h4 className="h4">{title}</h4>
+            }
+            {
+                elements.length > 0 &&
+                    <button className="expander-button btn btn-outline-secondary btn-sm" type="button" onClick={handleToggle} >
+                        {
+                            collapseList ?
+                                <UpIcon /> :
+                                <DownIcon />
+                        }
+                    </button>
+            }
+            {
+                description && <p>{description}</p>
+            }
+            {
+                elements.length === 0 ?
+                    ( disclaimer ? <ul className={collapseList ? 'collapse data-legend' : 'data-legend'} ><p className='legend-disclaimer'>{disclaimer}</p></ul> : <p className="data-intro">Coming soon…</p>) :
+                    <ul className={collapseList ? 'collapse data-legend' : 'data-legend'} >
+                        {
+                            disclaimer && <p className='legend-disclaimer'>{disclaimer}</p>
+                        }
+                        {
+                            elements.map((item) => {
+                                let key: string, 
+                                    content: React.ReactElement;
+                                    
+                                if('subtitle' in item) {
+                                    key = item.subtitle;
+                                    content = <h6>{item.subtitle}</h6>;
+                                } else {
+                                    key = `${item.text}-${item.color}`;
+                                    content = <>
+                                        <div className="key" style={ { background: item.color, border: item.border } } />
+                                        { item.text }
+                                    </>;
+                                }
+                                return (
+                                    <li key={key}>
+                                        {content}
+                                    </li>
+                                );
+                            })
+                        }
+                    </ul>
+            }
+        </div>
+    );
 }
-
-export default Legend;

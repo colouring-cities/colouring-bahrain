@@ -89,7 +89,7 @@ ALTER TABLE buildings
 
 -- World Heritage (id)
 -- e.g. http://whc.unesco.org/en/list/488/
--- full list for Bahrain: 426, 488, 795, 1084
+-- full list for London: 426, 488, 795, 1084
 ALTER TABLE buildings
     ADD COLUMN IF NOT EXISTS planning_world_list_id int DEFAULT NULL;
 
@@ -102,7 +102,7 @@ ALTER TABLE buildings
     ADD COLUMN IF NOT EXISTS planning_glher_url VARCHAR DEFAULT '';
 
 -- Archaeological Priority Area (bool, name, tier 1-4)
--- see https://historicengland.org.uk/services-skills/our-planning-services/greater-bahrain-archaeology-advisory-service/greater-bahrain-archaeological-priority-areas/
+-- see https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/greater-london-archaeological-priority-areas/
 -- (APA reports contain PDF maps)
 ALTER TABLE buildings
     ADD COLUMN IF NOT EXISTS planning_in_apa boolean DEFAULT FALSE;

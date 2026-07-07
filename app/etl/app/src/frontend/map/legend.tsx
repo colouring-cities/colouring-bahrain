@@ -7,7 +7,7 @@ import { Logo } from '../components/logo';
 
 const LEGEND_CONFIG = {
     location: {
-        title: 'Mapping',
+        title: 'Location',
         description: '% data collected',
         elements: [
             { color: '#084081', text: '≥80%' },
@@ -36,7 +36,7 @@ const LEGEND_CONFIG = {
         ]
     },
     type: {
-        title: 'Commerce & Activity',
+        title: 'Type',
         elements: [
             { color: "#f2a2b9", text: "Detached" },
             { color: "#ab8fb0", text: "Semi-Detached" },
@@ -45,7 +45,7 @@ const LEGEND_CONFIG = {
         ]
     },
     age: {
-        title: 'Age & History',
+        title: 'Age',
         elements: [
             { color: '#fff9b8', text: '>2020' },
             { color: '#fae269', text: '2000-2019' },
@@ -65,8 +65,7 @@ const LEGEND_CONFIG = {
         ]
     },
     size: {
-        title: 'Morphology',
-        description: 'Height to apex',
+        title: 'Height to apex',
         elements: [
             { color: '#f7f4f9', text: '0-5.55'},
             { color: '#e7e1ef', text: '5.55-7.73'},
@@ -79,7 +78,7 @@ const LEGEND_CONFIG = {
         ]
     },
     construction: {
-        title: 'Construction & Design',
+        title: 'Construction',
         elements: [
             { color: "#96613b", text: "Wood" },
             { color: "#ffffe3", text: "Stone" },
@@ -92,11 +91,11 @@ const LEGEND_CONFIG = {
         ]
     },
     team: {
-        title: 'Investment & Engagement',
+        title: 'Team',
         elements: []
     },
     sustainability: {
-        title: 'Assessment',
+        title: 'Sustainability',
         description: 'DEC Rating',
         elements: [
             { color: "#007f3d", text: 'A' },
@@ -109,11 +108,11 @@ const LEGEND_CONFIG = {
         ]
     },
     streetscape: {
-        title: 'Green / Urban Infrastructure',
+        title: 'Streetscape',
         elements: []
     },
     planning: {
-        title: 'Conservation',
+        title: 'Statutory protections',
         disclaimer: 'All data relating to designated buildings should be checked on the National Heritage List for England or local authority websites where used for planning or development purposes',
         elements: [
             { color: '#95beba', text: 'In conservation area'},
@@ -124,11 +123,11 @@ const LEGEND_CONFIG = {
         ]
     },
     dynamics: {
-        title: 'Disaster Management',
+        title: 'Dynamics',
         elements: []
     },
     community: {
-        title: 'Social',
+        title: 'Like Me',
         elements: [
             { color: '#bd0026', text: '👍👍👍👍 100+' },
             { color: '#e31a1c', text: '👍👍👍 50–99' },

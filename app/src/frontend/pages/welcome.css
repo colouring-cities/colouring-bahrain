@@ -28,3 +28,13 @@
 .turing-logo {
     height: 4em;
 }
+
+.h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.5;
+}

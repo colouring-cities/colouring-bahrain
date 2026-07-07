@@ -18,7 +18,7 @@ export enum Category {
 export const categories = {
     [Category.Location]: {
         slug: 'location',
-        name: 'Mapping'
+        name: 'Location'
     },
     [Category.LandUse]: {
         slug: 'use',
@@ -26,39 +26,39 @@ export const categories = {
     },
     [Category.Type]: {
         slug: 'type',
-        name: 'Commerce & Activity'
+        name: 'Type'
     },
     [Category.Age]: {
         slug: 'age',
-        name: 'Age & History'
+        name: 'Age'
     },
     [Category.SizeShape]: {
         slug: 'size',
-        name: 'Morphology'
+        name: 'Size & Shape'
     },
     [Category.Construction]: {
         slug: 'construction',
-        name: 'Construction & Design'
+        name: 'Construction'
     },
     [Category.Streetscape]: {
         slug: 'streetscape',
-        name: 'Green / Urban Infrastructure'
+        name: 'Streetscape'
     },
     [Category.Team]: {
         slug: 'team',
-        name: 'Investment & Engagement'
+        name: 'Team'
     },
     [Category.Sustainability]: {
         slug: 'sustainability',
-        name: 'Assessment'
+        name: 'Sustainability'
     },
     [Category.Community]: {
         slug: 'community',
-        name: 'Social'
+        name: 'Community'
     },
     [Category.Planning]: {
         slug: 'planning',
-        name: 'Conservation'
+        name: 'Planning'
     },
     [Category.Like]: {
         slug: 'like',
@@ -115,12 +115,12 @@ export const dataFields = {
     },
     location_town: {
         category: Category.Location,
-        title: "Town / City",
+        title: "Town",
         //tooltip: ,
     },
     location_postcode: {
         category: Category.Location,
-        title: "Area code / Postcode",
+        title: "Postcode",
         //tooltip: ,
     },
     ref_toid: {
@@ -155,7 +155,7 @@ export const dataFields = {
 
     current_landuse_group: {
         category: Category.LandUse,
-        title: "Current Land Use",
+        title: "Current Land Use (Group)",
         tooltip: "Land use Groups as classified by [NLUD](https://www.gov.uk/government/statistics/national-land-use-database-land-use-and-land-cover-classification)"
     },
     current_landuse_order: {
@@ -180,27 +180,32 @@ export const dataFields = {
      */
     original_building_use: {
         category: Category.Type,
-        title: "Original (Historical) Use",
-        tooltip: "What was the building originally used for when it was built? I.e. if it was a Victorian warehouse now used as an office, this would be warehouse.",
+        title: "Original building use",
+        tooltip: "What was the building originally used for when it was built? I.e. If it was Victorian warehouse which is now an office this would be warehouse",
     },
 
     date_year: {
         category: Category.Age,
-        title: "Year construction started (best estimate)"
+        title: "Year built (best estimate)"
     },
     date_lower : {
         category: Category.Age,
         title: "Earliest possible start date",
-        tooltip: "This should be the earliest year in which the building could have started."
+        tooltip: "This should be the earliest year in which building could have started."
     },
     date_upper: {
         category: Category.Age,
         title: "Latest possible start year",
-        tooltip: "This should be the latest year in which the building could have started."
+        tooltip: "This should be the latest year in which building could have started."
+    },
+    facade_year: {
+        category: Category.Age,
+        title: "Facade year",
+        tooltip: "Best estimate"
     },
     date_source: {
         category: Category.Age,
-        title: "Source type",
+        title: "Source of information",
         tooltip: "Source for the main start date"
     },
     date_source_detail: {
@@ -210,7 +215,7 @@ export const dataFields = {
     },
     date_link: {
         category: Category.Age,
-        title: "Source link(s)",
+        title: "Text and Image Links",
         tooltip: "URL for age and date reference",
     },
 
@@ -231,7 +236,7 @@ export const dataFields = {
     },
     size_height_apex: {
         category: Category.SizeShape,
-        title: "Total building height (m)",
+        title: "Height to apex (m)",
         //tooltip: ,
     },
     size_height_eaves: {
@@ -315,7 +320,7 @@ export const dataFields = {
     },
     sust_life_expectancy: {
         category: Category.Sustainability,
-        title: "Lifespan & Site History",
+        title: "Expected lifespan for typology",
         //tooltip: ,
     },
 
@@ -326,17 +331,17 @@ export const dataFields = {
     },
     planning_in_conservation_area: {
         category: Category.Planning,
-        title: "Is the building in a conservation area?",
+        title: "In a conservation area?",
         //tooltip: ,
     },
     planning_conservation_area_name: {
         category: Category.Planning,
-        title: "Conservation area or zone name",
+        title: "Conservation area name",
         //tooltip: ,
     },
     planning_in_list: {
         category: Category.Planning,
-        title: "Is this a listed building?",
+        title: "Is listed on the National Heritage List for England?",
         //tooltip: ,
     },
     planning_list_id: {
@@ -346,12 +351,12 @@ export const dataFields = {
     },
     planning_list_cat: {
         category: Category.Planning,
-        title: "Designation / Protection type",
+        title: "National Heritage List for England list type",
         //tooltip: ,
     },
     planning_list_grade: {
         category: Category.Planning,
-        title: "Protection rating",
+        title: "Listing grade",
         //tooltip: ,
     },
     planning_heritage_at_risk_id: {
@@ -366,12 +371,12 @@ export const dataFields = {
     },
     planning_in_glher: {
         category: Category.Planning,
-        title: "In the Greater Bahrain Historic Environment Record?",
+        title: "In the Greater London Historic Environment Record?",
         //tooltip: ,
     },
     planning_glher_url: {
         category: Category.Planning,
-        title: "Greater Bahrain Historic Environment Record link",
+        title: "Greater London Historic Environment Record link",
         //tooltip: ,
     },
     planning_in_apa: {

@@ -1,16 +1,16 @@
-# Colouring Bahrain Data Extract
+# Colouring London Data Extract
 
-This extract contains a snapshot of contributions to Colouring Bahrain
-(https://colouring.bh).
+This extract contains a snapshot of contributions to Colouring London
+(https://colouring.london).
 
-Colouring Bahrain is a citizen science platform collecting information on every building in
-Bahrain, to help make the city more sustainable.
+Colouring London is a citizen science platform collecting information on every building in
+London, to help make the city more sustainable.
 
 The data included are open data, licensed under the Open Data Commons Open Database License
-(ODbL, http://opendatacommons.org/licenses/odbl/) by Colouring Bahrain contributors.
+(ODbL, http://opendatacommons.org/licenses/odbl/) by Colouring London contributors.
 
 You are free to copy, distribute, transmit and adapt the data, as long as you credit Colouring
-Bahrain and our contributors. If you alter or build upon our data, you may distribute the
+London and our contributors. If you alter or build upon our data, you may distribute the
 result only under the same licence.
 
 
@@ -26,11 +26,11 @@ This extract contains four files:
 
 ## Building Attributes
 
-This is the main table, containing almost all data collected by Colouring Bahrain. Apart from
+This is the main table, containing almost all data collected by Colouring London. Apart from
 `building_id`, `revision_id` and `ref_toid`, all of these fields are optional.
 
-- `building_id`: unique building ID for Colouring Bahrain buildings
-- `revision_id`: unique revision ID for Colouring Bahrain, cross-references to our edit history
+- `building_id`: unique building ID for Colouring London buildings
+- `revision_id`: unique revision ID for Colouring London, cross-references to our edit history
 - `ref_toid`: cross-reference to Ordnance Survey MasterMap TOID
 - `ref_osm_id`: cross-reference to OpenStreetMap feature osm_id
 - `location_name`: building name
@@ -78,8 +78,8 @@ This is the main table, containing almost all data collected by Colouring Bahrai
 - `planning_list_grade`: National Heritage List for England listing grade
 - `planning_heritage_at_risk_id`: on the Heritage at Risk list? (True/False)
 - `planning_world_list_id`: UNESCO World Heritage list ID
-- `planning_in_glher`: in the Greater Bahrain Historic Environment Record? (True/False)
-- `planning_glher_url`: Greater Bahrain Historic Environment Record link
+- `planning_in_glher`: in the Greater London Historic Environment Record? (True/False)
+- `planning_glher_url`: Greater London Historic Environment Record link
 - `planning_in_apa`: in an Architectural Priority Area? (True/False)
 - `planning_apa_name`: Architectural Priority Area name
 - `planning_apa_tier`: Architectural Priority Area tier
@@ -87,13 +87,13 @@ This is the main table, containing almost all data collected by Colouring Bahrai
 - `planning_local_list_url`: local list reference link
 - `planning_in_historic_area_assessment`: within a historic area assessment? (True/False)
 - `planning_historic_area_assessment_url`: historic area assessment reference link
-- `likes_total`: number of times the building has been liked by Colouring Bahrain users
+- `likes_total`: number of times the building has been liked by Colouring London users
 
 
 ## Building UPRNs
 
 Buildings are matched to UPRNs (Unique Property Reference Numbers), which should help link
-Colouring Bahrain data against other datasets.
+Colouring London data against other datasets.
 
 Read more about UPRNs: https://www.ordnancesurvey.co.uk/business-government/tools-support/uprn
 
@@ -104,10 +104,10 @@ Read more about UPRNs: https://www.ordnancesurvey.co.uk/business-government/tool
     2810432,10091093496,100023038313
     2810432,10091093497,
 
-- `building_id`: Colouring Bahrain unique building ID, references the building_id in
+- `building_id`: Colouring London unique building ID, references the building_id in
   building_attributes.csv
 - `uprn`: Unique Property Reference Number associated with the building. In some cases
-  multiple UPRNs are associated with a single Colouring Bahrain building, for example in
+  multiple UPRNs are associated with a single Colouring London building, for example in
   blocks of flats or mixed-use buildings.
 - `parent_uprn`: optional. Some UPRNs are grouped by a parent-child relationship, so while
   each UPRN is unique, multiple UPRNs may share the same parent.
@@ -115,14 +115,14 @@ Read more about UPRNs: https://www.ordnancesurvey.co.uk/business-government/tool
 
 ## Edit History
 
-Each change to the Colouring Bahrain database is recorded, so it is possible to explore how the
+Each change to the Colouring London database is recorded, so it is possible to explore how the
 dataset evolves over time.
 
 The edit history logs changes made by users, with the following fields:
 
 - `revision_id`: unique change id, referenced by building_attributes
 - `revision_timestamp`: date and time of the change
-- `building_id`: Colouring Bahrain building ID, references building_attributes
+- `building_id`: Colouring London building ID, references building_attributes
 - `forward_patch`: the changes made, encoded as a JSON string where keys are attribute/column
   names, and values are the values set by this change.
 - `reverse_patch`: the reverse of the change, encoded as a JSON string. This shows what the
@@ -133,7 +133,7 @@ The edit history logs changes made by users, with the following fields:
 For example a forward patch might show a building date being provided, along with some source
 details:
 
-    {"date_year": 1911, "date_source_details": "Survey of Bahrain Marylebone draft text"}
+    {"date_year": 1911, "date_source_details": "Survey of London Marylebone draft text"}
 
 Where the reverse patch shows that there was no previous data stored:
 

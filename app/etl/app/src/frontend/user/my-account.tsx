@@ -46,9 +46,9 @@ export const MyAccountPage: React.FC = () => {
                 {!userError && (<>
                     <h1 className="h1">Welcome, {user.username}!</h1>
                     <p>
-                        Colouring Bahrain is under active development. Please
-                        <a href="https://discuss.colouring.bh/">discuss suggestions for improvements</a> and
-                        <a href="https://github.com/colouring-bahrain/colouring-bahrain/issues"> report issues or problems</a>.
+                        Colouring London is under active development. Please
+                        <a href="https://discuss.colouring.london/">discuss suggestions for improvements</a> and
+                        <a href="https://github.com/colouring-london/colouring-london/issues"> report issues or problems</a>.
                     </p>
                     <p>
                         For reference, here are the 
@@ -84,7 +84,7 @@ export const MyAccountPage: React.FC = () => {
                     </form>
 
                     <h3 className="h3">Open Source Code</h3>
-                    Colouring Bahrain site code is developed at <a href="http://github.com/colouring-bahrain/colouring-bahrain/">colouring-bahrain</a> on Github
+                    Colouring London site code is developed at <a href="http://github.com/colouring-london/colouring-london/">colouring-london</a> on Github
 
                     <hr />
 

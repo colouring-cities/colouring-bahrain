@@ -1,27 +1,22 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 interface InfoBoxProps {
-    msg: string;
+    msg?: string;
+    // https://react-bootstrap.github.io/components/alerts/
+    // predefined valid values
+    type?: 'info' | 'warning' | 'success' | 'danger' | 'dark'
 }
 
-const InfoBox: React.FC<InfoBoxProps> = (props) => (
-    <Fragment>
+const InfoBox: React.FC<InfoBoxProps> = ({msg, children, type = 'info'}) => (
+    <>
         {
-            (props.msg || props.children)?
-                (
-                    <div className="alert alert-info" role="alert">
-                        {
-                            typeof props.msg === 'string' ?
-                                props.msg
-                                : 'Enjoy the colouring! Usual service should resume shortly.'
-                        }
-                        {
-                            props.children
-                        }
-                    </div>
-                ) : null
+            (msg || children) &&
+                <div className={`alert alert-${type}`} role="alert">
+                    { msg ?? '' }
+                    { children }
+                </div>
         }
-    </Fragment>
+    </>
 );
 
 export default InfoBox;

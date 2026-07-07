@@ -6,6 +6,9 @@ import ConfirmationModal from '../components/confirmation-modal';
 import ErrorBox from '../components/error-box';
 import { SpinnerIcon } from '../components/icons';
 
+import { CCConfig } from '../../cc-config';
+let config: CCConfig = require('../../cc-config.json')
+
 export const MyAccountPage: React.FC = () => {
     const { isLoading, user, userError, logout, generateApiKey, deleteAccount } = useAuth();
 
@@ -39,6 +42,9 @@ export const MyAccountPage: React.FC = () => {
         );
     }
 
+    const issuesURL = config.githubURL + "/issues";
+    const discussURL = config.githubURL + "/discussions";
+
     return (
         <article>
             <section className="main-col">
@@ -46,20 +52,19 @@ export const MyAccountPage: React.FC = () => {
                 {!userError && (<>
                     <h1 className="h1">Welcome, {user.username}!</h1>
                     <p>
-                        Colouring Bahrain is under active development. Please
-                        <a href="https://discuss.colouring.bh/">discuss suggestions for improvements</a> and
-                        <a href="https://github.com/colouring-bahrain/colouring-bahrain/issues"> report issues or problems</a>.
+                        Colouring {config.cityName} is under active development. Please{' '}
+                        <a href={discussURL}>discuss suggestions for improvements</a> and{' '}
+                        <a href={issuesURL}> report issues or problems</a>.
                     </p>
                     <p>
-                        For reference, here are the 
-                        <Link to="/privacy-policy.html">privacy policy</Link>,
-                        <Link to="/contributor-agreement.html">contributor agreement</Link> and 
-                        <Link to="/data-accuracy.html">data accuracy agreement</Link>.
+                        For reference, here are the{' '}
+                        <a href="/privacy-policy.html">privacy policy</a>,{' and the  '} 
+                        <a href="/data-accuracy.html">contributor & data user data accuracy & ethical use agreement</a>
                     </p>
                     <ErrorBox msg={error} />
                     <form onSubmit={handleLogout}>
                         <div className="buttons-container">
-                            <Link to="/edit/age" className="btn btn-warning">Start colouring</Link>
+                            <Link to="/edit/age-history" className="btn btn-warning"><h1>Start colouring</h1></Link>
                             <input className="btn btn-secondary" type="submit" value="Log out"/>
                         </div>
                     </form>
@@ -80,11 +85,11 @@ export const MyAccountPage: React.FC = () => {
                     <h3 className="h3">API key</h3>
                     <p>{user.api_key || '-'}</p>
                     <form onSubmit={handleGenerateKey} className="form-group mb-3">
-                        <input className="btn btn-warning" type="submit" value="Generate API key"/>
+                        <input className="btn btn-secondary" type="submit" value="Generate API key"/>
                     </form>
 
                     <h3 className="h3">Open Source Code</h3>
-                    Colouring Bahrain site code is developed at <a href="http://github.com/colouring-bahrain/colouring-bahrain/">colouring-bahrain</a> on Github
+                    Colouring {config.cityName} site code is developed at <a href={config.githubURL}>colouring-cities</a> on Github
 
                     <hr />
 

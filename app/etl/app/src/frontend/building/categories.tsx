@@ -13,97 +13,97 @@ interface CategoriesProps {
 const Categories: React.FC<CategoriesProps> = (props) => (
     <ListWrapper className='data-category-list'>
         <CategoryLink
-            title="Mapping"
+            title="Location"
             slug="location"
-            help="https://pages.colouring.bh/location"
+            help="https://pages.colouring.london/location"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Land Use"
+            title="Current Use"
             slug="use"
-            help="https://pages.colouring.bh/use"
+            help="https://pages.colouring.london/use"
             inactive={true}
             mode={props.mode}
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Commerce & Activity"
+            title="Type"
             slug="type"
-            help="https://pages.colouring.bh/buildingtypology"
+            help="https://pages.colouring.london/buildingtypology"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Age & History"
+            title="Age"
             slug="age"
-            help="https://pages.colouring.bh/age"
+            help="https://pages.colouring.london/age"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Morphology"
+            title="Size &amp; Shape"
             slug="size"
-            help="https://pages.colouring.bh/shapeandsize"
+            help="https://pages.colouring.london/shapeandsize"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Construction & Design"
+            title="Construction"
             slug="construction"
-            help="https://pages.colouring.bh/construction"
+            help="https://pages.colouring.london/construction"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Green / Urban Infrastructure"
+            title="Streetscape"
             slug="streetscape"
-            help="https://pages.colouring.bh/greenery"
+            help="https://pages.colouring.london/greenery"
             inactive={true}
             mode={props.mode}
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Investment & Engagement"
+            title="Team"
             slug="team"
-            help="https://pages.colouring.bh/team"
+            help="https://pages.colouring.london/team"
             inactive={true}
             mode={props.mode}
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Assessment"
+            title="Planning"
+            slug="planning"
+            help="https://pages.colouring.london/planning"
+            inactive={true}
+            mode={props.mode}
+            building_id={props.building_id}
+        />
+        <CategoryLink
+            title="Sustainability"
             slug="sustainability"
-            help="https://pages.colouring.bh/sustainability"
+            help="https://pages.colouring.london/sustainability"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Conservation"
-            slug="planning"
-            help="https://pages.colouring.bh/planning"
-            inactive={true}
-            mode={props.mode}
-            building_id={props.building_id}
-        />
-        <CategoryLink
-            title="Disaster Management"
+            title="Dynamics"
             slug="dynamics"
-            help="https://pages.colouring.bh/dynamics"
+            help="https://pages.colouring.london/dynamics"
             inactive={true}
             mode={props.mode}
             building_id={props.building_id}
         />
         <CategoryLink
-            title="Social"
+            title="Community"
             slug="community"
-            help="https://pages.colouring.bh/community"
+            help="https://pages.colouring.london/community"
             inactive={false}
             mode={props.mode}
             building_id={props.building_id}

@@ -8,11 +8,14 @@ import { validatePassword } from '../validation';
 import { transporter } from './email';
 import * as userService from './user';
 
+import { CCConfig } from '../../cc-config';
+let config: CCConfig = require('../../cc-config.json')
+
 
 /**
  * Generate a password reset token for the specified account and send the password reset link by email
  * @param email the email address for which to generate a password reset token
- * @param siteOrigin the origin of the website, without a path element - e.g. https://beta.colouring.bh
+ * @param siteOrigin the origin of the website, without a path element - e.g. https://beta.colouring.london
  */
 async function sendPasswordResetToken(email: string, siteOrigin: string): Promise<void> {
     const user = await userService.getUserByEmail(email);
@@ -52,7 +55,7 @@ function getPasswordResetEmail(email: string, token: string, siteOrigin: string)
 
     const messageBody = `Hi there,
 
-    Someone has requested a password reset for the Colouring Bahrain account associated with this email address.
+    Someone has requested a password reset for the Colouring ${config.cityName} account associated with this email address.
     Click on the following link within the next 24 hours to reset your password:
 
     ${linkString}
@@ -60,9 +63,9 @@ function getPasswordResetEmail(email: string, token: string, siteOrigin: string)
 
     return {
         text: messageBody,
-        subject: 'Reset your Colouring Bahrain password',
+        subject: `Reset your Colouring ${config.cityName} password`,
         to: email,
-        from: 'no-reply@colouring.bh'
+        from: 'no-reply@colouring.london'
     };
 }
 

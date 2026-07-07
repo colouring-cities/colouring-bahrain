@@ -1,24 +1,20 @@
 /**
  * Expose query interface to database pool
  *
- * - connection details must be set in environment variables, default to:
- *      PGHOST='localhost'
- *      PGUSER=process.env.USER
- *      PGDATABASE=process.env.USER
- *      PGPASSWORD=null
- *      PGPORT=5432
+ * Connection: PGHOST (default localhost), PGPORT (default 5432), PGDATABASE, PGUSER, PGPASSWORD.
+ * See pgConnectionConfig.ts (shared with Mapnik tile rendering).
  */
 import pg from 'pg-promise';
+import { getPgConnectionOptions } from './pgConnectionConfig';
 
-// pg-promise, can provide initialisation options
 const pgp = pg();
-// database connection (default to env vars)
+const opts = getPgConnectionOptions();
 const db = pgp({
-    'host': process.env.PGHOST,
-    'database': process.env.PGDATABASE,
-    'user': process.env.PGUSER,
-    'password': process.env.PGPASSWORD,
-    'port': parseInt(process.env.PGPORT)
+    host: opts.host,
+    database: opts.database,
+    user: opts.user,
+    password: opts.password,
+    port: opts.port,
 });
 
 export default db;

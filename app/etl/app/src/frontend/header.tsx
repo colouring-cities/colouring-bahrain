@@ -33,7 +33,7 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
                 text: "Download data"
             },
             {
-                to: "https://github.com/colouring-bahrain/colouring-bahrain",
+                to: "https://github.com/colouring-london/colouring-london",
                 text: "Access open code",
                 external: true
             },
@@ -46,27 +46,27 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
         ],
         [
             {
-                to: "https://pages.colouring.bh",
+                to: "https://pages.colouring.london",
                 text: "About",
                 external: true
             },
             {
-                to: "https://pages.colouring.bh/buildingcategories",
+                to: "https://pages.colouring.london/buildingcategories",
                 text: "Data Categories",
                 external: true
             },
             {
-                to: "https://pages.colouring.bh/whoisinvolved",
+                to: "https://pages.colouring.london/whoisinvolved",
                 text: "Who's Involved?",
                 external: true
             },
             {
-                to: "https://pages.colouring.bh/data-ethics",
+                to: "https://pages.colouring.london/data-ethics",
                 text: "Data Ethics",
                 external: true
             },
             {
-                to: "https://pages.colouring.bh/colouring-cities",
+                to: "https://pages.colouring.london/colouring-cities",
                 text: "Colouring Cities Research Programme",
                 external: true
             },
@@ -77,7 +77,7 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
                 text: "Top Contributors"
             },
             {
-                to: "https://discuss.colouring.bh",
+                to: "https://discuss.colouring.london",
                 text: "Discussion Forum",
                 external: true
             },

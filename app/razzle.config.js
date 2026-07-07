@@ -1,47 +1,34 @@
+const CopyPlugin = require('copy-webpack-plugin');
+
 module.exports = {
-    plugins: [],
-    modifyWebpackConfig: ({ webpackConfig: config, env: { target, dev }, webpackObject: webpack }) => {
-        // Add Node.js polyfills for webpack 5
-        if (!config.resolve) config.resolve = {};
-        if (!config.resolve.fallback) config.resolve.fallback = {};
-        config.resolve.fallback = {
-            ...config.resolve.fallback,
-            "url": require.resolve("url/"),
-            "stream": require.resolve("stream-browserify"),
-            "crypto": require.resolve("crypto-browserify"),
-            "buffer": require.resolve("buffer"),
-            "util": require.resolve("util"),
-            "path": require.resolve("path-browserify"),
-        };
-
-        // Disable minification to avoid terser issues with ESM packages
-        config.optimization = {
-            ...config.optimization,
-            minimize: false,
-            minimizer: [],
-        };
-
-        if (Array.isArray(config.plugins)) {
-            config.plugins = config.plugins.filter(plugin => {
-                return plugin.constructor?.name !== 'TerserPlugin';
-            });
-        }
-
-        // load webfonts
-        rules = config.module.rules || [];
-        rules.push({
-            test: /\.(eot|svg|ttf|woff|woff2)$/,
-            use: [
-                {
-                    loader: require.resolve('file-loader'),
-                    options: {
-                        name: 'public/fonts/[name].[ext]',
-                    },
+    options: {
+        staticCssInDev: true,
+    },
+    plugins: [
+        {
+            name: 'typescript',
+            options: {
+                forkTsChecker: {
+                    eslint: undefined // { files: './src/**/*.{ts,tsx,js,jsx}' }
                 },
-            ],
+            },
+        },
+    ],
+    modifyWebpackConfig({ env: { target, dev }, webpackConfig }) {
+        // load webfonts
+        webpackConfig.module.rules = webpackConfig.module.rules || [];
+        webpackConfig.module.rules.push({
+            test: /\.(eot|svg|ttf|woff|woff2)$/,
+            type: 'asset/resource'
         });
-        config.module.rules = rules;
 
-        return config;
+        // add the map_styles directory to the build output
+        const plugins = webpackConfig.plugins || [];
+        plugins.push(new CopyPlugin({
+            patterns: [ {from: 'map_styles', to: 'map_styles'}]
+        }));
+        webpackConfig.plugins = plugins;
+
+        return webpackConfig;
     },
 };

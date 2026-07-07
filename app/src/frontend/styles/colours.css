@@ -54,41 +54,66 @@
 }
 
 /**
- * Category colours
+ * Category colours — exact design system palette (RGB values from brand spec)
  */
+.background-mapping {
+    background-color: #f3c940; /* R 243 G 201 B 64 */
+}
+.background-age-history {
+    background-color: #f77e2a; /* R 247 G 126 B 42 */
+}
+.background-morphology {
+    background-color: #f4a0b9; /* R 244 G 160 B 185 */
+}
+.background-construction-design {
+    background-color: #ff5f64; /* R 255 G 95 B 100 */
+}
+.background-land-use {
+    background-color: #f0f048; /* R 240 G 240 B 72 */
+}
+.background-conservation {
+    background-color: #ae8daf; /* R 174 G 141 B 175 */
+}
+.background-assessment {
+    background-color: #728798; /* R 114 G 135 B 152 */
+}
+.background-investment-engagement {
+    background-color: #6fc348; /* R 111 G 195 B 72 */
+}
+.background-disaster-management {
+    background-color: #aaaaaa; /* R 170 G 170 B 170 */
+}
+.background-green-urban-infrastructure {
+    background-color: #4ac491; /* R 74 G 196 B 145 */
+}
+.background-commerce-activity {
+    background-color: #72afe0; /* R 114 G 175 B 224 */
+}
+.background-social {
+    background-color: #a19271; /* R 161 G 146 B 113 */
+}
+/* Legacy category aliases — same palette */
 .background-location {
     background-color: #f3c940;
 }
-.background-use {
-    background-color: #f0f048;
-}
-.background-type {
-    background-color: #72afe0;
-}
-.background-age {
-    background-color: #ff5f64;
-}
-.background-size {
+.background-typology-size {
     background-color: #f4a0b9;
 }
-.background-construction {
-    background-color: #f77e2a;
-}
-.background-streetscape {
-    background-color: #4ac491;
-}
-.background-team {
-    background-color: #aaaaaa;
-}
-.background-planning {
+.background-planning-conservation {
     background-color: #ae8daf;
 }
-.background-sustainability {
-    background-color: #6fc348;
-}
-.background-dynamics {
+.background-retrofit-condition {
     background-color: #728798;
 }
+.background-energy-performance {
+    background-color: #6fc348;
+}
+.background-urban-infrastructure {
+    background-color: #72afe0;
+}
+.background-water-green-infrastructure {
+    background-color: #4ac491;
+}
 .background-community {
-    background-color: #a19271;
+    background-color: #6fc348;
 }

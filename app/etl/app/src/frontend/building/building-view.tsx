@@ -37,91 +37,91 @@ const BuildingView: React.FunctionComponent<BuildingViewProps> = (props) => {
         case 'location':
             return <LocationContainer
                 {...props}
-                title="Mapping"
-                help="https://pages.colouring.bh/location"
+                title="Location"
+                help="https://pages.colouring.london/location"
                 intro="Where are the buildings? Address, location and cross-references."
             />;
         case 'use':
             return <UseContainer
                 {...props}
                 inactive={false}
-                title="Land Use"
+                title="Current Use"
                 intro="How are buildings used, and how does use change over time? Coming soon…"
-                help="https://pages.colouring.bh/use"
+                help="https://pages.colouring.london/use"
             />;
         case 'type':
             return <TypeContainer
                 {...props}
                 inactive={false}
-                title="Commerce & Activity"
-                intro="How are buildings used and what kinds of activity does each building support?"
-                help="https://www.pages.colouring.bh/buildingtypology"
+                title="Type"
+                intro="How were buildings previously used?"
+                help="https://www.pages.colouring.london/buildingtypology"
             />;
         case 'age':
             return <AgeContainer
                 {...props}
-                title="Age & History"
-                help="https://pages.colouring.bh/age"
+                title="Age"
+                help="https://pages.colouring.london/age"
                 intro="Building age data can support energy analysis and help predict long-term change."
             />;
         case 'size':
             return <SizeContainer
                 {...props}
-                title="Morphology"
+                title="Size &amp; Shape"
                 intro="How big are buildings?"
-                help="https://pages.colouring.bh/shapeandsize"
+                help="https://pages.colouring.london/shapeandsize"
             />;
         case 'construction':
             return <ConstructionContainer
                 {...props}
-                title="Construction & Design"
+                title="Construction"
                 intro="How are buildings built?"
-                help="https://pages.colouring.bh/construction"
+                help="https://pages.colouring.london/construction"
             />;
         case 'team':
             return <TeamContainer
                 {...props}
-                title="Investment & Engagement"
+                title="Team"
                 intro="Who built the buildings? Coming soon…"
-                help="https://pages.colouring.bh/team"
+                help="https://pages.colouring.london/team"
                 inactive={true}
             />;
         case 'sustainability':
             return <SustainabilityContainer
                 {...props}
-                title="Assessment"
+                title="Sustainability"
                 intro="Are buildings energy efficient?"
-                help="https://pages.colouring.bh/sustainability"
+                help="https://pages.colouring.london/sustainability"
                 inactive={false}
             />;
         case 'streetscape':
             return <StreetscapeContainer
                 {...props}
-                title="Green / Urban Infrastructure"
+                title="Streetscape"
                 intro="What's the building's context? Coming soon…"
-                help="https://pages.colouring.bh/streetscape"
+                help="https://pages.colouring.london/streetscape"
                 inactive={true}
             />;
         case 'community':
             return <CommunityContainer
                 {...props}
-                title="Social"
+                title="Community"
                 intro="How does this building work for the local community?"
-                help="https://pages.colouring.bh/community"
+                help="https://pages.colouring.london/community"
             />;
         case 'planning':
             return <PlanningContainer
                 {...props}
-                title="Conservation"
+                title="Planning"
                 intro="Planning controls relating to protection and reuse."
-                help="https://pages.colouring.bh/planning"
+                help="https://pages.colouring.london/planning"
             />;
         case 'dynamics':
             return <DynamicsContainer
                 {...props}
-                title="Disaster Management"
+                title="Dynamics"
                 intro="How has the site of this building changed over time?"
-                help="https://pages.colouring.bh/buildingcategories"
+                help="https://pages.colouring.london/buildingcategories"
                 inactive={true}
             />;
         default:

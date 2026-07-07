@@ -7,6 +7,9 @@ import { SpinnerIcon } from '../components/icons';
 import InfoBox from '../components/info-box';
 import SupporterLogos from '../components/supporter-logos';
 
+import { CCConfig } from '../../cc-config';
+let config: CCConfig = require('../../cc-config.json')
+
 export const SignUp: React.FC = () => {
     const { isLoading, signup } = useAuth();
     const [error, setError] = useState(undefined);
@@ -26,15 +29,17 @@ export const SignUp: React.FC = () => {
         [username, email, confirmEmail, password, confirmConditions, signup]
     );
 
+    const msgName = `Welcome to Colouring ${config.cityName}. You're one of the first people to sign up!`;
+    const issuesURL = config.githubURL + "/issues";
+    const discussURL = config.githubURL + "/discussions";
+
     return (
         <article>
             <section className="main-col">
                 <h1 className="h2">Sign up</h1>
-                <InfoBox msg="Welcome to Colouring Bahrain. You're one of the first people to sign up!  ">
-                    <br/>Please <a href="https://discuss.colouring.bh/">discuss
-                    suggestions for improvements</a> and <a
-                        href="https://github.com/colouring-bahrain/colouring-bahrain/issues">
-                    report issues or problems</a>.
+                <InfoBox msg={msgName}>
+                    <br/>Please <a href={discussURL}>discuss suggestions for improvements</a> and {' '}
+                    <a href={issuesURL}>report issues or problems</a>.
                 </InfoBox>
                 <p>
                     Create an account to start colouring in.
@@ -45,9 +50,9 @@ export const SignUp: React.FC = () => {
                     <input name="username" id="username"
                         className="form-control" type="text"
                         value={username} onChange={e => setUsername(e.target.value)}
-                        placeholder="not-your-real-name" required
+                        placeholder="name-you-would-like-shown-on-the-edit-history-and-active-contributors-list" required
                         minLength={4}
-                        maxLength={30}
+                        maxLength={29}
                         pattern="\w+"
                         title="Usernames can contain only letters, numbers and the underscore"
                     />
@@ -58,7 +63,7 @@ export const SignUp: React.FC = () => {
                         value={email} onChange={e => setEmail(e.target.value)}
                         placeholder="someone@example.com"
                     />
-                    <InfoBox msg="Please note that if you forget your password, you will only be able to recover your account if you provide an email address." />
+                    <InfoBox msg="Our policy is to avoid collecting personal data wherever possible. An email address is only necessary if you wish to be able to recover your account should you forget your password." />
                     
                     <label htmlFor="confirm_email">Confirm email (optional)</label>
                     <input name="confirm_email" id="confirm_email"
@@ -94,10 +99,9 @@ export const SignUp: React.FC = () => {
                             onChange={e => setConfirmConditions(e.target.checked)}
                             required />
                         <label className="form-check-label" htmlFor="confirm_conditions">
-                            I confirm that I have read and agree to the <Link
-                                to="/privacy-policy.html">privacy policy</Link>, <Link
-                                to="/contributor-agreement.html">contributor agreement</Link> and <Link
-                                to="/data-accuracy.html">data accuracy agreement</Link>.
+                            I confirm that I have read and agree to the {' '}  
+                                <a href="/privacy-policy.html">privacy policy</a>,{' and the '}  
+                                <a href="/data-accuracy.html">contributor & data user data accuracy & ethical use agreement</a>.
                         </label>
                     </div>
 
@@ -106,7 +110,7 @@ export const SignUp: React.FC = () => {
                         {isLoading && <span><SpinnerIcon/>Sending sign up data...</span>}
                     </div>
                     <InfoBox msg="">
-                        Please also read our <a href="https://www.pages.colouring.bh/data-ethics">data ethics policy</a> before using or sharing our data
+                        Please also read our <a href="https://github.com/colouring-cities/manual/wiki/ETHICAL-FRAMEWORK#ccrp-data-ethics-policies">data ethics policy</a> before using or sharing our data
                     </InfoBox>
 
                     Do you already have an account?

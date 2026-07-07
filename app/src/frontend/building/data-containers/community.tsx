@@ -1,41 +1,34 @@
+import './community.css';
 import React, { Fragment } from 'react';
-
 import withCopyEdit from '../data-container';
-import LikeDataEntry from '../data-components/like-data-entry';
-
+import { DataEntryGroup } from '../data-components/data-entry-group';
 import { CategoryViewProps } from './category-view-props';
+import InfoBox from '../../components/info-box';
 
-/**
-* Community view/edit section
-*/
-const CommunityView: React.FunctionComponent<CategoryViewProps> = (props) => (
-    <Fragment>
-        <LikeDataEntry
-            userLike={props.building_like}
-            totalLikes={props.building.likes_total}
-            mode={props.mode}
-            onLike={props.onLike}
-            />
-        <p className="data-intro">{props.intro}</p>
-        <ul className="data-list">
-            <li>Is this a publicly owned building?</li>
-            {
-            // "slug": "community_publicly_owned",
-            // "type": "checkbox"
-            }
-            <li>Has this building ever been used for community or public services activities?</li>
-            {
-            // "slug": "community_past_public",
-            // "type": "checkbox"
-            }
-            <li>Would you describe this building as a community asset?</li>
-            {
-            // "slug": "community_asset",
-            // "type": "checkbox"
-            }
-        </ul>
-    </Fragment>
-);
+const CommunityView: React.FunctionComponent<CategoryViewProps> = (props) => {
+    const queryParameters = new URLSearchParams(window.location.search);
+    const subcat = queryParameters.get("sc");
+
+    return (
+        <Fragment>
+            <DataEntryGroup name="Investment" collapsed={subcat==null || subcat!="1"}>
+                <InfoBox type='warning'>
+                    This section is under development.
+                </InfoBox>
+            </DataEntryGroup>
+            <DataEntryGroup name="Engagement" collapsed={subcat==null || subcat!="2"}>
+                <div className={`alert alert-dark`} role="alert" style={{ fontSize: 14, backgroundColor: "#f6f8f9" }}>
+                    <i>
+                        Do you have any information you would like to verify about this building?
+                    </i>
+                </div>
+                <InfoBox type='warning'>
+                    This section is under development. Fields will include: Full Name, Property Ownership / Supporting Evidence (CPR), and Attachments (supporting documents, plans, photos or recordings).
+                </InfoBox>
+            </DataEntryGroup>
+        </Fragment>
+    );
+};
 const CommunityContainer = withCopyEdit(CommunityView);
 
 export default CommunityContainer;

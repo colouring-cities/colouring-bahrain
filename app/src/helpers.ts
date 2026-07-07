@@ -24,7 +24,7 @@ export function parseJsonOrDefault(jsonString: string) {
     }
 }
 
-export function hasAnyOwnProperty(obj: {}, keys: string[]) {
+export function hasAnyOwnProperty<T>(obj: T, keys: (keyof T)[]) {
     return keys.some(k => obj.hasOwnProperty(k));
 }
 
@@ -73,4 +73,27 @@ export function pickFields(obj: any, fieldWhitelist: Set<string>) {
         }
     }
     return subObject;
+}
+
+/**
+ * Generic type for a function validating that the argument is a object with 
+ * Used to enforce value types in a config object, but not obscuring the key names
+ * by using a TS lookup type
+ */
+type ValueTypeCheck<C> = <K extends string>(x: Record<K, C>) => Record<K, C>;
+
+/**
+ * Creates a function that enforces all fields of its argument to be of type C
+ * Useful to create configs where each field must be of a set type,
+ * but the list of keys should be accessible to users of the config variable.
+ */
+export function valueType<C>(): ValueTypeCheck<C>{
+    return x => x;
+}
+
+/**
+ * Map all properties of object through a function
+ */
+export function mapObject<T, R>(x: T, fn: ([key, value]: [keyof T, T[keyof T]]) => R): Record<keyof T, R> {
+    return Object.assign({}, ...Object.entries(x).map(([key, value]) => ({ [key]: fn([key as keyof T, value]) })) );
 }

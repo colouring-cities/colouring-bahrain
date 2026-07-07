@@ -1,30 +1,22 @@
 import React from 'react';
+import { useAuth } from '../auth-context';
 
-import { Building } from '../models/building';
+import { categoriesConfig, Category } from '../config/categories-config';
+import { categoryUiConfig } from '../config/category-ui-config';
+import { Building, UserVerified } from '../models/building';
+import { BuildingMapTileset } from '../config/tileserver-config';
 
 import BuildingNotFound from './building-not-found';
-import AgeContainer from './data-containers/age';
-import CommunityContainer from './data-containers/community';
-import ConstructionContainer from './data-containers/construction';
-import DynamicsContainer from './data-containers/dynamics';
-import LocationContainer from './data-containers/location';
-import PlanningContainer from './data-containers/planning';
-import SizeContainer from './data-containers/size';
-import StreetscapeContainer from './data-containers/streetscape';
-import SustainabilityContainer from './data-containers/sustainability';
-import TeamContainer from './data-containers/team';
-import TypeContainer from './data-containers/type';
-import UseContainer from './data-containers/use';
-
 
 interface BuildingViewProps {
-    cat: string;
+    cat: Category;
     mode: 'view' | 'edit';
     building?: Building;
-    building_like?: boolean;
-    user?: any;
-    selectBuilding: (building: Building) => void;
     user_verified?: any;
+    onBuildingUpdate: (buildingId: number, updatedData: Building) => void;
+    onUserVerifiedUpdate: (buildingId: number, updatedData: UserVerified) => void;
+    mapColourScale: BuildingMapTileset;
+    onMapColourScale: (x: BuildingMapTileset) => void;
 }
 
 /**
@@ -33,100 +25,32 @@ interface BuildingViewProps {
  * @param props
  */
 const BuildingView: React.FunctionComponent<BuildingViewProps> = (props) => {
-    switch (props.cat) {
-        case 'location':
-            return <LocationContainer
-                {...props}
-                title="Mapping"
-                help="https://pages.colouring.bh/location"
-                intro="Where are the buildings? Address, location and cross-references."
-            />;
-        case 'use':
-            return <UseContainer
-                {...props}
-                inactive={false}
-                title="Land Use"
-                intro="How are buildings used, and how does use change over time? Coming soon…"
-                help="https://pages.colouring.bh/use"
-            />;
-        case 'type':
-            return <TypeContainer
-                {...props}
-                inactive={false}
-                title="Commerce & Activity"
-                intro="How are buildings used and what kinds of activity does each building support?"
-                help="https://www.pages.colouring.bh/buildingtypology"
-            />;
-        case 'age':
-            return <AgeContainer
-                {...props}
-                title="Age & History"
-                help="https://pages.colouring.bh/age"
-                intro="Building age data can support energy analysis and help predict long-term change."
-            />;
-        case 'size':
-            return <SizeContainer
-                {...props}
-                title="Morphology"
-                intro="How big are buildings?"
-                help="https://pages.colouring.bh/shapeandsize"
-            />;
-        case 'construction':
-            return <ConstructionContainer
-                {...props}
-                title="Construction & Design"
-                intro="How are buildings built?"
-                help="https://pages.colouring.bh/construction"
-            />;
-        case 'team':
-            return <TeamContainer
-                {...props}
-                title="Investment & Engagement"
-                intro="Who built the buildings? Coming soon…"
-                help="https://pages.colouring.bh/team"
-                inactive={true}
-            />;
-        case 'sustainability':
-            return <SustainabilityContainer
-                {...props}
-                title="Assessment"
-                intro="Are buildings energy efficient?"
-                help="https://pages.colouring.bh/sustainability"
-                inactive={false}
-            />;
-        case 'streetscape':
-            return <StreetscapeContainer
-                {...props}
-                title="Green / Urban Infrastructure"
-                intro="What's the building's context? Coming soon…"
-                help="https://pages.colouring.bh/streetscape"
-                inactive={true}
-            />;
-        case 'community':
-            return <CommunityContainer
-                {...props}
-                title="Social"
-                intro="How does this building work for the local community?"
-                help="https://pages.colouring.bh/community"
-            />;
-        case 'planning':
-            return <PlanningContainer
-                {...props}
-                title="Conservation"
-                intro="Planning controls relating to protection and reuse."
-                help="https://pages.colouring.bh/planning"
-            />;
-        case 'dynamics':
-            return <DynamicsContainer
-                {...props}
-                title="Disaster Management"
-                intro="How has the site of this building changed over time?"
-                help="https://pages.colouring.bh/buildingcategories"
-                inactive={true}
-            />;
-        default:
-            return <BuildingNotFound mode="view" />;
+    const { user } = useAuth();
+    const DataContainer = categoryUiConfig[props.cat];
+    
+    const categoryConfig = categoriesConfig[props.cat];
+
+    if(categoryConfig == undefined) {
+        return <BuildingNotFound mode="view" />;
     }
+
+    const {
+        name,
+        aboutUrl,
+        intro,
+        inactive = false
+    } = categoryConfig;
+
+    return <DataContainer
+        {...props}
+        title={name}
+        help={aboutUrl}
+        intro={intro}
+        inactive={inactive}
+        user={user}
+        mapColourScale={props.mapColourScale}
+        onMapColourScale={props.onMapColourScale}
+    />; 
 };
 
 export default BuildingView;

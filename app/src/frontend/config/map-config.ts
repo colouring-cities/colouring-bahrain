@@ -1,0 +1,27 @@
+import { CCConfig } from '../../cc-config';
+let config: CCConfig = require('../../cc-config.json')
+
+interface MapViewport {
+    position: [number, number];
+    zoom: number;
+}
+
+export const initialMapViewport: MapViewport = {
+  position: [config.initialMapPosition[0], config.initialMapPosition[1]], // lat,lng
+  zoom: config.initialZoomLevel,
+};
+
+// expose configured min/max zoom so map consumers can use them
+export const minZoom: number = typeof config.minZoom === 'number' ? config.minZoom : 9;
+export const maxZoom: number = typeof config.maxZoom === 'number' ? config.maxZoom : 18;
+
+export type MapTheme = 'light' | 'night' | 'night_outlines' | 'boroughs';
+
+export type LayerEnablementState = 'enabled' | 'disabled';
+
+export const mapBackgroundColor: Record<MapTheme, string> = {
+    light: '#F0EEEB',
+    night: '#162639',
+    night_outlines: '#162639',
+    boroughs: '#ff0000',
+};

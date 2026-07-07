@@ -1,24 +1,21 @@
 import mapnik from "mapnik";
 import path from 'path';
+import fs from 'fs';
 import { promisify } from "util";
 
 import { TableDefinitionFunction, VariablesFunction, Tile, TileParams } from "../types";
 import { getBbox, TILE_SIZE } from "../util";
+import { getMapnikPostgisConnection } from "../../pgConnectionConfig";
 
 
 const TILE_BUFFER_SIZE = 64;
 const PROJ4_STRING = '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over';
 
-// connection details from environment variables
 const DATASOURCE_CONFIG = {
-    'host': process.env.PGHOST,
-    'dbname': process.env.PGDATABASE,
-    'user': process.env.PGUSER,
-    'password': process.env.PGPASSWORD,
-    'port': process.env.PGPORT,
-    'extent': '-20005048.4188,-9039211.13765,19907487.2779,17096598.5401',
-    'srid': 3857,
-    'type': 'postgis'
+    ...getMapnikPostgisConnection(),
+    extent: '-20005048.4188,-9039211.13765,19907487.2779,17096598.5401',
+    srid: 3857,
+    type: 'postgis',
 };
 
 // register datasource adapters for mapnik database connection
@@ -52,7 +49,20 @@ async function renderDataSourceTile(
     layer.datasource = postgis;
     layer.styles = [tileset];
 
-    const stylePath = path.join(__dirname, '..', 'map_styles', 'polygon.xml');
+    // map_styles is copied to build/map_styles by webpack CopyPlugin
+    // When compiled, this file is in build/tiles/renderers/, so go up to build/ then to map_styles
+    // Also try absolute path as fallback
+    let stylePath = path.resolve(__dirname, '..', '..', 'map_styles', 'polygon.xml');
+    
+    // Fallback: try absolute path if relative doesn't work
+    if (!fs.existsSync(stylePath)) {
+        // Try from process.cwd() if __dirname path doesn't work
+        stylePath = path.resolve(process.cwd(), 'build', 'map_styles', 'polygon.xml');
+    }
+    if (!fs.existsSync(stylePath)) {
+        // Final fallback: absolute path
+        stylePath = '/home/ubuntu/colouring-core/app/build/map_styles/polygon.xml';
+    }
 
     map = await promisify(map.load.bind(map))(stylePath, { strict: true });
 

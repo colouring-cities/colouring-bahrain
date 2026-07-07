@@ -100,8 +100,8 @@
  */
 .section-body {
     margin-top: 0.75em;
-    padding: 0 0.75em 5em 0.75em;
-    min-height: 80vh;
+    padding: 0 0.75em 1em 0.75em;
+    /*min-height: 80vh;*/
 }
 .data-section .h3 {
     margin: 0;
@@ -150,6 +150,9 @@
     position: static;
     margin-right: 0.5em;
 }
+.data-section a {
+    overflow-wrap: break-word;
+}
 .data-list dd {
     margin: 0 0 0.5rem;
     line-height: 1.5;
@@ -162,13 +165,64 @@
     list-style: none;
     padding-left: 0;
 }
-.data-section .data-link-list {
+.data-section .data-entry-list {
     padding: 0;
     list-style: none;
     margin-bottom: 0;
     margin-top: 0.5rem;
 }
-.data-link-list li {
+.data-entry-list li {
     border-color: #6c757d;
     border-radius: 0;
+}
+
+.data-entry-list-button {
+    width: 2.5em;
+}
+
+.source-url {
+    padding-top: 0px;
+    padding-bottom: 5px;
+}
+
+dd {
+    margin-bottom: 15px;
+}
+
+.uprn-list {
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+.uprn-list li {
+    margin-bottom: 10px;
+}
+
+.slider-container { 
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 15px;
+    margin-bottom: 50px;
+}
+
+.slider-average{
+    float: right;
+    padding-right: 12px;
+}
+
+.slider-score {
+    font-size: 13px !important;
+}
+
+.date-picker {
+    margin-left: 10px;
+    max-width: 400px;
+}
+
+.date-picker-label {
+    width: 100px;
+}
+
+.date-picker-label label {
+    margin-top: 8px;
 }

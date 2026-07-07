@@ -90,26 +90,26 @@ function renderHTML(context, data, req, res) {
         <meta charset="utf-8" />
 
         <meta name="twitter:card"              content="summary" />
-        <meta name="twitter:site"              content="@colouringbahrain" />
+        <meta name="twitter:site"              content="@colouringlondon" />
 
-        <meta property="og:url"                content="https://colouring.bh" />
+        <meta property="og:url"                content="https://colouring.london" />
         <meta property="og:type"               content="website" />
-        <meta property="og:title"              content="Colouring Bahrain" />
-        <meta property="og:description"        content="Colouring Bahrain is a knowledge exchange platform collecting information on every building in Bahrain, to help make the city more sustainable. We’re building it in partnership with BIG IT Technology and University of Bahrain, funded and directed by the Bahrain Authority for Culture and Antiquities." />
+        <meta property="og:title"              content="Colouring London" />
+        <meta property="og:description"        content="Colouring London is a knowledge exchange platform collecting information on every building in London, to help make the city more sustainable. We’re building it at The Bartlett Centre for Advanced Spatial Analysis, University College London." />
         <meta property="og:locale"             content="en_GB" />
-        <meta property="og:image"              content="https://colouring.bh/images/logo-cl-square.png" />
+        <meta property="og:image"              content="https://colouring.london/images/logo-cl-square.png" />
 
         <link rel="manifest" href="site.webmanifest">
 
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="apple-mobile-web-app-title" content="Colouring Bahrain">
+        <meta name="apple-mobile-web-app-title" content="Colouring London">
         <link rel="apple-touch-icon" href="icon-192x192.png">
 
         <meta name="mobile-web-app-capable" content="yes">
         <link rel="icon" sizes="192x192" href="icon-192x192.png">
 
-        <title>Colouring Bahrain</title>
+        <title>Colouring London</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <style>
           @font-face {

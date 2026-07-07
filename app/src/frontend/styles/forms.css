@@ -5,13 +5,20 @@ input[type="text"],
 input[type="number"],
 input[type="password"],
 input[type="email"] {
-    border-color: #999;
     padding: 0.25rem 0.5rem;
-    border-radius: 0;
 }
 input[type="number"] {
     padding-right: 0.25rem;
 }
+
+/* Only show number input controls on hover in Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+input[type="number"]:hover:not(:disabled) {
+    -moz-appearance: unset;
+}
+
 form .alert {
     margin: 0.5rem 0;
 }
@@ -34,9 +41,7 @@ label {
     margin-bottom: 0.25rem;
     margin-right: 0.25rem;
 }
-form .btn {
-    margin-bottom: 0.25rem;
-}
+
 .buttons-container.btn-center {
     margin-right: 0;
     text-align: center;

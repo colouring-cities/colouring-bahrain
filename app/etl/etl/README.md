@@ -1,21 +1,21 @@
 # Data loading
 
 The scripts in this directory are used to extract, transform and load (ETL) the core datasets
-for Colouring Bahrain:
+for Colouring London:
 
 1. Building geometries, sourced from Ordnance Survey MasterMap (Topography Layer)
 1. Unique Property Reference Numbers (UPRNs), sourced from Ordnance Survey AddressBase
 
 ## Prerequisites
 
-Install PostgreSQL and create a database for colouringbahrain, with a database
+Install PostgreSQL and create a database for colouringlondon, with a database
 user that can connect to it. The [PostgreSQL
 documentation](https://www.postgresql.org/docs/12/tutorial-start.html) covers
 installation and getting started.
 
 Install the [PostGIS extension](https://postgis.net/).
 
-Connect to the colouringbahrain database and add the PostGIS, pgcrypto and
+Connect to the colouringlondon database and add the PostGIS, pgcrypto and
 pg_trgm extensions:
 
 ```sql
@@ -68,7 +68,7 @@ psql < ../migrations/003.index-buildings.sql
 
 This uses the [osmnx](https://github.com/gboeing/osmnx) python package to get OpenStreetMap data. You will need python and osmnx to run `get_test_polygons.py`.
 
-To help test the Colouring Bahrain application, `get_test_polygons.py` will attempt to save a
+To help test the Colouring London application, `get_test_polygons.py` will attempt to save a
 small (1.5km²) extract from OpenStreetMap to a format suitable for loading to the database.
 
 In this case, run:

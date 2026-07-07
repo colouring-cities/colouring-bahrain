@@ -2,50 +2,59 @@
  * Building data access
  *
  */
-import * as _ from 'lodash';
+import _ from 'lodash';
 
-import { pickFields } from '../../../helpers';
 import * as buildingDataAccess from '../../dataAccess/building';
-import { processBuildingUpdate } from '../domainLogic/processBuildingUpdate';
-
-import { BUILDING_FIELD_WHITELIST } from './dataFields';
+import { Building, BuildingUserAttributes } from '../../models/building';
 import { getBuildingEditHistory } from './history';
-import { updateBuildingData } from './save';
 import { getBuildingVerifications } from './verify';
 
 // data type note: PostgreSQL bigint (64-bit) is handled as string in JavaScript, because of
 // JavaScript numerics are 64-bit double, giving only partial coverage.
 
-export async function getBuildingById(id: number) {
-    try {
-        const building = await buildingDataAccess.getBuildingData(id);
+export interface BuildingMetadataOptions {
+    editHistory?: boolean;
+    verified?: boolean;
 
-        building.edit_history = await getBuildingEditHistory(id);
-        building.verified = await getBuildingVerifications(building);
-
-        return building;
-    } catch(error) {
-        console.error(error);
-        return undefined;
+    userDataOptions?: {
+        userId: string;
+        userAttributes?: boolean;
     }
 }
 
-export async function editBuilding(buildingId: number, building: any, userId: string): Promise<object> { // TODO add proper building type
-    return await updateBuildingData(buildingId, userId, async () => {
-        const processedBuilding = await processBuildingUpdate(buildingId, building);
+export async function getBuildingById(
+    buildingId: number,
+    {
+        editHistory = true,
+        verified = true,
+        userDataOptions
+    }: BuildingMetadataOptions = {}
+) {
+    const baseBuilding = await buildingDataAccess.getBuildingData(buildingId);
+    const building: Partial<Building> = {...baseBuilding};
 
-        // remove read-only fields from consideration
-        delete processedBuilding.building_id;
-        delete processedBuilding.revision_id;
-        delete processedBuilding.geometry_id;
+    if(editHistory) {
+        building.edit_history = await getBuildingEditHistory(buildingId);
+    }
 
-        // return whitelisted fields to update
-        return pickFields(processedBuilding, BUILDING_FIELD_WHITELIST);
-    });
+    if(verified) {
+        building.verified = await getBuildingVerifications(baseBuilding);
+    }
+
+    if(userDataOptions && userDataOptions.userAttributes) {
+        building.user_attributes = await getBuildingUserAttributesById(buildingId, userDataOptions.userId);
+    }
+
+    return building;
 }
 
+export async function getBuildingUserAttributesById(buildingId: number, userId: string): Promise<BuildingUserAttributes> {
+    return buildingDataAccess.getBuildingUserData(buildingId, userId);
+}
+
+export * from './edit';
 export * from './history';
-export * from './like';
 export * from './query';
 export * from './uprn';
+export * from './planningData';
 export * from './verify';

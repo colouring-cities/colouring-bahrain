@@ -7,7 +7,7 @@ are they located and how do they contribute to the city? How adaptable are
 they? How long will they last, and what are the environmental and
 socio-economic implications of demolition?
 
-[Colouring Bahrain](http://colouring.bh/) is a web-based citizen social
+[Colouring Bahrain](http://colouring.Bahrain/) is a web-based citizen social
 science project designed to help address these questions by crowdsourcing and
 visualising twelve categories of information on Bahrain’s buildings.
 
@@ -47,8 +47,7 @@ TILECACHE_PATH=/path/to/tilecache/directory \
 ## Acknowledgements
 
 Colouring Bahrain was set up at the Centre for Advanced Spatial
-Analysis (CASA), University of Bahrain and is now based at The Alan Turing Institute.
-This project is funded and directed by the Bahrain Authority for Culture and Antiquities.
+Analysis (CASA), University College Bahrain and is now based at The Alan Turing Institute.
 Ordnance Survey is providing building footprints required to collect the data,
 facilitated by the Greater Bahrain Authority (GLA), and giving access to its API
 and technical support.
@@ -95,4 +94,4 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 Even more thanks go to Colouring Bahrain contributors, funders, project partners, consultees,
 advisers, supporters and friends - [everyone involved in the
-project](https://www.pages.colouring.bh/whoisinvolved).
+project](https://www.pages.colouring.Bahrain/whoisinvolved).
