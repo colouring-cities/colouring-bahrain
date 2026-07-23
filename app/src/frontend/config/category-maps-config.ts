@@ -5,6 +5,8 @@ export type LegendElement = {
     color: string;
     border?: string;
     text: string;
+    /** BACA-style diagonal hatch swatch (protection zones) */
+    hatch?: boolean;
 } | {
     subtitle: string;
 };
@@ -872,10 +874,10 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
             legend: {
                 title: 'Protection Zones',
                 elements: [
-                    { color: '#00467c', text: 'World Heritage Protection Zone' },
-                    { color: '#a01033', text: 'Primary National Protection Zone' },
-                    { color: '#ae7c86', text: 'Secondary National Protection Zone' },
-                    { color: '#ccb2aa', text: 'Consultation National Protection Zone' },
+                    { color: '#3d5a80', text: 'World Heritage Protection Zone' },
+                    { color: '#c41e3a', text: 'Primary National Protection Zone' },
+                    { color: '#c4a090', text: 'Secondary National Protection Zone' },
+                    { color: '#e8b4a8', text: 'Consultation National Protection Zone' },
                 ]
             },
         },
@@ -895,9 +897,9 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
             legend: {
                 title: 'Historic Area Classifications',
                 elements: [
-                    { color: '#dfefee', text: 'Urban Heritage A (UHA)' },
-                    { color: '#a1bab8', text: 'Urban Heritage B (UHB)' },
-                    { color: '#638481', text: 'Urban Heritage C (UHC)' },
+                    { color: '#7eb8b4', text: 'Urban Heritage A (UHA)' },
+                    { color: '#4a8a86', text: 'Urban Heritage B (UHB)' },
+                    { color: '#2f5f5c', text: 'Urban Heritage C (UHC)' },
                     { color: '#c27364', text: 'National Heritage Building (NHB)' },
                     { color: '#e8c992', text: 'Archaeological Site (ARC)' },
                     { color: '#bcc493', text: 'Heritage Garden (HG)' },
@@ -929,7 +931,7 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
         {
             mapStyle: 'location',
             legend: {
-                title: 'Green / Urban Infrastructure',
+                title: 'Green / Water Infrastructure',
                 elements: []
             },
         },

@@ -28,7 +28,8 @@
         "borough": "/geometries/boroughs.geojson",
         "conservation": "/geometries/protection_zones.geojson",
         "parcel": "/geometries/parcels.geojson",
-        "archaeological": "/geometries/archaeological_sites.geojson"
+        "archaeological": "/geometries/archaeological_sites.geojson",
+        "urbanHeritage": "/geometries/urban_heritage.geojson"
     },
 
     "historicMapTileUrl": "",

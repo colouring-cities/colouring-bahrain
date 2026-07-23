@@ -11,6 +11,7 @@ const DEFAULT_GEOMETRY_URLS = {
     vista: '/geometries/protected_vistas.geojson',
     borough: '/geometries/boroughs.geojson',
     archaeological: '/geometries/archaeological_sites.geojson',
+    urbanHeritage: '/geometries/urban_heritage.geojson',
 } as const;
 
 export type GeometryLayerKey = keyof typeof DEFAULT_GEOMETRY_URLS;

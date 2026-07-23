@@ -4,7 +4,6 @@ import { GeoJSON, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { getGeometryLayerRequestPath } from '../../config/geometry-layer-urls';
 import { historicAreaClassificationColors } from '../../config/conservation-colors';
-import { useDisplayPreferences } from '../../displayPreferences-context';
 import { apiGet } from '../../apiHelpers';
 
 const SITE_FILL = historicAreaClassificationColors.archaeologicalSite;
@@ -87,7 +86,6 @@ function ArchaeologicalSitesLayerContent({ geojson }: { geojson: GeoJsonObject }
 
 export function ArchaeologicalSitesLayer() {
     const [boundaryGeojson, setBoundaryGeojson] = useState<GeoJsonObject>(null);
-    const { archaeological } = useDisplayPreferences();
 
     useEffect(() => {
         apiGet(getGeometryLayerRequestPath('archaeological'))
@@ -101,7 +99,8 @@ export function ArchaeologicalSitesLayer() {
             .catch(() => setBoundaryGeojson(null));
     }, []);
 
-    if (archaeological === 'enabled' && boundaryGeojson) {
+    // Visibility is controlled by the parent (e.g. Historic Area Classifications map style)
+    if (boundaryGeojson) {
         return <ArchaeologicalSitesLayerContent geojson={boundaryGeojson} />;
     }
     return <></>;

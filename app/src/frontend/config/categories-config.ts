@@ -114,9 +114,9 @@ export const categoriesConfig: {[key in Category]: CategoryDefinition} = {
     // Coming Soon categories
     [Category.GreenUrbanInfrastructure]: {
         slug: 'green-urban-infrastructure',
-        name: 'Green / Urban Infrastructure',
+        name: 'Green / Water Infrastructure',
         aboutUrl: '/data-categories.html#green-urban-infrastructure',
-        intro: 'This layer captures data on greenery and urban infrastructure surrounding buildings.',
+        intro: 'This layer captures data on greenery and water infrastructure surrounding buildings.',
         inactive: true,
     },
     [Category.CommerceActivity]: {

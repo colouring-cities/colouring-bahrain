@@ -33,18 +33,19 @@ export function ConservationAreaBoundaryLayer({}) {
             fillColor: fill,
             fill: true,
             weight: 2,
-            opacity: 0.9,
-            fillOpacity: 0.35,
+            opacity: 1,
+            fillOpacity: 0.45,
         };
     };
 
     if (conservation == "enabled") {
-        return boundaryGeojson &&
-        <GeoJSON
-            attribution='Protection zones — Colouring Bahrain'
-            data={boundaryGeojson}
-            style={zoneStyle}
-        />;
+        return boundaryGeojson ? (
+            <GeoJSON
+                attribution='Protection zones — BACA / Colouring Bahrain'
+                data={boundaryGeojson}
+                style={zoneStyle}
+            />
+        ) : null;
     } else if (conservation == "disabled") {
         return <div></div>;
     } else {

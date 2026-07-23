@@ -4,7 +4,7 @@ import './legend.css';
 
 import { DownIcon, UpIcon } from '../components/icons';
 import { Logo } from '../components/logo';
-import { CategoryMapDefinition, LegendConfig } from '../config/category-maps-config';
+import { CategoryMapDefinition } from '../config/category-maps-config';
 import { BuildingMapTileset } from '../config/tileserver-config';
 
 interface LegendProps {
@@ -96,8 +96,22 @@ export const Legend : FC<LegendProps> = ({
                                     content = <h6>{item.subtitle}</h6>;
                                 } else {
                                     key = `${item.text}-${item.color}`;
+                                    const hatchStyle = item.hatch ? {
+                                        backgroundImage: `repeating-linear-gradient(
+                                            -45deg,
+                                            transparent,
+                                            transparent 2px,
+                                            ${item.color} 2px,
+                                            ${item.color} 3.5px
+                                        )`,
+                                        backgroundColor: 'transparent',
+                                        border: `1.5px solid ${item.color}`,
+                                        borderRadius: '50%',
+                                        width: '16px',
+                                        height: '16px',
+                                    } : { background: item.color, border: item.border };
                                     content = <>
-                                        <div className="key" style={ { background: item.color, border: item.border } } />
+                                        <div className="key" style={hatchStyle} />
                                         { item.text }
                                     </>;
                                 }

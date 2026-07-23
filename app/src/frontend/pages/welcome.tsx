@@ -33,14 +33,12 @@ const Welcome = () => (
             Start Colouring Here!
         </Link>
         <div className="image-row">
-            <img className="cl-logo" src="images/logo-cc.jpg" alt="Colouring Cities Research Programme"></img>
-            <img className="turing-logo" src="images/logo-turing.jpg" alt="Alan Turing Institute"></img>
+            <img className="cl-logo" src="/images/logo-cc.jpg?v=2" alt="Colouring Cities Research Programme"></img>
+            <img className="turing-logo" src="/images/logo-turing.jpg?v=2" alt="Alan Turing Institute"></img>
         </div>
         <div className="image-row">
-            <img src="images/supporter-logos.png" alt="Colouring Cities collaborating organisations" />
-        </div>
-        <div className="image-row">
-            <img src="images/logo-loughborough.png" alt="Colouring Cities collaborating organisations" />
+            <img className="baca-logo" src="/images/logo-baca.png?v=1" alt="Bahrain Authority for Culture & Antiquities"></img>
+            <img className="uob-logo" src="/images/logo-uob.png?v=1" alt="University of Bahrain"></img>
         </div>
     </div>
 );

@@ -134,3 +134,7 @@
     background-color: #5ec233;
     border-color: #5ec233;
 }
+
+.coming-soon-legend {
+    z-index: 1100;
+}

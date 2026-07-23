@@ -25,7 +25,7 @@ export interface CCConfig
      * Configure per deployment (e.g. Britain vs Bahrain filenames). Omitted keys use UK defaults.
      */
     geometryLayerUrls?: Partial<Record<
-        'parcel' | 'conservation' | 'housing' | 'creative' | 'flood' | 'vista' | 'borough' | 'archaeological',
+        'parcel' | 'conservation' | 'housing' | 'creative' | 'flood' | 'vista' | 'borough' | 'archaeological' | 'urbanHeritage',
         string
     >>;
 
@@ -34,7 +34,7 @@ export interface CCConfig
      * Example: "/api/map-layers/parcels" (see MAP_LAYER_SLUG_TO_TABLE in mapOverlayGeoJson.ts).
      */
     geometryLayerApiPaths?: Partial<Record<
-        'parcel' | 'conservation' | 'housing' | 'creative' | 'flood' | 'vista' | 'borough' | 'archaeological',
+        'parcel' | 'conservation' | 'housing' | 'creative' | 'flood' | 'vista' | 'borough' | 'archaeological' | 'urbanHeritage',
         string
     >>;
 

@@ -83,11 +83,6 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
                 text: "About the Colouring " + config.cityName + " Project",
             },
             {
-                to: "https://github.com/colouring-cities/manual/wiki/M3.1-News",
-                text: "Colouring Cities development news",
-                external: true
-            },
-            {
                 to: "https://github.com/colouring-cities/manual/wiki/How‐to‐use-Platform-Guides",
                 text: "How to Use",
                 external: true
@@ -95,11 +90,6 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
             {
                 to: "/data-categories.html",
                 text: "Data Categories",
-            },
-            {
-                to: "https://github.com/colouring-cities/manual/wiki/M3.2-Colouring-Britain:-Who's-Involved%3F",
-                text: "Who's Involved?",
-                external: true
             },
             {
                 to: "https://github.com/colouring-cities/manual/wiki/ETHICAL-FRAMEWORK",
@@ -139,16 +129,6 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
             {
                 to: "/contributor-agreement.html",
                 text: "Contributor Agreement",
-            },
-            {
-                to: "https://github.com/colouring-cities/manual/wiki/F2.-PROTOCOLS-&-CODES-OF-CONDUCT#ccrp-equality-diversity-and-inclusion-policy",
-                text: "Equality, Diversity and Inclusion",
-                external: true
-            },
-            {
-                to: "https://github.com/colouring-cities/manual/wiki/F2.-PROTOCOLS-&-CODES-OF-CONDUCT#ccrp-protocols-for-international-academic-partners",
-                text: "CCRP Academic Partner Protocols",
-                external: true
             },
         ],
         [
