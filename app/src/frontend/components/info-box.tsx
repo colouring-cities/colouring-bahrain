@@ -2,15 +2,18 @@ import React from 'react';
 
 interface InfoBoxProps {
     msg?: string;
+    // https://react-bootstrap.github.io/components/alerts/
+    // predefined valid values
+    type?: 'info' | 'warning' | 'success' | 'danger' | 'dark'
 }
 
-const InfoBox: React.FC<InfoBoxProps> = (props) => (
+const InfoBox: React.FC<InfoBoxProps> = ({msg, children, type = 'info'}) => (
     <>
         {
-            (props.msg || props.children) &&
-                <div className="alert alert-info" role="alert">
-                    { props.msg ?? '' }
-                    { props.children }
+            (msg || children) &&
+                <div className={`alert alert-${type}`} role="alert">
+                    { msg ?? '' }
+                    { children }
                 </div>
         }
     </>

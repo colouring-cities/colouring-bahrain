@@ -1,0 +1,22 @@
+                      List of tables
+ Schema |              Name              | Type  | Owner  
+--------+--------------------------------+-------+--------
+ public | building_properties            | table | ubuntu
+ public | building_user_attributes       | table | ubuntu
+ public | building_user_likes            | table | ubuntu
+ public | building_verification          | table | ubuntu
+ public | buildings                      | table | ubuntu
+ public | bulk_extracts                  | table | ubuntu
+ public | external_data_borough_boundary | table | ubuntu
+ public | geometries                     | table | ubuntu
+ public | logs                           | table | ubuntu
+ public | planning_data                  | table | ubuntu
+ public | search_locations               | table | ubuntu
+ public | spatial_ref_sys                | table | ubuntu
+ public | user_access_levels             | table | ubuntu
+ public | user_categories                | table | ubuntu
+ public | user_password_reset_tokens     | table | ubuntu
+ public | user_sessions                  | table | ubuntu
+ public | users                          | table | ubuntu
+(17 rows)
+

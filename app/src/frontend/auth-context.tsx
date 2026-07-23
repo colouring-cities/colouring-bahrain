@@ -11,8 +11,8 @@ interface AuthContextState {
     login: (data: UserLoginData, cb?: (err) => void) => void;
     logout: (cb?: (err) => void) => void;
     signup: (data: UserSignupData, cb?: (err) => void) => void;
-    deleteAccount: (cb?: (err) => void) => void;
     generateApiKey: (cb?: (err) => void) => void;
+    deleteAccount: (cb?: (err) => void) => void;
 }
 
 interface UserLoginData {
@@ -58,85 +58,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     const [userError, setUserError] = useState<string>(undefined);
     const [isLoading, setIsLoading] = useState(false);
 
-    const login = useCallback(async (data: UserLoginData, cb: (err) => void = noop) => {
-        if(isAuthenticated) {
-            return;
-        }
-
-        setIsLoading(true);
-
-        try {
-            const res = await apiPost('/api/login', { ...data });
-
-            if (res.error) {
-                setIsLoading(false);
-                cb(res.error);
-            } else {
-                setIsAuthenticated(true);
-            }
-        } catch(err) {
-            cb('Error logging in.');
-        }
-    }, [isAuthenticated]);
-
-    const logout = useCallback(async (cb: (err) => void = noop) => {
-        if(!isAuthenticated) {
-            return;
-        }
-
-        setIsLoading(true);
-
-        try {
-            const res = await apiPost('/api/logout');
-
-            if (res.error) {
-                setIsLoading(false);
-                cb(res.error);
-            } else {
-                setIsAuthenticated(false);
-            }
-        } catch(err) {
-            cb('Error logging out');
-        }
-
-    }, [isAuthenticated]);
-
-    const signup = useCallback(async (data: UserSignupData, cb: (err) => void = noop) => {
-        if(isAuthenticated) {
-            return;
-        }
-
-        setIsLoading(true);
-
-        try {
-            const res = await apiPost('/api/users', {
-                username: data.username,
-                email: data.email,
-                confirm_email: data.confirmEmail,
-                password: data.password
-            });
-
-            if(res.error) {
-                setIsLoading(false);
-                cb(res.error);
-            } else {
-                setIsAuthenticated(true);
-            }
-        } catch(err) {
-            cb('Error signing up.');
-        }
-    }, [isAuthenticated]);
-
-    async function updateUserData(): Promise<void> {
+    // 1. Stable data fetching function
+    const updateUserData = useCallback(async (): Promise<void> => {
         setUserError(undefined);
         setIsLoading(true);
 
         try {
-            const user = await apiGet('/api/users/me');
-            if (user.error) {
-                setUserError(user.error);
+            const userResponse = await apiGet('/api/users/me'); 
+            
+            if (userResponse.error) {
+                setUserError(userResponse.error);
+                if (userResponse.error === 'Must be logged in') { 
+                    setIsAuthenticated(false);
+                }
             } else {
-                setUser(user);
+                setUser(userResponse);
                 setIsAuthenticated(true);
             }
         } catch(err) {
@@ -144,7 +80,63 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
         }
 
         setIsLoading(false);
-    }
+    }, []); 
+
+    const login = useCallback(async (data: UserLoginData, cb: (err) => void = noop) => {
+        if(isAuthenticated) return;
+        setIsLoading(true);
+        try {
+            const res = await apiPost('/api/login', { ...data });
+            if (res.error) {
+                setIsLoading(false);
+                cb(res.error);
+            } else {
+                setIsAuthenticated(true);
+                updateUserData();
+            }
+        } catch(err) {
+            cb('Error logging in.');
+        }
+    }, [isAuthenticated, updateUserData]);
+
+    const logout = useCallback(async (cb: (err) => void = noop) => {
+        if(!isAuthenticated) return;
+        setIsLoading(true);
+        try {
+            const res = await apiPost('/api/logout');
+            if (res.error) {
+                setIsLoading(false);
+                cb(res.error);
+            } else {
+                setIsAuthenticated(false);
+                setUser(undefined);
+            }
+        } catch(err) {
+            cb('Error logging out');
+        }
+    }, [isAuthenticated]);
+
+    const signup = useCallback(async (data: UserSignupData, cb: (err) => void = noop) => {
+        if(isAuthenticated) return;
+        setIsLoading(true);
+        try {
+            const res = await apiPost('/api/users', {
+                username: data.username,
+                email: data.email,
+                confirm_email: data.confirmEmail,
+                password: data.password
+            });
+            if(res.error) {
+                setIsLoading(false);
+                cb(res.error);
+            } else {
+                setUser(res as User);
+                setIsAuthenticated(true);
+            }
+        } catch(err) {
+            cb('Error signing up.');
+        }
+    }, [isAuthenticated]);
 
     const generateApiKey = useCallback(async (cb: (err) => void = noop) => {
         try {
@@ -157,7 +149,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
         } catch(err) {
             cb('Error getting API key.');
         }
-    }, []);
+    }, [updateUserData]);
 
     const deleteAccount = useCallback(async (cb) => {
         try {
@@ -166,28 +158,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
                 cb(data.error);
             } else {
                 setIsAuthenticated(false);
+                setUser(undefined);
             }
         } catch(err) {
-            cb('Error getting API key.');
+            cb('Error deleting account.');
         }
     }, []);
 
+    // 2. Single Effect for Syncing User State
     useEffect(() => {
-        if(isAuthenticated) {
-            updateUserData();
+        if (isAuthenticated) {
+            // Only fetch if user data is missing
+            if (user === undefined || user.user_id === undefined) {
+                 updateUserData();
+            }
         } else {
-            setUser(undefined);
+            if (user !== undefined) {
+                setUser(undefined);
+            }
             setIsLoading(false);
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, updateUserData, user?.user_id]);
 
-    // update user data initially to check if already logged in
+    // 3. Single Effect for Initial Load
     useEffect(() => {
-        // if user state not preloaded
-        if(user == undefined) {
+        if (user === undefined) {
             updateUserData();
         }
-    }, []);
+    }, [updateUserData]);
 
     return (
         <AuthContext.Provider value={{
@@ -199,7 +197,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
             logout,
             signup,
             generateApiKey,
-            deleteAccount
+            deleteAccount,
         }}>
             {children}
         </AuthContext.Provider>

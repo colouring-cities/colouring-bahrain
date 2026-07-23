@@ -1,5 +1,7 @@
 import bodyParser from 'body-parser';
 import express from 'express';
+import fs from 'fs';
+import path from 'path';
 
 import autofillController from './controllers/autofillController';
 import * as editHistoryController from './controllers/editHistoryController';
@@ -11,6 +13,8 @@ import leaderboardRouter from './routes/leaderboardRouter';
 import usersRouter from './routes/usersRouter';
 import { queryLocation } from './services/search';
 import { authUser, getNewUserAPIKey, logout } from './services/user';
+import { getFeatureCollectionForTable, MAP_LAYER_SLUG_TO_TABLE } from './services/mapOverlayGeoJson';
+import db from '../db';
 
 const server = express.Router();
 
@@ -27,16 +31,30 @@ server.get('/autofill', autofillController.getAutofillOptions);
 
 // POST user auth
 server.post('/login', function (req, res) {
-    authUser(req.body.username, req.body.password).then(function (user: any) { // TODO: remove any
-        if (user.user_id) {
-            req.session.user_id = user.user_id;
-        } else {
-            req.session.user_id = undefined;
-        }
-        res.send(user);
-    }).catch(function (error) {
-        res.send(error);
-    });
+  authUser(req.body.username, req.body.password).then(function (user: any) { 
+        
+        // 1. Set the session data (as before)
+    if (user.user_id) {
+      req.session.user_id = user.user_id;
+    } else {
+      req.session.user_id = undefined;
+    }
+        
+        // 2. EXPLICITLY SAVE THE SESSION AND WAIT FOR THE CALLBACK
+        // This ensures express-session has updated the DB before sending headers
+        req.session.save((err) => {
+            if (err) {
+                // Handle session save error (e.g., DB failure)
+                console.error("Session save error:", err);
+                return res.status(500).send({ error: 'Session error' });
+            }
+            // 3. Send the response ONLY after the session is saved
+            res.send(user);
+        });
+        
+  }).catch(function (error) {
+    res.send(error);
+  });
 });
 
 // POST user logout
@@ -96,6 +114,45 @@ server.get('/search', function (req, res) {
     }).catch(function (error) {
         res.send(error);
     });
+});
+
+// GET governorates - static GeoJSON (see public/geometries/governorates.geojson)
+server.get('/governorates', function (req, res) {
+    const geojsonPath = path.join(
+        process.env.RAZZLE_PUBLIC_DIR || path.join(__dirname, '..', '..', 'public'),
+        'geometries',
+        'governorates.geojson'
+    );
+    fs.readFile(geojsonPath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading governorates GeoJSON:', err);
+            res.status(500).json({ error: 'Governorate geometry file not found' });
+            return;
+        }
+        res.type('json').send(data);
+    });
+});
+
+// GET map overlay layers (PostGIS) — slugs: parcels | protection-zones | moh-zones | green-water
+server.get('/map-layers/:slug', function (req, res) {
+    const table = MAP_LAYER_SLUG_TO_TABLE[req.params.slug];
+    if (!table) {
+        res.status(404).json({ error: 'Unknown map layer' });
+        return;
+    }
+    getFeatureCollectionForTable(table)
+        .then((geojson) => {
+            res.json(geojson);
+        })
+        .catch(function (error) {
+            console.error('Error fetching map layer:', req.params.slug, error);
+            res.status(500).json({ error: 'Database error' });
+        });
+});
+
+// Handle geometries requests - return 404 as JSON instead of HTML
+server.get('/geometries/*', (req: express.Request, res: express.Response) => {
+    res.status(404).json({ error: 'Geometry file not found', path: req.path });
 });
 
 server.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

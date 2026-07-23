@@ -7,6 +7,9 @@ import { SpinnerIcon } from '../components/icons';
 import InfoBox from '../components/info-box';
 import SupporterLogos from '../components/supporter-logos';
 
+import { CCConfig } from '../../cc-config';
+let config: CCConfig = require('../../cc-config.json')
+
 export const Login: React.FC = () => {
     const {isLoading, login } = useAuth();
 
@@ -20,18 +23,20 @@ export const Login: React.FC = () => {
         e.preventDefault();
         setError(undefined);
 
-        login({ username, password });
+        login({ username, password }, setError);
     }, [username, password]);
+
+    const msgText = `Welcome to Colouring ${config.cityName}. You're one of the first people to use the site!`;
+    const issuesURL = config.githubURL + "/issues";
+    const discussURL = config.githubURL + "/discussions";
 
     return (
         <article>
             <section className="main-col">
                 <h1 className="h2">Log in</h1>
-                <InfoBox msg="Welcome to Colouring London. You're one of the first people to use the site!  ">
-                    <br/>Please <a href="https://discuss.colouring.london/">discuss
-                    suggestions for improvements</a> and <a
-                        href="https://github.com/colouring-london/colouring-london/issues">
-                    report issues or problems</a>.
+                <InfoBox msg={msgText}>
+                    <br/>Please <a href={discussURL}>discuss suggestions for improvements</a> and {' '}
+                    <a href={issuesURL}>report issues or problems</a>.
                 </InfoBox>
                 <ErrorBox msg={error} />
                 <form onSubmit={onSubmit}>
@@ -39,7 +44,7 @@ export const Login: React.FC = () => {
                     <input name="username" id="username"
                         className="form-control" type="text"
                         value={username} onChange={e => setUsername(e.target.value)}
-                        placeholder="not-your-real-name" required
+                        placeholder="please note the user name you choose will be public" required
                     />
 
                     <label htmlFor="password">Password</label>

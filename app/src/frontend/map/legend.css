@@ -4,7 +4,7 @@
 .map-legend {
     position: absolute;
     bottom: 3.5rem;
-    right: 10px;
+    right: 15px;
     z-index: 1000;
 
     min-width: 14rem;
@@ -21,10 +21,6 @@
     box-shadow: 0px 0px 1px 1px #222222;
 }
 
-.map-legend * {
-    flex: 0;
-}
-
 .map-legend .logo {
     display: none;
 }
@@ -37,29 +33,40 @@
 /* Prevent legend from overlapping with attribution */
 @media(min-width: 392px) {
     .map-legend {
-        bottom: 2.5rem;
+        bottom: 3.5rem;
     }
 }
 @media (min-width: 760px){
     .map-legend {
-        bottom: 1.5rem;
+        bottom: 2.5rem;
     }
 }
 @media (min-width: 990px) {
     .map-legend {
-        bottom: 2.5rem;
+        bottom: 3.5rem;
     }
 }
 @media (min-width: 1129px){
     .map-legend {
-        bottom: 1.5rem;
+        bottom: 3.0rem;
     }
+}
+
+.map-legend .style-select {
+    background-color: inherit;
+    padding: 0.5rem 0.25rem;
+    margin: 0.25rem 0.5rem 0.25rem 0.5rem;
+    width: auto;
+    font-size: 17px;
+    border: 1px solid;
+    border-radius: 4px;
+    min-height: 1.2em;
 }
 
 .map-legend .h4,
 .map-legend p,
 .data-legend {
-    padding: 0 0.5rem;
+    padding: 0 0.5rem 0.5rem 0.5rem;
 }
 .map-legend p {
     margin: 0.25rem 0 0.5rem;
@@ -77,17 +84,17 @@
 }
 
 .data-legend li {
-    white-space: nowrap;
+    display: flex;
 }
 
 .data-legend .key {
     display: inline-block;
-    width: 1.3rem;
-    height: 1.3rem;
-    margin-right: 0.3rem;
+    width: 14px;
+    height: 14px;
+    margin-right: 3px;
     vertical-align: middle;
     overflow: hidden;
-    border: solid 1px #ddd;
+    flex-shrink: 0;
 }
 
 .data-legend h6 {
@@ -113,11 +120,14 @@
 .expander-button:hover {
     box-shadow: none;
 }
+/* hides expander/hider button of legend on a small screens */
+/*
 @media (min-height: 670px) and (min-width: 880px) {
     .expander-button {
         visibility: hidden;
     }
 }
+*/
 
 .map-legend .logo {
     padding: 0 0.5rem 0.5rem;

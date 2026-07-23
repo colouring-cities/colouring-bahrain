@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './tooltip.css';
 
 import { InfoIcon } from './icons';
+import Markdown from 'markdown-to-jsx';
 
 interface TooltipProps {
     text: string;
@@ -70,7 +71,7 @@ class Tooltip extends Component<TooltipProps, TooltipState> {
             <div className="tooltip-wrap" tabIndex={0} onBlur={this.handleBlur}>
                 <button type="button" className={(this.state.active? 'active ': '') + 'tooltip-hint icon-button'}
                     onClick={this.toggleVisible}>
-                    Hint
+                    Info
                     <InfoIcon />
                 </button>
                 {
@@ -79,7 +80,9 @@ class Tooltip extends Component<TooltipProps, TooltipState> {
                             <div className="tooltip bs-tooltip-bottom">
                                 <div className="arrow"></div>
                                 <div className="tooltip-inner">
-                                    {tooltipTextToComponents(this.props.text)}
+                                    <Markdown>
+                                        {this.props.text}
+                                    </Markdown>
                                 </div>
                             </div>
                         )

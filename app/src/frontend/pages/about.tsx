@@ -1,168 +1,99 @@
 import React from 'react';
 
-import './about.css';
-
-import Categories from '../building/categories';
-import SupporterLogos from '../components/supporter-logos';
+import { CCConfig } from '../../cc-config';
+let config: CCConfig = require('../../cc-config.json');
 
 const AboutPage = () => (
     <article>
         <section className="main-col">
-            <h1 className="h2">
-        Can you help us capture information on every building in London?
-            </h1>
+            <h1 className="h2">About the Colouring {config.cityName} Project</h1>
+
             <p>
-
-        How many buildings are there in London? What are their characteristics? Where
-        are they located and how do they contribute to the city? How adaptable are
-        they? How long will they last, and what are the environmental and
-        socio-economic implications of demolition?
-
+                Colouring {config.cityName} is a free knowledge exchange platform, designed to collate, generate,
+                visualise, open spatial data on every building across Muharraq and potentially other cities. It also
+                releases open platform code to enable its design to be easily reproduced.
             </p>
             <p>
-
-        Colouring London is being designed to address these questions by crowdsourcing
-        and visualising information on London’s buildings. We’re releasing the
-        prototype for testing in the late summer. See the slideshow below for what it
-        will look like.
-
+                If you live in, research, design, build, manage, or care for Bahrain&apos;s buildings—or have a
+                professional or academic interest in the built environment—this platform has been developed to enable
+                you to share your expertise and contribute to enhancing the city&apos;s sustainability. We invite
+                contributions from academia, government, and industry to support the development of accurate,
+                informative, and visually compelling maps that represent the city&apos;s buildings. Colouring{' '}
+                {config.cityName} is part of the international Colouring Cities Research Programme. The development is
+                led by the Bahrain Authority for Culture and Antiquities, responsible for preserving urban heritage
+                and historical areas.
             </p>
-            <div className="buttons-container btn-center">
-                <a className="btn btn-outline-dark btn-lg" href="#sign-up">Sign up for updates</a>
-            </div>
-            <div className="carousel">
-                <button className="carousel-control offscreen-text back">Back</button>
-                <ul className="carousel-content">
-                    <li><img src="images/slide-1-welcome.png" alt="Welcome" /></li>
-                    <li><img src="images/slide-2-categories.png" alt="Categories" /></li>
-                    <li><img src="images/slide-3-edit.png" alt="Add/edit data" /></li>
-                    <li><img src="images/slide-4-view.png" alt="View maps" /></li>
-                    <li><img src="images/slide-5-download.png" alt="Download data" /></li>
-                    <li><img src="images/slide-6-showcase.png" alt="Showcase" /></li>
-                    <li><img src="images/slide-7-partners.png" alt="Partners" /></li>
-                </ul>
-                <button className="carousel-control offscreen-text next">Next</button>
-            </div>
-            <div className="buttons-container btn-center">
-                <a className="btn btn-outline-dark btn-lg"
-                    href="files/colouring-london-online-exhibition.pdf">
-               View online exhibition</a>
-            </div>
-        </section>
-        <hr/>
-        <section className="main-col">
+
+            <h2 className="h3">Why do we need Colouring {config.cityName}?</h2>
             <p>
-
-        Colouring London is being designed and built by the Centre for Advanced Spatial
-        Analysis (CASA), University College London and funded by Historic England.
-        Ordnance Survey is providing building footprints required to collect the data,
-        facilitated by the GLA, and giving access to its API and technical support. It
-        will launch in 2019.
-
+                The building stock forms the core of a city&apos;s physical and cultural fabric and represents one of
+                society&apos;s most valuable and enduring resources. In historic cities such as those found across
+                Bahrain, buildings and streets are not only functional assets but also carriers of collective memory,
+                identity, and heritage value. The quality, condition, and management of these buildings—particularly
+                residential structures, which make up the majority of the stock—have a direct impact on quality of
+                life, cultural continuity, and urban character. However, geospatial and attribute data on buildings,
+                which are essential for understanding, managing, and safeguarding historic urban areas, remain
+                fragmented and difficult to access in Bahrain, as in many other countries.
             </p>
-            <SupporterLogos />
-        </section>
-        <hr/>
-        <div className="main-col">
-            <h2 className="h1">Data Categories</h2>
             <p>
-
-        12 categories have been chosen in consultation with specialists working in a
-        range of areas, from energy analysis and sustainable urban planning and design
-        to building conservation, community planning, architecture and historical
-        research.
-
+                Bahrain&apos;s urban landscape reflects multiple layers of development, from traditional architecture
+                to post-oil modern expansion. Managing this diverse building stock presents significant challenges,
+                particularly in historic cities where pressures for redevelopment, densification, and infrastructure
+                upgrades can place heritage assets at risk. Effective decision-making requires detailed knowledge of
+                building age, construction type, use, condition, and heritage status, yet such information is rarely
+                available in an integrated or openly accessible form.
             </p>
-            <Categories building_id={2503371} mode="view" />
-        </div>
-        <hr/>
-        <div className="main-col">
-            <h2 className="h1">Once built, our platform will allow you to:</h2>
-        </div>
-        <section className="pale-pink color-block">
-            <div className="main-col">
-                <h3 className="h2">View maps</h3>
-                <p>
+            <p>
+                In recent years, Bahrain has shown increasing interest in smart city approaches as a means of improving
+                urban management, service delivery, and planning efficiency. Smart city initiatives rely on accurate,
+                up-to-date, and spatially linked data, including data on buildings and the public realm. For historic
+                cities, this creates an opportunity to combine digital innovation with heritage-sensitive planning,
+                supporting evidence-based conservation, targeted retrofit, and informed development control.
+            </p>
+            <p>
+                Tracking change within the building stock—such as refurbishment, adaptation, demolition, and changes of
+                use—is particularly important in historic areas, where incremental transformation can cumulatively erode
+                cultural significance. Systematic data on these processes would support better monitoring of historic
+                urban landscapes, help prioritise conservation efforts, and enable more balanced negotiations between
+                preservation and growth.
+            </p>
+            <p>
+                This context has generated a growing demand among researchers, heritage professionals, planners, and
+                policymakers for detailed, accessible building data to support analysis, monitoring, and urban modelling.
+                While some countries have begun to release large-scale building attribute datasets, access to such
+                information in Bahrain remains limited, including for academic and public-interest research.
+            </p>
+            <p>
+                Colouring {config.cityName}, as part of the Colouring Cities Research Programme, has been established in
+                response to these challenges. It proposes a new model of open knowledge exchange centred on an open,
+                collaborative database designed to document and visualise building attributes relevant to cities,
+                including age, form, use, and heritage significance. Supported by open-source platform code, the
+                initiative enables replication and adaptation across different national contexts. The overarching aim
+                of Colouring {config.cityName} and the Colouring Cities Research Programme is to support more informed,
+                transparent, and inclusive management of cities, in alignment with the United Nations&apos; 2016 New
+                Urban Agenda and its emphasis on culturally sensitive, resilient, and well-managed urban development.
+            </p>
 
-            To view the data, navigate to the ‘View Maps’ page and find the category that
-            interests you.
+            <h2 className="h3">What are we collecting?</h2>
+            <p>
+                Our platform collects data on the physical form, quality and performance of Bahrain&apos;s buildings, as
+                well as their lifespans and history. This includes temporal data on building age, architectural
+                typology, construction materials, and their planning context. Over the coming years, and with the
+                support of partners and contributors, our goal is to provide free, spatially enabled statistics on the
+                location, use, age, size, street context, designers and builders, planning and heritage status,
+                adaptability, repairability, and site history of buildings across Bahrain.
+            </p>
 
-                </p>
-                <img className="border-image" src="images/slide-4-view.png"
-                    alt="Preview of view maps page" />
-            </div>
+            <h2 className="h3">How are we collecting data?</h2>
+            <p>
+                We are currently evaluating multiple methods of data capture, including the bulk upload of existing
+                surveyed datasets, building-level crowdsourcing, automated approaches (such as deriving building
+                characteristics from available datasets, including age and height), and the integration of continuously
+                updated data sources, particularly in relation to planning information. Data ethics—encompassing
+                considerations of privacy, potential misuse, and responsible application—as well as data accuracy,
+                constitute key areas of ongoing research.
+            </p>
         </section>
-        <section className="pale-yellow color-block">
-            <div className="main-col">
-                <h3 className="h2">Add and edit data</h3>
-                <p>
-
-            Find a building and add or edit data for any of the 12 core categories.
-
-                </p>
-                <img className="border-image" src="images/slide-3-edit.png"
-                    alt="Preview of add/edit data page" />
-            </div>
-        </section>
-        <section className="pale-orange color-block">
-            <div className="main-col">
-                <h3 className="h2">See how people are using our data</h3>
-                <p>
-
-            Find links to visualisations and analysis, art projects and applications
-            relating to the evolution of London, housing, energy, planning, heritage and
-            history&mdash;or something we haven’t imagined yet.
-
-                </p>
-                <img className="border-image" src="images/slide-6-showcase.png"
-                    alt="Preview of data showcase page" />
-            </div>
-        </section>
-
-        <section className="pale-green color-block">
-            <div className="main-col">
-                <h3 className="h2">Download, remix and reuse</h3>
-                <p>
-
-            Access bulk downloads of data created through the project to use and reuse
-            under a liberal open data license. Let us know and we’ll feature showcase
-            projects on the Colouring London site.
-
-                </p>
-                <img className="border-image" src="images/slide-5-download.png"
-                    alt="Preview of download page" />
-            </div>
-        </section>
-
-        <div className="main-col">
-
-            <form id="sign-up" action="https://tinyletter.com/colouringlondon" method="post"
-                target="popupwindow"
-                onSubmit={function() {window.open(
-                    'https://tinyletter.com/colouringlondon',
-                    'popupwindow',
-                    'scrollbars=yes,width=800,height=600'); return true;}}>
-                <h3 className="h1">Keep in touch</h3>
-                <p>
-
-        Receive occasional newsletters about the project as it develops. You can
-        read previous newsletters in our <a
-                        href="https://tinyletter.com/colouringlondon/archive">newsletter archive</a>.
-
-                </p>
-                <label htmlFor="tlemail">Enter your email address:</label>
-                <input className="form-control" type="email" name="email" id="tlemail" placeholder="name@example.com" />
-                <input type="hidden" value="1" name="embed"/>
-                <small className="form-text text-muted">
-                    <a href="https://tinyletter.com">
-            powered by TinyLetter</a>.
-            We&rsquo;ll never share your email address.
-                </small>
-                <div className="buttons-container">
-                    <input className="btn btn-outline-dark btn-block" type="submit" value="Sign up for updates" />
-                </div>
-            </form>
-        </div>
     </article>
 );
 

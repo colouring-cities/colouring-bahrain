@@ -1,12 +1,15 @@
 import React, { Fragment } from 'react';
 import { NavLink, Redirect } from 'react-router-dom';
 import Confetti from 'canvas-confetti';
+import _ from 'lodash';
 
 import { apiPost } from '../apiHelpers';
+import { sendBuildingUpdate } from '../api-data/building-update';
 import ErrorBox from '../components/error-box';
 import InfoBox from '../components/info-box';
 import { compareObjects } from '../helpers';
-import { Building, BuildingAttributes, UserVerified } from '../models/building';
+import { Building, BuildingEdits, BuildingUserAttributes, UserVerified } from '../models/building';
+import { BuildingMapTileset } from '../config/tileserver-config';
 import { User } from '../models/user';
 
 import ContainerHeader from './container-header';
@@ -15,6 +18,9 @@ import { CopyControl } from './header-buttons/copy-control';
 import { ViewEditControl } from './header-buttons/view-edit-control';
 
 import './data-container.css';
+import { dataFields } from '../config/data-fields-config'
+
+import { EditHistoryLatest } from './edit-history/edit-history-latest';
 
 interface DataContainerProps {
     title: string;
@@ -26,11 +32,12 @@ interface DataContainerProps {
     user?: User;
     mode: 'view' | 'edit';
     building?: Building;
-    building_like?: boolean;
     user_verified?: any;
     onBuildingUpdate: (buildingId: number, updatedData: Building) => void;
-    onBuildingLikeUpdate: (buildingId: number, updatedData: boolean) => void;
     onUserVerifiedUpdate: (buildingId: number, updatedData: UserVerified) => void;
+
+    mapColourScale: BuildingMapTileset;
+    onMapColourScale: (x: BuildingMapTileset) => void;
 }
 
 interface DataContainerState {
@@ -39,7 +46,9 @@ interface DataContainerState {
     keys_to_copy: {[key: string]: boolean};
     currentBuildingId: number;
     currentBuildingRevisionId: number;
-    buildingEdits: Partial<Building>;
+    buildingEdits: BuildingEdits;
+    mapColourScale: BuildingMapTileset;
+    onMapColourScale: (x: BuildingMapTileset) => void;
 }
 
 export type DataContainerType = React.ComponentType<DataContainerProps>;
@@ -63,12 +72,13 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
                 keys_to_copy: {},
                 buildingEdits: {},
                 currentBuildingId: undefined,
-                currentBuildingRevisionId: undefined
+                currentBuildingRevisionId: undefined,
+                mapColourScale: undefined,
+                onMapColourScale: undefined
             };
 
             this.handleChange = this.handleChange.bind(this);
             this.handleReset = this.handleReset.bind(this);
-            this.handleLike = this.handleLike.bind(this);
             this.handleSubmit = this.handleSubmit.bind(this);
             this.handleVerify = this.handleVerify.bind(this);
             this.handleSaveAdd = this.handleSaveAdd.bind(this);
@@ -78,17 +88,40 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
             this.toggleCopyAttribute = this.toggleCopyAttribute.bind(this);
         }
 
-        static getDerivedStateFromProps(props, state) {
+        static getDerivedStateFromProps(props, state): DataContainerState {
             const newBuildingId = props.building == undefined ? undefined : props.building.building_id;
             const newBuildingRevisionId = props.building == undefined ? undefined : props.building.revision_id;
+
+            const categoryKeys = {};
+            const blackListedKeys = ['current_landuse_order',
+                                     'current_landuse_verified',
+                                     'planning_list_grade',
+                                     'likes_total',
+                                     'community_type_worth_keeping_total',
+                                     'community_local_significance_total',
+                                     'community_expected_planning_application_total',
+                                     'typology_original_use',
+                                     'typology_original_use_verified'
+                                    ]
+            for (let key in dataFields) {  
+                let fieldName = props.building == undefined ? undefined : props.building[key];    
+                if (dataFields[key].category == props.cat && fieldName != null && !blackListedKeys.includes(key)){
+                    categoryKeys[key] = true;
+                }
+                if (props.cat == 'team' && key == 'date_year' && fieldName != null && !blackListedKeys.includes(key)){
+                    categoryKeys[key] = true;
+                }
+            }
             if(newBuildingId !== state.currentBuildingId || newBuildingRevisionId > state.currentBuildingRevisionId) {
                 return {
                     error: undefined,
                     copying: false,
-                    keys_to_copy: {},
+                    keys_to_copy: categoryKeys,
                     buildingEdits: {},
                     currentBuildingId: newBuildingId,
-                    currentBuildingRevisionId: newBuildingRevisionId
+                    currentBuildingRevisionId: newBuildingRevisionId,
+                    mapColourScale: props.mapColourScale,
+                    onMapColourScale: props.onMapColourScale
                 };
             }
 
@@ -122,9 +155,8 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
         }
 
         isEdited() {
-            const edits = this.state.buildingEdits;
             // check if the edits object has any fields
-            return Object.entries(edits).length !== 0;
+            return !_.isEmpty(this.state.buildingEdits);
         }
 
         clearEdits() {
@@ -166,46 +198,15 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
             this.clearEdits();
         }
 
-        /**
-         * Handle likes separately
-         * - like/love reaction is limited to set/unset per user
-         *
-         * @param {*} event
-         */
-        async handleLike(like: boolean) {
-            try {
-                const data = await apiPost(
-                    `/api/buildings/${this.props.building.building_id}/like.json`,
-                    {like: like}
-                );
-
-                if (data.error) {
-                    this.setState({error: data.error});
-                } else {
-                    // like endpoint returns whole building data so we can update both
-                    this.props.onBuildingUpdate(this.props.building.building_id, data);
-                    this.props.onBuildingLikeUpdate(this.props.building.building_id, like);
-                }
-            } catch(err) {
-                this.setState({error: err});
-            }
-        }
-
-        async doSubmit(edits: Partial<BuildingAttributes>) {
+        async doSubmit(edits: Partial<Building & BuildingUserAttributes>) {
             this.setState({error: undefined});
+            
             try {
-                const data = await apiPost(
-                    `/api/buildings/${this.props.building.building_id}.json`,
-                    edits
-                );
-
-                if (data.error) {
-                    this.setState({error: data.error});
-                } else {
-                    this.props.onBuildingUpdate(this.props.building.building_id, data);
-                }
-            } catch(err) {
-                this.setState({error: err});
+                const buildingUpdate = await sendBuildingUpdate(this.props.building.building_id, edits);
+                const updatedBuilding = Object.assign({}, this.props.building, buildingUpdate);
+                this.props.onBuildingUpdate(this.props.building.building_id, updatedBuilding);
+            } catch(error) {
+                this.setState({ error });
             }
         }
 
@@ -268,6 +269,8 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
                         Confetti({
                             angle: 60,
                             disableForReducedMotion: true,
+                            particleCount: 200,
+                            ticks: 300,
                             origin: {x, y},
                             zIndex: 2000
                         });
@@ -277,6 +280,22 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
             } catch(err) {
                 this.setState({error: err});
             }
+            
+            if (slug == 'current_landuse_group'){
+                const edits = {
+                    'current_landuse_verified': true
+                };
+
+                this.doSubmit(edits);
+            }
+            if (slug == 'typology_original_use'){
+                const edits = {
+                    'typology_original_use_verified': true
+                };
+
+                this.doSubmit(edits);
+            }
+            console.log(slug + " verify button clicked")
         }
 
         render() {
@@ -311,7 +330,7 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
                             className="icon-button help"
                             title="Find out more"
                             href={this.props.help}>
-                            Info
+                            About
                         </a>
                     : null
                 }
@@ -330,7 +349,7 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
                                     <NavLink
                                         className="icon-button history"
                                         to={`/${this.props.mode}/${this.props.cat}/${this.props.building.building_id}/history`}
-                                    >History</NavLink>
+                                    >Edit History</NavLink>
                                     <ViewEditControl
                                         cat={this.props.cat}
                                         mode={this.props.mode}
@@ -345,22 +364,33 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
                 }
                 </ContainerHeader>
                 <div className="section-body">
+                <InfoBox>
+                    {this.props.intro}&nbsp;
+                    {(this.props.title !== "Community") ? 
+                        "Can you help us capture and verify this information?" 
+                        : 
+                        "" 
+                    }
+                </InfoBox>
+                <EditHistoryLatest
+                    building={this.props.building}
+                />
                 {
                     this.props.inactive ?
                         <Fragment>
                             <WrappedComponent
                                 intro={this.props.intro}
                                 building={this.props.building}
-                                building_like={this.props.building_like}
                                 mode={this.props.mode}
                                 edited={false}
                                 copy={copy}
                                 onChange={undefined}
-                                onLike={undefined}
                                 onVerify={undefined}
                                 onSaveAdd={undefined}
                                 onSaveChange={undefined}
                                 user_verified={[]}
+                                mapColourScale={undefined}
+                                onMapColourScale={undefined}
                             />
                         </Fragment> :
                         this.props.building != undefined ?
@@ -397,29 +427,33 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
                                                                 null
                                                         }
                                                     </div>
+                                                    
                                             }
                                         </div>
                                         : null
                                 }
+                                <hr/>
                                 <WrappedComponent
                                     intro={this.props.intro}
                                     building={currentBuilding}
-                                    building_like={this.props.building_like}
                                     mode={this.props.mode}
                                     edited={edited}
                                     copy={copy}
                                     onChange={this.handleChange}
-                                    onLike={this.handleLike}
                                     onVerify={this.handleVerify}
                                     onSaveAdd={this.handleSaveAdd}
                                     onSaveChange={this.handleSaveChange}
                                     user_verified={this.props.user_verified}
                                     user={this.props.user}
+                                    mapColourScale={this.props.mapColourScale}
+                                    onMapColourScale={this.props.onMapColourScale}
                                 />
                             </form> :
-                            <InfoBox msg="Select a building to view data"></InfoBox>
+                            <InfoBox msg="Select a building to add, view or amend the data"></InfoBox>
                 }
+                <hr/>
                 </div>
+                
                 </section>
             );
         }

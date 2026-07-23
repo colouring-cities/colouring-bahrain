@@ -1,0 +1,37 @@
+{
+    "cityName": "Bahrain",
+    "institution": "Bahrain Authority for Culture and Antiquities",
+    "projectBlurb": "Colouring Bahrain is part of Colouring Cities.",
+    
+    "githubURL": "https://github.com/colouring-cities/colouring-britain",
+    "manualURL": "https://github.com/colouring-cities/manual/wiki/M3.-COLOURING-BRITAIN",
+    "privacyStatement": "Colouring Bahrain stores your data securely using industry standard practices.",
+
+   "initialMapPosition": [  26.254370, 50.610697 ],
+    "initialZoomLevel": 12,
+
+    "postcode": "Postcode",
+    "energy_rating": "Building Research Establishment Environmental Assessment Method (BREEAM) rating [<a href='https://bregroup.com/products/breeam/how-breeam-works'>More info</a>]",
+
+    "minZoom": 10,
+  "maxZoom": 20,
+  "bbox": [-20037508, -20037508, 20037508, 20037508],
+
+    "basemapTileUrl": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "baseAttribution": "Building attribute data is © Colouring Cities contributors. Maps contain OS data © Crown copyright. <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors.",
+
+    "geometryLayerApiPaths": {
+        "housing": "/api/map-layers/moh-zones",
+        "creative": "/api/map-layers/green-water"
+    },
+    "geometryLayerUrls": {
+        "borough": "/geometries/boroughs.geojson",
+        "conservation": "/geometries/protection_zones.geojson",
+        "parcel": "/geometries/parcels.geojson",
+        "archaeological": "/geometries/archaeological_sites.geojson",
+        "urbanHeritage": "/geometries/urban_heritage.geojson"
+    },
+
+    "historicMapTileUrl": "",
+    "historicMapAttribution": ""
+}

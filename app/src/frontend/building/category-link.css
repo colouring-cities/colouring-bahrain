@@ -3,7 +3,6 @@
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    /* padding: 0.1em; */
     width: 100%;
     height: 100%;
   }
@@ -16,7 +15,14 @@
   .category-title {
     display: block;
     text-align: center;
-    font-size: 1em;
+    font-size: 0.8em;
     margin: 0;
+    padding: 0.6em;
+  }
+
+  /* Inactive category appearance - still clickable but shows coming soon message */
+  .category-link.inactive {
+    cursor: pointer;
+    opacity: 1;
   }
   

@@ -1,35 +1,51 @@
 .data-category-list {
   margin: 0;
-  margin-bottom: 10px;
-  padding: 2px;
+  margin-bottom: 25px;
+  padding: 12px;
   width: 100%;
-  height: 340px;
-  max-height: 340px;
-  max-width: 470px;
-  
+  /* allow the list to size naturally so following content doesn't overlap */
+  min-height: auto;
+  height: auto;
+  max-height: none;
+  max-width: 100%;
+
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
 
   list-style: none;
 }
 
+.welcome .data-category-list {
+  padding: 0px;
+}
+
 .data-category-list li {
   box-sizing: border-box;
-  flex-basis: 7rem;
+  /* slightly wider tiles */
+  flex-basis: 8rem;
   flex-grow: 1;
-  max-height: 7em;
   margin: 2px;
 }
 
 @media(min-width:734px) {
+  /* Use four columns on wider screens so the tile layout matches the logo (4x3) */
   .data-category-list li {
-    flex-basis: 24%;
+    /* subtract margins so four items fit per row; increase width slightly */
+    flex-basis: calc(25% - 6px);
     height: 6.75rem;
     flex-grow: 0;
     max-height: 6.75rem;
   }
-  
+
+  /* Mobile: a little taller tiles for touch friendliness */
+  @media (max-width: 733px) {
+    .data-category-list li {
+      height: 8.5rem;
+      flex-basis: 100%;
+    }
+  }
+
   .data-category-list li:hover {
     box-shadow: 0 0 2px 3px #00ffff;
     z-index: 1;

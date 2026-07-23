@@ -25,8 +25,10 @@ const handleTileRequest = asyncController(async function (req: express.Request, 
         res.writeHead(200, { 'Content-Type': 'image/png' });
         res.end(im);
     } catch(err) {
-        console.error(err);
-        res.status(500).send({ error: err });
+        console.error('Tile rendering error:', err);
+        // Return a proper error response instead of crashing
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        res.status(500).json({ error: 'Tile rendering failed', message: errorMessage });
     }
 });
 
@@ -38,16 +40,16 @@ router.get('/:tileset/:z/:x/:y(\\d+):scale(@\\dx)?.png', handleTileRequest);
 function parseTileParams(params: any): TileParams {
     const { tileset, z, x, y, scale } = params;
 
-    if (!allTilesets.includes(tileset)) throw new Error('Invalid value for tileset');
+    if (!allTilesets.includes(tileset)) throw new Error('Invalid value for tileset: ' + tileset);
     
     const intZ = strictParseInt(z);
-    if (isNaN(intZ)) throw new Error('Invalid value for z');
+    if (isNaN(intZ)) throw new Error('Invalid value for z: ' + intZ);
 
     const intX = strictParseInt(x);
-    if (isNaN(intX)) throw new Error('Invalid value for x');
+    if (isNaN(intX)) throw new Error('Invalid value for x: ' + intX);
 
     const intY = strictParseInt(y);
-    if (isNaN(intY)) throw new Error('Invalid value for y');
+    if (isNaN(intY)) throw new Error('Invalid value for y: ' + intY);
 
     let intScale: number;
     if (scale === '@2x') {

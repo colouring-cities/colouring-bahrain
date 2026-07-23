@@ -1,31 +1,47 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import loadable from '@loadable/component';
 
-import { useRevisionId } from './hooks/use-revision';
-import { useBuildingData } from './hooks/use-building-data';
-import { useBuildingLikeData } from './hooks/use-building-like-data';
-import { useUserVerifiedData } from './hooks/use-user-verified-data';
+import { useRevisionId } from './api-data/use-revision';
+import { useBuildingData } from './api-data/use-building-data';
+import { useUserVerifiedData } from './api-data/use-user-verified-data';
 import { useUrlBuildingParam } from './nav/use-url-building-param';
 import { useUrlCategoryParam } from './nav/use-url-category-param';
 import { useUrlModeParam } from './nav/use-url-mode-param';
-import { apiPost } from './apiHelpers';
 import BuildingView from './building/building-view';
 import Categories from './building/categories';
 import { EditHistory } from './building/edit-history/edit-history';
 import MultiEdit from './building/multi-edit';
 import Sidebar from './building/sidebar';
-import ColouringMap from './map/map';
 import { Building, UserVerified } from './models/building';
 import Welcome from './pages/welcome';
 import { PrivateRoute } from './route';
 import { useLastNotEmpty } from './hooks/use-last-not-empty';
 import { Category } from './config/categories-config';
-import { defaultMapCategory } from './config/category-maps-config';
+import { BuildingMapTileset } from './config/tileserver-config';
+import { defaultMapCategory, categoryMapsConfig } from './config/category-maps-config';
 import { useMultiEditData } from './hooks/use-multi-edit-data';
+import { useAuth } from './auth-context';
+import { sendBuildingUpdate } from './api-data/building-update';
+
+/**
+ * Load and render ColouringMap component on client-side only.
+ * This is because leaflet and react-leaflet currently don't work on the server
+ * (leaflet assumes the presence of browser-specific global `window` variable).
+ * 
+ * The previous solution involved installing react-leaflet-universal,
+ * but that doesn't work with latest react-leaflet.
+ * 
+ * The limitation is that ColouringMap needs to be the single entry point in the whole app
+ * to all modules that import leaflet or react-leaflet.
+ */
+const ColouringMap = loadable(
+    async () => (await import('./map/map')).ColouringMap,
+    { ssr: false }  
+);
 
 interface MapAppProps {
     building?: Building;
-    building_like?: boolean;
     revisionId?: string;
     user_verified?: object;
 }
@@ -44,7 +60,17 @@ function setOrToggle<T>(currentValue: T, newValue: T): T {
     }
 }
 
+function useStateWithOptions<T>(defaultValue: T, options: T[]): [T, (x: T) => void] {
+    const [value, setValue] = useState(defaultValue);
+
+    const effectiveValue = options.includes(value) ? value : options[0];
+    const handleChange = useCallback((x) => setValue(x), []);
+
+    return [effectiveValue, handleChange];
+}
+
 export const MapApp: React.FC<MapAppProps> = props => {
+    const { user } = useAuth();
     const [categoryUrlParam] = useUrlCategoryParam();
 
     const [currentCategory, setCategory] = useState<Category>();
@@ -54,8 +80,7 @@ export const MapApp: React.FC<MapAppProps> = props => {
     
     const [selectedBuildingId, setSelectedBuildingId] = useUrlBuildingParam('view', displayCategory);
     
-    const [building, updateBuilding, reloadBuilding] = useBuildingData(selectedBuildingId, props.building);
-    const [buildingLike, updateBuildingLike] = useBuildingLikeData(selectedBuildingId, props.building_like);
+    const [building, updateBuilding, reloadBuilding] = useBuildingData(selectedBuildingId, props.building, user != undefined);
     const [userVerified, updateUserVerified, reloadUserVerified] = useUserVerifiedData(selectedBuildingId, props.user_verified);
     
     const [revisionId, updateRevisionId] = useRevisionId(props.revisionId);
@@ -78,20 +103,9 @@ export const MapApp: React.FC<MapAppProps> = props => {
         const buildingId = building?.building_id;
 
         if(buildingId != undefined && multiEditError == undefined) {
-            const isLike = currentCategory === Category.Community;
-            const endpoint = isLike ?
-                `/api/buildings/${buildingId}/like.json`:
-                `/api/buildings/${buildingId}.json`;
-
-            const payload = isLike ? {like: true} : multiEditData;
-
             try {
-                const res = await apiPost(endpoint, payload);
-                if(res.error) {
-                    console.error({ error: res.error });
-                } else {
-                    updateRevisionId(res.revision_id);
-                }
+                const updatedBuilding = await sendBuildingUpdate(buildingId, multiEditData);
+                updateRevisionId(updatedBuilding.revision_id);
             } catch(error) {
                 console.error({ error });
             }
@@ -108,13 +122,6 @@ export const MapApp: React.FC<MapAppProps> = props => {
         }
     }, [selectedBuildingId, building, updateBuilding, updateRevisionId]);
 
-    const handleBuildingLikeUpdate = useCallback((buildingId: number, updatedData: boolean) => {
-        // only update current building data if the IDs match
-        if(buildingId === selectedBuildingId) {
-            updateBuildingLike(updatedData);
-        }
-    }, [selectedBuildingId, updateBuildingLike]);
-
     const handleUserVerifiedUpdate = useCallback((buildingId: number, updatedData: UserVerified) => {
         // only update current building data if the IDs match
         if(buildingId === selectedBuildingId) {
@@ -123,6 +130,13 @@ export const MapApp: React.FC<MapAppProps> = props => {
             reloadUserVerified(); // but still reload from server to reflect removed verifications
         }
     }, [selectedBuildingId, updateUserVerified, reloadBuilding, userVerified]);
+
+
+    const categoryMapDefinitions = useMemo(() => categoryMapsConfig[displayCategory], [displayCategory]);
+    const availableMapStyles = useMemo(() => categoryMapDefinitions.map(x => x.mapStyle), [categoryMapDefinitions]);
+    // Set default to first available map style so buildings are colored by default
+    const defaultMapStyle = availableMapStyles.length > 0 ? availableMapStyles[0] : undefined;
+    const [mapColourScale, setMapColourScale] = useStateWithOptions<BuildingMapTileset>(defaultMapStyle, availableMapStyles);
 
     return (
         <>
@@ -146,11 +160,11 @@ export const MapApp: React.FC<MapAppProps> = props => {
                                     mode={viewEditMode}
                                     cat={displayCategory}
                                     building={building}
-                                    building_like={buildingLike}
                                     user_verified={userVerified ?? {}}
                                     onBuildingUpdate={handleBuildingUpdate}
-                                    onBuildingLikeUpdate={handleBuildingLikeUpdate}
                                     onUserVerifiedUpdate={handleUserVerifiedUpdate}
+                                    mapColourScale={mapColourScale}
+                                    onMapColourScale={setMapColourScale}
                                 />
                             </Route>
                         </Switch>
@@ -163,9 +177,11 @@ export const MapApp: React.FC<MapAppProps> = props => {
             <ColouringMap
                 selectedBuildingId={selectedBuildingId}
                 mode={mode || 'basic'}
-                category={displayCategory}
                 revisionId={revisionId}
                 onBuildingAction={mode === 'multi-edit' ? colourBuilding : selectBuilding}
+                mapColourScale={mapColourScale}
+                onMapColourScale={setMapColourScale}
+                categoryMapDefinitions={categoryMapDefinitions}
             />
         </>
     );

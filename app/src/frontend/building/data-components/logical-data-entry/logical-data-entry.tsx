@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './logical-data-entry.css';
+
 import { BaseDataEntryProps } from '../data-entry';
 import { DataTitleCopyable } from '../data-title';
 
@@ -33,15 +35,28 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
                 style: { cursor: 'default'}
             }}
         >
-            <input type="radio" name="options" value={value + ''}
-                autoComplete="off"
-                checked={checked}
-                onChange={onChange}
-                disabled={disabled}
-            />
+            <div className="boolean">
+                <input type="radio" name="options" value={value + ''}
+                    autoComplete="off"
+                    checked={checked}
+                    onChange={onChange}
+                    disabled={disabled}
+                />
+            </div>
             {children}
         </label>
     );
+}
+
+const ClearButton = ({
+    onClick,
+    disabled
+}) => {
+    return <div className="btn-group btn-group-toggle">
+        <label>
+        <button type="button" className="btn btn-outline-warning" onClick={onClick} disabled={disabled}>Clear</button>
+        </label>
+        </div>
 }
 
 interface LogicalDataEntryProps extends BaseDataEntryProps {
@@ -53,7 +68,11 @@ interface LogicalDataEntryProps extends BaseDataEntryProps {
 
 export const LogicalDataEntry: React.FC<LogicalDataEntryProps> = (props) => {
     function handleValueChange(e: React.ChangeEvent<HTMLInputElement>) {
-        props.onChange?.(props.slug, e.target.value === 'null' ? null : e.target.value === 'true');
+        props.onChange?.(props.slug, e.target.value === 'true');
+    }
+
+    function handleClear(e: React.MouseEvent<HTMLButtonElement>) {
+        props.onChange?.(props.slug, null);
     }
 
     const isDisabled = props.mode === 'view' || props.disabled;
@@ -76,16 +95,6 @@ export const LogicalDataEntry: React.FC<LogicalDataEntryProps> = (props) => {
                     uncheckedClassName='btn-outline-dark'
                     onChange={handleValueChange}
                 >Yes</ToggleButton>
-
-                <ToggleButton
-                    value="null"
-                    checked={props.value == null}
-                    disabled={isDisabled || props.disallowNull}
-                    checkedClassName='btn-secondary active'
-                    uncheckedClassName='btn-outline-dark'
-                    onChange={handleValueChange}
-                >?</ToggleButton>
-
                 <ToggleButton
                     value="false"
                     checked={props.value === false}
@@ -95,6 +104,76 @@ export const LogicalDataEntry: React.FC<LogicalDataEntryProps> = (props) => {
                     onChange={handleValueChange}
                 >No</ToggleButton>
             </div>
+                {
+                    !isDisabled && props.value != null &&
+                    <ClearButton onClick={handleClear} disabled={props.disallowNull}/>
+                }
+        </>
+    );
+};
+
+export const LogicalDataEntryYesOnly: React.FC<LogicalDataEntryProps> = (props) => {
+    function handleValueChange(e: React.ChangeEvent<HTMLInputElement>) {
+        props.onChange?.(props.slug, e.target.value === 'true');
+    }
+
+    function handleClear(e: React.MouseEvent<HTMLButtonElement>) {
+        props.onChange?.(props.slug, null);
+    }
+
+    const isDisabled = props.mode === 'view' || props.disabled;
+
+    return (
+        <>
+            <DataTitleCopyable
+                slug={props.slug}
+                title={props.title}
+                tooltip={props.tooltip}
+                disabled={props.disabled || props.value == undefined}
+                copy={props.copy}
+            />
+            <div className="btn-group btn-group-toggle">
+                <ToggleButton
+                    value="true"
+                    checked={props.value === true}
+                    disabled={isDisabled || props.disallowTrue}
+                    checkedClassName='btn-outline-dark active'
+                    uncheckedClassName='btn-outline-dark'
+                    onChange={handleValueChange}
+                >Yes</ToggleButton>
+            </div>
+                {
+                    !isDisabled && props.value != null &&
+                    <ClearButton onClick={handleClear} disabled={props.disallowNull}/>
+                }
+        </>
+    );
+};
+
+export const LogicalDataEntryYesOnlyWithExplanation: React.FC<LogicalDataEntryProps> = (props) => {
+    function handleValueChange(e: React.ChangeEvent<HTMLInputElement>) {
+        props.onChange?.(props.slug, e.target.checked);
+    }
+
+    const isDisabled = props.mode === 'view' || props.disabled;
+
+    return (
+        <>
+            <DataTitleCopyable
+                slug={props.slug}
+                title={props.title}
+                tooltip={props.tooltip}
+                disabled={props.disabled || props.value == undefined}
+                copy={props.copy}
+            />
+            <label className="form-check-label">
+                <input className="form-check-input" type="checkbox"
+                    name={props.slug}
+                    checked={props.value === true}
+                    disabled={isDisabled || props.disallowTrue}
+                    onChange={handleValueChange}
+                /> Yes (tick to add or remove your edit)
+            </label>
         </>
     );
 };

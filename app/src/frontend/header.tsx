@@ -7,6 +7,8 @@ import { Logo } from './components/logo';
 import { WithSeparator } from './components/with-separator';
 import { useAuth } from './auth-context';
 
+import { CCConfig } from '../cc-config';
+let config: CCConfig = require('../cc-config.json')
 
 interface MenuLink {
     to: string;
@@ -20,95 +22,6 @@ interface MenuLink {
 function getCurrentMenuLinks(username: string): MenuLink[][] {
     return [
         [
-            {
-                to: "/view/categories",
-                text: "View Maps"
-            },
-            {
-                to: "/edit/categories",
-                text: "Edit Maps"
-            },
-            {
-                to: "/data-extracts.html",
-                text: "Download data"
-            },
-            {
-                to: "https://github.com/colouring-london/colouring-london",
-                text: "Access open code",
-                external: true
-            },
-            {
-                to: "/showcase.html",
-                text: "View Data Showcase",
-                disabled: true,
-                note: "Coming soon"
-            },
-        ],
-        [
-            {
-                to: "https://pages.colouring.london",
-                text: "About",
-                external: true
-            },
-            {
-                to: "https://pages.colouring.london/buildingcategories",
-                text: "Data Categories",
-                external: true
-            },
-            {
-                to: "https://pages.colouring.london/whoisinvolved",
-                text: "Who's Involved?",
-                external: true
-            },
-            {
-                to: "https://pages.colouring.london/data-ethics",
-                text: "Data Ethics",
-                external: true
-            },
-            {
-                to: "https://pages.colouring.london/colouring-cities",
-                text: "Colouring Cities Research Programme",
-                external: true
-            },
-        ],
-        [
-            {
-                to: "/leaderboard.html",
-                text: "Top Contributors"
-            },
-            {
-                to: "https://discuss.colouring.london",
-                text: "Discussion Forum",
-                external: true
-            },
-        ],
-        [
-            {
-                to: "/privacy-policy.html",
-                text: "Privacy Policy"
-            },
-            {
-                to: "/contributor-agreement.html",
-                text: "Contributor Agreement"
-            },
-            {
-                to: "/code-of-conduct.html",
-                text: "Code of Conduct"
-            },
-            {
-                to: "/data-accuracy.html",
-                text: "Data Accuracy Agreement"
-            },
-            {
-                to: "/ordnance-survey-uprn.html",
-                text: "Ordnance Survey terms of UPRN usage"
-            },
-        ],
-        [
-            {
-                to: "/contact.html",
-                text: "Contact"
-            },
             ...(
                 username != undefined ?
                     [
@@ -128,6 +41,101 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
                         }
                     ]
             )
+        ],
+        [
+            {
+                to: "/view/categories",
+                text: "View Maps"
+            },
+            {
+                to: "/edit/categories",
+                text: "Edit Maps"
+            },
+            {
+                to: "/data-extracts.html",
+                text: "Download data"
+            },
+            {
+                to: "https://github.com/colouring-cities/manual/wiki",
+                text: "Colouring Cities Open Manual/Wiki",
+                disabled: false,
+                external: true
+            },
+            {
+                to: config.githubURL,
+                text: "Open code",
+                external: true
+            },
+            {
+                to: "https://colouringcities.org/impact-studies",
+                text: "Impact Study Showcase",
+                external: true
+            },
+        ],
+        [
+            {
+                to: "https://github.com/colouring-cities/manual/wiki/A.-ABOUT",
+                text: "About the Colouring Cities Research Programme",
+                external: true
+            },
+            {
+                to: "/about.html",
+                text: "About the Colouring " + config.cityName + " Project",
+            },
+            {
+                to: "https://github.com/colouring-cities/manual/wiki/How‐to‐use-Platform-Guides",
+                text: "How to Use",
+                external: true
+            },
+            {
+                to: "/data-categories.html",
+                text: "Data Categories",
+            },
+            {
+                to: "https://github.com/colouring-cities/manual/wiki/ETHICAL-FRAMEWORK",
+                text: "Ethical Framework",
+                external: true
+            }
+        ],
+        [
+            {
+                to: "/leaderboard.html",
+                text: "Top Contributors"
+            },
+            {
+                to: config.githubURL+"/discussions",
+                text: "Discussion Forum (GitHub)",
+                external: true
+            },
+            // {
+            //     to: "https://discuss.colouring.london/c/blog/9",
+            //     text: "Blog",
+            //     external: true
+            // },
+        ],
+        [
+            {
+                to: "/privacy-policy.html",
+                text: "Privacy Policy",
+            },
+            {
+                to: "/data-accuracy.html",
+                text: "Contributor & Data User Data Accuracy & Ethical Use Agreement",
+            },
+            {
+                to: "/code-of-conduct.html",
+                text: "Code of Conduct",
+            },
+            {
+                to: "/contributor-agreement.html",
+                text: "Contributor Agreement",
+            },
+        ],
+        [
+            {
+                to: "/contact.html",
+                text: "Contact"
+            },
         ],
     ];
 }
@@ -164,7 +172,7 @@ const InternalNavLink: React.FC<{to: string; onClick: () => void}> = ({ to, onCl
 );
 
 const ExternalNavLink: React.FC<{to: string}> = ({ to, children }) => (
-    <a className="nav-link" href={to}>
+    <a className="nav-link" href={to} target="_blank">
         {children}
     </a>
 );

@@ -1,4 +1,5 @@
-import { Building } from '../../models/building';
+import { Building, BuildingAttributes } from '../../models/building';
+import { BuildingMapTileset } from '../config/tileserver-config';
 
 interface CopyProps {
     copying: boolean;
@@ -7,15 +8,27 @@ interface CopyProps {
     copyingKey: (key: string) => boolean;
 }
 
+function initCopyProps(options?: Partial<CopyProps>): CopyProps {
+    const defaults = {
+        copying: true,
+        toggleCopying: undefined
+    };
+
+    return {
+        ...defaults,
+        ...options,
+    };
+}
+
+const defaultCopyProps: CopyProps = initCopyProps();
+
 interface CategoryViewProps {
     intro: string;
     building: Building;
-    building_like: boolean;
     mode: 'view' | 'edit' | 'multi-edit';
     edited: boolean;
-    copy: CopyProps;
+    copy: defaultCopyProps;
     onChange: (key: string, value: any) => void;
-    onLike: (like: boolean) => void;
     onVerify: (slug: string, verify: boolean, x: number, y: number) => void;
 
     /* Special handler for adding and immediately saving a new item of an array-like attribute */
@@ -26,6 +39,9 @@ interface CategoryViewProps {
 
     user_verified: any;
     user?: any;
+
+    mapColourScale: BuildingMapTileset;
+    onMapColourScale: (x: BuildingMapTileset) => void;
 }
 
 export {

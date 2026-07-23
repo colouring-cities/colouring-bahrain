@@ -1,6 +1,6 @@
 {
-    "short_name": "Colouring London",
-    "name": "Colouring London",
+    "short_name": "Colouring Bahrain",
+    "name": "Colouring Bahrain",
     "icons": [
         {
             "src": "icon-192x192.png",
@@ -9,6 +9,7 @@
         }
     ],
     "start_url": "/",
-    "background_color": "#ffffff",
-    "theme_color": "#fffff"
+    "display": "standalone",
+    "background_color": "#162639",
+    "theme_color": "#162639"
 }

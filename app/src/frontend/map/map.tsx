@@ -1,183 +1,243 @@
-import { GeoJsonObject } from 'geojson';
-import React, { Component, Fragment } from 'react';
-import { AttributionControl, GeoJSON, Map, TileLayer, ZoomControl } from 'react-leaflet-universal';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import { AttributionControl, MapContainer, ZoomControl, useMapEvent, Pane, useMap } from 'react-leaflet';
+import { useLocation } from 'react-router';
 
 import 'leaflet/dist/leaflet.css';
 import './map.css';
 
 import { apiGet } from '../apiHelpers';
-import { HelpIcon } from '../components/icons';
+import { initialMapViewport, mapBackgroundColor, MapTheme, LayerEnablementState } from '../config/map-config';
 
-import Legend from './legend';
-import SearchBox from './search-box';
-import ThemeSwitcher from './theme-switcher';
-import { categoryMapsConfig } from '../config/category-maps-config';
-import { Category } from '../config/categories-config';
 import { Building } from '../models/building';
 
-const OS_API_KEY = 'NVUxtY5r8eA6eIfwrPTAGKrAAsoeI9E9';
+import { CityBaseMapLayer } from './layers/city-base-map-layer';
+// import { CityBoundaryLayer } from './layers/city-boundary-layer';
+import { BoroughBoundaryLayer } from './layers/borough-boundary-layer';
+import { BoroughLabelLayer } from './layers/borough-label-layer';
+import { ParcelBoundaryLayer } from './layers/parcel-boundary-layer';
+import { HistoricDataLayer } from './layers/historic-data-layer';
+import { FloodBoundaryLayer } from './layers/flood-boundary-layer';
+import { ConservationAreaBoundaryLayer } from './layers/conservation-boundary-layer';
+import { VistaBoundaryLayer } from './layers/vista-boundary-layer';
+import { GovernorateBoundaryLayer } from './layers/governorate-boundary-layer';
+import { ArchaeologicalSitesLayer } from './layers/archaeological-sites-layer';
+import { UrbanHeritageLayer } from './layers/urban-heritage-layer';
+import { BuildingBaseLayer } from './layers/building-base-layer';
+import { BuildingDataLayer } from './layers/building-data-layer';
+import { BuildingNumbersLayer } from './layers/building-numbers-layer';
+import { BuildingHighlightLayer } from './layers/building-highlight-layer';
+
+import { Legend } from './legend';
+import { Logo } from '../components/logo';
+import SearchBox from './search-box';
+import ThemeSwitcher from './theme-switcher';
+import DataLayerSwitcher from './data-switcher';
+import { SimpleLayerButton } from './simple-layer-button';
+import { BuildingMapTileset } from '../config/tileserver-config';
+import { useDisplayPreferences } from '../displayPreferences-context';
+import { CategoryMapDefinition } from '../config/category-maps-config';
+
+import './legend.css';
 
 interface ColouringMapProps {
     selectedBuildingId: number;
     mode: 'basic' | 'view' | 'edit' | 'multi-edit';
-    category: Category;
     revisionId: string;
     onBuildingAction: (building: Building) => void;
+    mapColourScale: BuildingMapTileset;
+    onMapColourScale: (x: BuildingMapTileset) => void;
+    categoryMapDefinitions: CategoryMapDefinition[]
 }
 
-interface ColouringMapState {
-    theme: 'light' | 'night';
-    lat: number;
-    lng: number;
-    zoom: number;
-    boundary: GeoJsonObject;
-}
-/**
- * Map area
- */
-class ColouringMap extends Component<ColouringMapProps, ColouringMapState> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            theme: 'night',
-            lat: 51.5245255,
-            lng: -0.1338422,
-            zoom: 16,
-            boundary: undefined,
-        };
-        this.handleClick = this.handleClick.bind(this);
-        this.handleLocate = this.handleLocate.bind(this);
-        this.themeSwitch = this.themeSwitch.bind(this);
-    }
+export const ColouringMap : FC<ColouringMapProps> = ({
+    mode,
+    revisionId,
+    onBuildingAction,
+    selectedBuildingId,
+    mapColourScale,
+    onMapColourScale,
+    categoryMapDefinitions,
+    children
+}) => {
+    const { darkLightTheme, darkLightThemeSwitch, showLayerSelection, governoratesSwitchOnClick, parcelSwitchOnClick, conservationSwitchOnClick, editableBuildingsSwitchOnClick, parcel, conservation, editableBuildings, governorates, vista, flood, borough, historicData, boroughSwitchOnClick } = useDisplayPreferences();
+    const [position, setPosition] = useState(initialMapViewport.position);
+    const [zoom, setZoom] = useState(initialMapViewport.zoom);
+    const [comingSoonTitle, setComingSoonTitle] = useState<string | null>(null);
+    const location = useLocation();
 
-    handleLocate(lat, lng, zoom){
-        this.setState({
-            lat: lat,
-            lng: lng,
-            zoom: zoom
-        });
-    }
+    const toggleComingSoon = useCallback((title: string) => {
+        setComingSoonTitle((current) => (current === title ? null : title));
+    }, []);
 
-    handleClick(e) {
-        const { lat, lng } = e.latlng;
-        apiGet(`/api/buildings/locate?lat=${lat}&lng=${lng}`)
-            .then(data => {
-                const building = data?.[0];
-                this.props.onBuildingAction(building);
-            }).catch(err => console.error(err));
-    }
+    // Clear layer Coming soon when navigating sidebar categories (e.g. Green / Water)
+    useEffect(() => {
+        setComingSoonTitle(null);
+    }, [location.pathname]);
 
-    themeSwitch(e) {
-        e.preventDefault();
-        const newTheme = (this.state.theme === 'light')? 'night' : 'light';
-        this.setState({theme: newTheme});
-    }
+    const handleLocate = useCallback(
+        (lat: number, lng: number, zoom: number) => {
+            setPosition([lat, lng]);
+            setZoom(zoom);
+        },
+        []
+    );
 
-    async getBoundary() {
-        const data = await apiGet('/geometries/boundary-detailed.geojson') as GeoJsonObject;
+    const handleClick = useCallback(
+        async (e) => {
+            const {lat, lng} = e.latlng;
+            const data = await apiGet(`/api/buildings/locate?lat=${lat}&lng=${lng}`);
+            const building = data?.[0];
+            onBuildingAction(building);
+        },
+        [onBuildingAction],
+    )
 
-        this.setState({
-            boundary: data
-        });
-    }
-
-    componentDidMount() {
-        this.getBoundary();
-    }
-
-    render() {
-        const categoryMapDefinition = categoryMapsConfig[this.props.category];
-
-        const position: [number, number] = [this.state.lat, this.state.lng];
-
-        // baselayer
-        const key = OS_API_KEY;
-        const tilematrixSet = 'EPSG:3857';
-        const layer = (this.state.theme === 'light')? 'Light 3857' : 'Night 3857';
-        const baseUrl = `https://api2.ordnancesurvey.co.uk/mapping_api/v1/service/zxy/${tilematrixSet}/${layer}/{z}/{x}/{y}.png?key=${key}`;
-        const attribution = 'Building attribute data is © Colouring London contributors. Maps contain OS data © Crown copyright: OS Maps baselayers and building outlines. <a href=/ordnance-survey-licence.html>OS licence</a>';
-        const baseLayer = <TileLayer
-            url={baseUrl}
-            attribution={attribution}
-            maxNativeZoom={18}
-            maxZoom={19}
-        />;
-
-        const buildingsBaseUrl = `/tiles/base_${this.state.theme}/{z}/{x}/{y}{r}.png`;
-        const buildingBaseLayer = <TileLayer url={buildingsBaseUrl} minZoom={14} maxZoom={19}/>;
-
-        const boundaryLayer = this.state.boundary &&
-                <GeoJSON data={this.state.boundary} style={{color: '#bbb', fill: false}}/>;
-
-        const tileset = categoryMapDefinition.mapStyle;
-        const dataLayer = tileset != undefined &&
-            <TileLayer
-                key={tileset}
-                url={`/tiles/${tileset}/{z}/{x}/{y}{r}.png?rev=${this.props.revisionId}`}
+    return (
+        <div className="map-container">
+            <MapContainer
+                center={initialMapViewport.position}
+                zoom={initialMapViewport.zoom}
                 minZoom={9}
-                maxZoom={19}
-            />;
+                maxZoom={18}
+                doubleClickZoom={false}
+                zoomControl={false}
+                attributionControl={false}
+            >
+                <ClickHandler onClick={handleClick} />
+                <MapBackgroundColor theme={darkLightTheme} />
+                <MapViewport position={position} zoom={zoom} />
 
-        // highlight
-        const highlightLayer = this.props.selectedBuildingId != undefined &&
-            <TileLayer
-                key={this.props.selectedBuildingId}
-                url={`/tiles/highlight/{z}/{x}/{y}{r}.png?highlight=${this.props.selectedBuildingId}&base=${tileset}`}
-                minZoom={13}
-                maxZoom={19}
-                zIndex={100}
-            />;
-
-        const numbersLayer = <TileLayer
-            key={this.state.theme}
-            url={`/tiles/number_labels/{z}/{x}/{y}{r}.png?rev=${this.props.revisionId}`}
-            zIndex={200}
-            minZoom={17}
-            maxZoom={19}
-        />
-
-        const hasSelection = this.props.selectedBuildingId != undefined;
-        const isEdit = ['edit', 'multi-edit'].includes(this.props.mode);
-
-        return (
-            <div className="map-container">
-                <Map
-                    center={position}
-                    zoom={this.state.zoom}
-                    minZoom={9}
-                    maxZoom={19}
-                    doubleClickZoom={false}
-                    zoomControl={false}
-                    attributionControl={false}
-                    onClick={this.handleClick}
-                    detectRetina={true}
+                <Pane
+                    key={darkLightTheme}
+                    name={'cc-base-pane'}
+                    style={{zIndex: 50}}
                 >
-                    { baseLayer }
-                    { buildingBaseLayer }
-                    { boundaryLayer }
-                    { dataLayer }
-                    { highlightLayer }
-                    { numbersLayer }
-                    <ZoomControl position="topright" />
-                    <AttributionControl prefix=""/>
-                </Map>
+                    <CityBaseMapLayer theme={darkLightTheme} />
+                    <BuildingBaseLayer theme={darkLightTheme} />
+                </Pane>
+
                 {
-                    this.props.mode !== 'basic' &&
-                    <Fragment>
-                        {
-                            !hasSelection &&
-                            <div className="map-notice">
-                                <HelpIcon /> {isEdit ? 'Click a building to edit' : 'Click a building for details'}
-                            </div>
-                        }
-                        <Legend legendConfig={categoryMapDefinition?.legend} />
-                        <ThemeSwitcher onSubmit={this.themeSwitch} currentTheme={this.state.theme} />
-                        <SearchBox onLocate={this.handleLocate} />
-                    </Fragment>
+                    mapColourScale &&
+                        <BuildingDataLayer
+                            tileset={mapColourScale}
+                            revisionId={revisionId}
+                        />
+                }
+
+                <Pane
+                    name='cc-overlay-pane'
+                    style={{zIndex: 300}}
+                >
+                    {/* <CityBoundaryLayer/> */}
+                    {historicData === 'enabled' && <HistoricDataLayer revisionId={revisionId} />}
+                    {borough === 'enabled' && <BoroughBoundaryLayer/>}
+                    {parcel === 'enabled' && <ParcelBoundaryLayer/>}
+                    {flood === 'enabled' && <FloodBoundaryLayer/>}
+                    {vista === 'enabled' && <VistaBoundaryLayer/>}
+                    {governorates === 'enabled' && <GovernorateBoundaryLayer/>}
+                    {/* Protection Zones above buildings so they are visible */}
+                    {conservation === 'enabled' && <ConservationAreaBoundaryLayer/>}
+                    {/* Historic Area Classifications: Urban Heritage A/B/C parcels + archaeological sites */}
+                    {mapColourScale === 'historic_area_classifications' && (
+                        <>
+                            <UrbanHeritageLayer/>
+                            <ArchaeologicalSitesLayer/>
+                        </>
+                    )}
+                    <BuildingNumbersLayer revisionId={revisionId} />
+                    {
+                        selectedBuildingId &&
+                            <BuildingHighlightLayer
+                                selectedBuildingId={selectedBuildingId}
+                                baseTileset={mapColourScale} 
+                            />
+                    }
+                </Pane>
+                <Pane
+                    name='cc-label-overlay-pane'
+                    style={{zIndex: 1000}}
+                >
+                    <BoroughLabelLayer/>
+                </Pane>
+
+                <ZoomControl position="topright" />
+                <AttributionControl prefix=""/>
+            </MapContainer>
+            {
+                // Layer Coming soon must show on welcome (basic) and view/edit modes
+                comingSoonTitle ? (
+                    <div className="map-legend coming-soon-legend">
+                        <Logo variant="default" />
+                        <h4 className="h4">{comingSoonTitle}</h4>
+                        <p className="data-intro">Coming soon…</p>
+                    </div>
+                ) : (
+                    mode !== 'basic' && (
+                        <Legend
+                            mapColourScaleDefinitions={categoryMapDefinitions}
+                            mapColourScale={mapColourScale}
+                            onMapColourScale={onMapColourScale}
+                        />
+                    )
+                )
+            }
+            <div className="switchers-of-layers-map-menu">
+                <ThemeSwitcher onSubmit={darkLightThemeSwitch} currentTheme={darkLightTheme} />
+                <DataLayerSwitcher />
+                {
+                    (showLayerSelection == "enabled") ?
+                    <>
+                        <SimpleLayerButton label="Parcel Overlay" state={parcel} onClick={parcelSwitchOnClick} />
+                        <SimpleLayerButton label="Governorates" state={governorates} onClick={governoratesSwitchOnClick} />
+                        <SimpleLayerButton label="Protection Zones" state={conservation} onClick={conservationSwitchOnClick} />
+                        <SimpleLayerButton
+                            label="MOH Zone"
+                            comingSoon
+                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleComingSoon('MOH Zone'); }}
+                        />
+                        <SimpleLayerButton
+                            label="Historic Aerial Photos"
+                            comingSoon
+                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleComingSoon('Historic Aerial Photos'); }}
+                        />
+                        <SimpleLayerButton label="Editable Building" state={editableBuildings} onClick={editableBuildingsSwitchOnClick} />
+                        <SimpleLayerButton label="OpenStreetMap" state={borough} onClick={boroughSwitchOnClick} />
+                    </>
+                    : <></>
                 }
             </div>
-        );
-    }
+            <SearchBox onLocate={handleLocate} />
+        </div>
+    );
 }
 
-export default ColouringMap;
+function ClickHandler({ onClick }: {onClick: (e) => void}) {
+    useMapEvent('click', (e) => onClick(e));
+    
+    return null;
+}
+
+function MapBackgroundColor({ theme}: {theme: MapTheme}) {
+    const map = useMap();
+    useEffect(() => {
+        map.getContainer().style.backgroundColor = mapBackgroundColor[theme];
+    });
+
+    return null;
+}
+
+function MapViewport({
+    position,
+    zoom
+}: {
+    position: [number, number];
+    zoom: number;
+}) {
+    const map = useMap();
+
+    useEffect(() => {
+        map.setView(position, zoom)
+    }, [position, zoom]);
+
+    return null;
+}
