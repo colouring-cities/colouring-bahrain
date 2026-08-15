@@ -12,12 +12,8 @@ import { MapApp } from './map-app';
 import { Building, UserVerified } from './models/building';
 import { User } from './models/user';
 import ChangesPage from './pages/changes';
-import AboutPage from './pages/about';
 import ContactPage from './pages/contact';
-import CodeOfConductPage from './pages/code-of-conduct';
-import ContributorAgreementPage from './pages/contributor-agreement';
 import DataAccuracyPage from './pages/data-accuracy';
-import DataCategoriesPage from './pages/data-categories';
 import DataExtracts from './pages/data-extracts';
 import LeaderboardPage from './pages/leaderboard';
 import OrdnanceSurveyLicencePage from './pages/ordnance-survey-licence';
@@ -72,12 +68,8 @@ export const App: React.FC<AppProps> = props => {
                     <PrivateRoute exact path="/my-account.html" component={MyAccountPage} />
                     <Route exact path="/privacy-policy.html" component={PrivacyPolicyPage} />
                     <Route exact path="/ordnance-survey-licence.html" component={OrdnanceSurveyLicencePage} />
-                    <Route exact path="/code-of-conduct.html" component={CodeOfConductPage} />
-                    <Route exact path="/contributor-agreement.html" component={ContributorAgreementPage} />
                     <Route exact path="/data-accuracy.html" component={DataAccuracyPage} />
-                    <Route exact path="/data-categories.html" component={DataCategoriesPage} />
                     <Route exact path="/data-extracts.html" component={DataExtracts} />
-                    <Route exact path="/about.html" component={AboutPage} />
                     <Route exact path="/contact.html" component={ContactPage} />
                     <Route exact path="/leaderboard.html" component={LeaderboardPage} />
                     <Route exact path="/history.html" component={ChangesPage} />

@@ -29,22 +29,22 @@ const Logo: React.FunctionComponent<LogoProps> = (props) => {
 const LogoGrid: React.FunctionComponent = () => (
     <div className="grid">
         <div className="row">
-            <div className="cell background-mapping"></div>
-            <div className="cell background-age-history"></div>
-            <div className="cell background-morphology"></div>
+            <div className="cell background-location"></div>
+            <div className="cell background-land-use"></div>
+            <div className="cell background-typology-size"></div>
             <div className="cell background-construction-design"></div>
         </div>
         <div className="row">
-            <div className="cell background-land-use"></div>
-            <div className="cell background-conservation"></div>
-            <div className="cell background-assessment"></div>
-            <div className="cell background-investment-engagement"></div>
+            <div className="cell background-age-history"></div>
+            <div className="cell background-planning-conservation"></div>
+            <div className="cell background-retrofit-condition"></div>
+            <div className="cell background-energy-performance"></div>
         </div>
         <div className="row">
+            <div className="cell background-water-green-infrastructure"></div>
+            <div className="cell background-urban-infrastructure"></div>
             <div className="cell background-disaster-management"></div>
-            <div className="cell background-green-urban-infrastructure"></div>
-            <div className="cell background-commerce-activity"></div>
-            <div className="cell background-social"></div>
+            <div className="cell background-community"></div>
         </div>
     </div>
 );

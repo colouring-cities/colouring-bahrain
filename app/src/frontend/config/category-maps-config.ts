@@ -5,8 +5,6 @@ export type LegendElement = {
     color: string;
     border?: string;
     text: string;
-    /** BACA-style diagonal hatch swatch (protection zones) */
-    hatch?: boolean;
 } | {
     subtitle: string;
 };
@@ -46,15 +44,32 @@ export const ageLegend = [
 export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = {
     [Category.AgeHistory]: [
         {
+            mapStyle: 'age_amalgamated',
+            legend: {
+                disclaimer: 'This map prioritises crowdsourced age data, provided mainly by local historians. It also uses automatically inferred data, and official data to fill in gaps.',
+                title: 'Age (Amalgamated methods)',
+                elements: ageLegend,
+            },
+        },
+        {
             mapStyle: 'date_year',
             legend: {
-                title: 'Age',
+                title: 'Age (Crowdsourced)',
+                elements: ageLegend,
+            },
+        },
+        {
+            mapStyle: 'age_inferred',
+            legend: {
+                disclaimer: 'This map shows age data that has been automatically inferred from other kinds of data. For example, for London, historical street networks data are used.',
+                title: 'Age (Automatically inferred)',
                 elements: ageLegend,
             },
         },
         {
             mapStyle: 'typology_style_period',
             legend: {
+                disclaimer: 'This shows data automatically derived from our "Age (Amalgamated methods)" map, and grouped into historical periods. Contributors can also directly choose an historical period to represent the age of a given building if the exact date is not known.',
                 title: 'Historical Period',
                 elements: [
                     { color: '#fae269', text: '2000-2025 (Early C21)' },
@@ -116,7 +131,7 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
                     { color: "#f5d96b", text: "Brick" },
                     { color: "#beffe8", text: "Steel" },
                     { color: "#fca89d", text: "Reinforced Concrete" },
-                    { color: "#5c8970", text: "Other Metal" },
+                    { color: "#8fc3a0", text: "Other Metal" },
                     { color: "#96613b", text: "Other Natural Material" },
                     { color: "#c48a85", text: "Other Man-Made Material" }
                 ]
@@ -174,9 +189,22 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
                     { color: "#f5d96b", text: "Brick" },
                     { color: "#beffe8", text: "Steel" },
                     { color: "#fca89d", text: "Reinforced Concrete" },
-                    { color: "#5c8970", text: "Other Metal" },
+                    { color: "#8fc3a0", text: "Other Metal" },
                     { color: "#96613b", text: "Other Natural Material" },
                     { color: "#c48a85", text: "Other Man-Made Material" }
+                ]
+            },
+        },
+        {
+            mapStyle: 'construction_material_window_frame',
+            legend: {
+                title: 'Window frame material',
+                elements: [
+                    { color: "#b5a859", text: "Wood" },
+                    { color: "#8fc3a0", text: "Metal" },
+                    { color: "#ff3939", text: "Plastic" },
+                    { color: "#8080ff", text: "Other" },
+                    { color: "#ffffff", text: "No windows" }
                 ]
             },
         },
@@ -219,7 +247,7 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
         {
             mapStyle: 'sust_aggregate_estimate_epc',
             legend: {
-                title: 'Energy rating (EPC)',
+                title: 'Energy rating (residential)',
                 description: 'Residential energy rating (EPC Rating)',
                 disclaimer: 'This map shows official 2025 EPC data, required for new, sold and rented buildings. Please note EPC ratings may be out-of-date, as retrofit may have occurred since certification.',
                 elements: [
@@ -230,15 +258,15 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
                     { color: "#f7af1d", text: 'E' },
                     { color: "#ed6823", text: 'F' },
                     { color: "#e31d23", text: 'G' },
-                    { color: "#c0c0c0", text: 'No EPC identified' },
+                    { color: "#909090", text: 'No EPC identified or non-residential.' },
                 ]
             },
         },
         {
             mapStyle: 'sust_dec',
             legend: {
-                title: 'Energy rating (DEC)',
-                description: 'Non-domestic energy rating (DEC Rating)',
+                title: 'Energy rating (non-residential)',
+                description: 'Non-residential energy rating (DEC Rating)',
                 elements: [
                     { color: "#007f3d", text: 'A' },
                     { color: "#2c9f29", text: 'B' },
@@ -329,11 +357,27 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
         {
             mapStyle: 'planning_combined',
             legend: {
-                title: 'Designation / Protection',
+                title: 'Designation/protection (official and crowdsourced data)',
+                disclaimer: 'All data relating to designated buildings should be checked against the National Heritage List for England and local authority websites. Designation data is currently incomplete.',
                 elements: [
-                    { color: '#00467c', text: 'World Heritage' },
-                    { color: '#85ffd4', text: 'Regional Heritage' },
-                    { color: '#c27364', text: 'National Heritage' },
+                    { color: '#95beba', text: 'In Conservation Area'},
+                    { color: '#c72e08', text: 'Grade I Listed'},
+                    { color: '#e75b42', text: 'Grade II* Listed'},
+                    { color: '#ffbea1', text: 'Grade II Listed'},
+                    { color: '#85ffd4', text: 'Heritage at Risk'},
+                    { color: '#858ed4', text: 'Locally Listed'},
+                    { color: '#0bbf12', text: 'In World Heritage Site'},
+                    { color: '#8500d4', text: 'In Archaeological Priority Area'},
+                ]
+            },
+        },
+        {
+            mapStyle: 'planning_world_heritage_buildings',
+            legend: {
+                title: 'Buildings in World Heritage Sites (official and crowdsourced data)',
+                disclaimer: 'All data relating to designated buildings should be checked against the National Heritage List for England and local authority websites. Designation data is currently incomplete.',
+                elements: [
+                    { color: '#0bbf12', text: 'In World Heritage Site'},
                 ]
             },
         },
@@ -369,6 +413,24 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
         },
     }],
     [Category.Community]: [
+        {
+            mapStyle: 'count_crowdsourced',
+            legend: {
+                title: 'Community help',
+                description: 'crowdsourced entries',
+                elements: [
+                    { color: '#ff006e', text: '9+' },
+                    { color: '#fb5607', text: '8' },
+                    { color: '#ff9500', text: '7' },
+                    { color: '#ffbe0b', text: '6' },
+                    { color: '#ffe566', text: '5' },
+                    { color: '#caffbf', text: '4' },
+                    { color: '#9bf6ff', text: '3' },
+                    { color: '#74b9ff', text: '2' },
+                    { color: '#a29bfe', text: '1' },
+                ]
+            },
+        },
         /*
         {
             mapStyle: 'likes',
@@ -581,7 +643,7 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
         {
             mapStyle: 'typology_classification',
             legend: {
-                title: 'National Historical Description',
+                title: 'Block/Density Classification',
                 elements: [
                     { color: '#0311AB', text: '1-3 storeys: Detached' },
                     { color: '#3845D4', text: '1-3 storeys: Tightly grouped' },
@@ -823,136 +885,6 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
                 ],
             },
         }
-    ],
-    [Category.Mapping]: [{
-        mapStyle: 'location',
-        legend: {
-            title: 'Mapping',
-            description: '% data collected',
-            elements: [
-                { color: '#084081', text: '≥80%' },
-                { color: '#0868ac', text: '60–80%' },
-                { color: '#43a2ca', text: '40–60%' },
-                { color: '#7bccc4', text: '20–40%' },
-                { color: '#bae4bc', text: '<20%' }
-            ]
-        },
-    }],
-    [Category.Morphology]: [
-        {
-            mapStyle: 'typology_classification',
-            legend: {
-                title: 'National Historical Description',
-                elements: [
-                    { color: '#0311AB', text: '1-3 storeys: Detached' },
-                    { color: '#3845D4', text: '1-3 storeys: Tightly grouped' },
-                    { color: '#6D79FD', text: '1-3 storeys: Loosely grouped' },
-                    { color: '#FF5D00', text: '4-7 storeys: Detached' },
-                    { color: '#FF8000', text: '4-7 storeys: Tightly grouped' },
-                    { color: '#FFA200', text: '4-7 storeys: Loosely grouped' },
-                    { color: '#AB1303', text: '8+ storeys: Detached' },
-                    { color: '#D43A29', text: '8+ storeys: Tightly grouped' },
-                    { color: '#FC604F', text: '8+ storeys: Loosely grouped' },
-                ]
-            }
-        },
-        {
-            mapStyle: 'typology_dynamic_classification',
-            legend: {
-                title: 'Dynamic classification',
-                elements: [
-                    { color: '#FF7F11', text: 'Small, often repetitive plots, mainly residential' },
-                    { color: '#FF1B1C', text: 'Linear non-domestic, i.e. high streets' },
-                    { color: '#40E0D0', text: 'Large plots with internal roads' },
-                ]
-            }
-        },
-    ],
-    [Category.Conservation]: [
-        {
-            mapStyle: 'protection_zones',
-            legend: {
-                title: 'Protection Zones',
-                elements: [
-                    { color: '#3d5a80', text: 'World Heritage Protection Zone' },
-                    { color: '#c41e3a', text: 'Primary National Protection Zone' },
-                    { color: '#c4a090', text: 'Secondary National Protection Zone' },
-                    { color: '#e8b4a8', text: 'Consultation National Protection Zone' },
-                ]
-            },
-        },
-        {
-            mapStyle: 'planning_combined',
-            legend: {
-                title: 'Designation / Protection',
-                elements: [
-                    { color: '#00467c', text: 'World Heritage' },
-                    { color: '#85ffd4', text: 'Regional Heritage' },
-                    { color: '#c27364', text: 'National Heritage' },
-                ]
-            },
-        },
-        {
-            mapStyle: 'historic_area_classifications',
-            legend: {
-                title: 'Historic Area Classifications',
-                elements: [
-                    { color: '#7eb8b4', text: 'Urban Heritage A (UHA)' },
-                    { color: '#4a8a86', text: 'Urban Heritage B (UHB)' },
-                    { color: '#2f5f5c', text: 'Urban Heritage C (UHC)' },
-                    { color: '#c27364', text: 'National Heritage Building (NHB)' },
-                    { color: '#e8c992', text: 'Archaeological Site (ARC)' },
-                    { color: '#bcc493', text: 'Heritage Garden (HG)' },
-                ]
-            },
-        },
-    ],
-    [Category.Assessment]: [
-        
-    ],
-    [Category.InvestmentEngagement]: [
-        {
-            mapStyle: 'community_building_hominess_avg',
-            legend: {
-                title: 'Building hominess',
-                description: 'The average of all scores for the building',
-                elements: [
-                    { color: '#e1fce5', text: '1' },
-                    { color: '#a8fab5', text: '2' },
-                    { color: '#7dfa92', text: '3' },
-                    { color: '#3efa5e', text: '4' },
-                    { color: '#00d924', text: '5' },
-                ]
-            }
-        },
-    ],
-    // Coming Soon categories - placeholder map configs
-    [Category.GreenUrbanInfrastructure]: [
-        {
-            mapStyle: 'location',
-            legend: {
-                title: 'Green / Water Infrastructure',
-                elements: []
-            },
-        },
-    ],
-    [Category.CommerceActivity]: [
-        {
-            mapStyle: 'location',
-            legend: {
-                title: 'Commerce & Activity',
-                elements: []
-            },
-        },
-    ],
-    [Category.Social]: [
-        {
-            mapStyle: 'location',
-            legend: {
-                title: 'Social',
-                elements: []
-            },
-        },
-    ],
+    ]
     
 };

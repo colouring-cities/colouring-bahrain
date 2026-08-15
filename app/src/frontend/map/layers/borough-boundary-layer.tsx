@@ -1,24 +1,17 @@
 import { GeoJsonObject } from 'geojson';
 import React, { useEffect, useState } from 'react';
 import { GeoJSON } from 'react-leaflet';
-import { getGeometryLayerRequestPath } from '../../config/geometry-layer-urls';
 import { useDisplayPreferences } from '../../displayPreferences-context';
 import { apiGet } from '../../apiHelpers';
+import { BuildingBaseLayerAllZoom } from './building-base-layer-all-zoom';
 
 export function BoroughBoundaryLayer({}) {
     const [boundaryGeojson, setBoundaryGeojson] = useState<GeoJsonObject>(null);
     const { borough } = useDisplayPreferences();
 
     useEffect(() => {
-        apiGet(getGeometryLayerRequestPath('borough'))
-            .then(data => {
-                if (data && data.type === 'FeatureCollection') {
-                    setBoundaryGeojson(data as GeoJsonObject);
-                } else {
-                    setBoundaryGeojson(null);
-                }
-            })
-            .catch(() => setBoundaryGeojson(null));
+        apiGet('/geometries/boroughs.geojson')
+            .then(data => setBoundaryGeojson(data as GeoJsonObject));
     }, []);
 
     if(borough == "enabled") {

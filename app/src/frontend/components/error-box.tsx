@@ -1,29 +1,23 @@
 import React from 'react';
 
 interface ErrorBoxProps {
-    msg: string | null | undefined;
+    msg: string;
 }
 
 const ErrorBox: React.FC<ErrorBoxProps> = (props) => {
-    // Only show error box if there's a non-empty error message
-    if (!props.msg || (typeof props.msg === 'string' && props.msg.trim() === '')) {
-        return null;
-    }
-
-    // Log error to console for debugging
     if (props.msg) {
-        console.error('ErrorBox:', props.msg);
+        console.error(props.msg);
     }
 
-    return (
+    return props.msg ?
         <div className="alert alert-danger" role="alert">
             {
                 typeof props.msg === 'string' ?
                     props.msg
                     : 'Unexpected error'
             }
-        </div>
-    );
+        </div> :
+        null;
 };
 
 export default ErrorBox;

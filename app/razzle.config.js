@@ -1,9 +1,6 @@
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-    options: {
-        staticCssInDev: true,
-    },
     plugins: [
         {
             name: 'typescript',

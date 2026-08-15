@@ -18,13 +18,15 @@ const CategoryLink: React.FC<CategoryLinkProps> = (props) => {
 
     let className = "category-title";
 
-    // Make inactive categories clickable so they navigate and show "Coming soon" in legend
-    // They still have the inactive class for styling but are now navigable
     return (
         <NavLink
-            className={`category-link background-${props.slug} ${props.inactive ? 'inactive' : ''}`}
+            className={`category-link background-${props.slug}`}
             to={categoryLink}
-            title={props.inactive ? 'Coming soon… Click more info for details.' : 'View/Edit Map'}>
+            title={
+                (props.inactive)?
+                    'Coming soon… Click more info for details.'
+                    : 'View/Edit Map'
+            }>
                 <h3 className={className}>{props.title}</h3>
         </NavLink>
     );

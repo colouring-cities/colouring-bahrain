@@ -10,10 +10,20 @@ import { isOutsideExtent } from "./util";
 import { CCConfig } from '../cc-config';
 let config: CCConfig = require('../cc-config.json')
 
+/**
+ * A list of all tilesets handled by the tile server
+ */
 const allTilesets = getAllLayerNames();
+
+/**
+ * Zoom level when we switch from rendering direct from database to instead composing tiles
+ * from the zoom level below - gets similar effect, with much lower load on Postgres
+ */
 const STITCH_THRESHOLD = 12;
 
-// The coordinates the server allows
+/**
+ * Hard-code extent so we can short-circuit rendering and return empty/transparent tiles outside the area of interest
+ */
 const EXTENT_BBOX: BoundingBox = config.bbox;
 
 const allLayersCacheSwitch = parseBooleanExact(process.env.CACHE_TILES) ?? true;
@@ -42,11 +52,8 @@ const tileCache = new TileCache(
     },
     shouldCacheFn,
     
-    // FIX: Changed 'base_borough' to 'base_boroughs' to match the actual tileset name
-    (tileset: string) => 
-        !['base_light', 'base_night', 'base_night_outlines', 'base_boroughs', 
-          'planning_applications_status_recent', 'planning_applications_status_very_recent', 
-          'planning_applications_status_all'].includes(tileset)
+    // don't clear on bounding box cache clear tilesets not affected by user-editable data
+    (tileset: string) => tileset !== 'base_light' && tileset !== 'base_night' && tileset !== 'base_night_outlines' && tileset !== 'base_borough' && tileset !== "planning_applications_status_recent" && tileset !== "planning_applications_status_very_recent" && tileset !== "planning_applications_status_all"
 );
 
 const renderBuildingTile = (t: TileParams, d: any) => renderDataSourceTile(t, d, getDataConfig, getLayerVariables);
@@ -56,20 +63,24 @@ function cacheOrCreateBuildingTile(tileParams: TileParams, dataParams: any): Pro
 }
 
 function stitchOrRenderBuildingTile(tileParams: TileParams, dataParams: any): Promise<Tile> {
-    // Bypass the summary grid and ALWAYS render individual buildings
-    return renderBuildingTile(tileParams, dataParams);
+    if (tileParams.z <= STITCH_THRESHOLD && tileParams.tileset != "base_boroughs") {
+        // stitch tile, using cache recursively
+        return stitchTile(tileParams, dataParams, cacheOrCreateBuildingTile);
+    } else {
+        return renderBuildingTile(tileParams, dataParams);
+    }
 }
 
 function renderTile(tileParams: TileParams, dataParams: any): Promise<Tile> {
-    // CHECK 1: Bounding Box Check
-    if (isOutsideExtent(tileParams, EXTENT_BBOX)) {
-        console.warn(`[TileServer] Tile ${tileParams.z}/${tileParams.x}/${tileParams.y} rejected: Outside BBOX ${JSON.stringify(EXTENT_BBOX)}`);
-        return createBlankTile();
-    }
+    if (isOutsideExtent(tileParams, EXTENT_BBOX) 
+        || tileParams.z < MIN_ZOOM_FOR_RENDERING_TILES
+        || tileParams.z > MAX_ZOOM_FOR_RENDERING_TILES
+        ) {
+        // if tiles are outside cache zoom level then producing/caching is expected
+        // then we should short-circuit tile generation
+        // otherwise tile would be generated and not cached
 
-    // CHECK 2: Zoom Level Check
-    if (tileParams.z < MIN_ZOOM_FOR_RENDERING_TILES || tileParams.z > MAX_ZOOM_FOR_RENDERING_TILES) {
-        console.warn(`[TileServer] Tile rejected: Zoom ${tileParams.z} outside range (${MIN_ZOOM_FOR_RENDERING_TILES}-${MAX_ZOOM_FOR_RENDERING_TILES})`);
+        // also, tiles outside EXTENT_BBOX are not to be produced
         return createBlankTile();
     }
 
@@ -80,4 +91,8 @@ function renderTile(tileParams: TileParams, dataParams: any): Promise<Tile> {
     return cacheOrCreateBuildingTile(tileParams, dataParams);
 }
 
-export { allTilesets, renderTile, tileCache };
+export {
+    allTilesets,
+    renderTile,
+    tileCache
+};

@@ -555,8 +555,8 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
     },
     date_year_completed: {
         category: Category.AgeHistory,
-        title: "Year construction completed (best estimate)",
-        tooltip: "Best estimate for the year that construction completed on this building.",
+        title: "Year construction completed if known",
+        tooltip: null,
         example: 1925,
     },
     date_lower: {
@@ -568,8 +568,26 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
     date_upper: {
         category: Category.AgeHistory,
         title: "Latest possible start year",
-        tooltip: "This should be the latest year in which building could have started.",
+        tooltip: "This should be the latest year in which construction could have started.",
         example: 2000,
+    },
+    date_year_inferred: {
+        category: Category.AgeHistory,
+        title: "Year construction started (automatically inferred from other data)",
+        tooltip: null,
+        example: 1924,
+    },
+    date_year_inferred_lower: {
+        category: Category.AgeHistory,
+        title: "Best estimate for the earliest year in which construction could have started (automatically inferred from other data)",
+        tooltip: null,
+        example: 1920,
+    },
+    date_year_inferred_upper: {
+        category: Category.AgeHistory,
+        title: "This should be the latest year in which construction could have started (automatically inferred from other data)",
+        tooltip: null,
+        example: 1935,
     },
     facade_year: {
         category: Category.AgeHistory,
@@ -586,7 +604,7 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
     },
     date_source_links: {
         category: Category.AgeHistory,
-        title: "Alternative Source link(s)",
+        title: "Additional Source link(s)",
         tooltip: null,
         example: ["", "", ""],
     },
@@ -626,6 +644,32 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         title: "Height to apex (m)",
         example: 100.5,
         tooltip: "i.e. the highest part of the roof (in meters).",
+    },
+    construction_material_window_frame: {
+        category: Category.ConstructionDesign,
+        title: "What is the material used for most of the window frames?",
+        tooltip: null,
+        example: "Wood",
+        items: [
+            "Wood",
+            "Metal",
+            "Plastic",
+            "Other",
+            "No windows"
+        ]
+    },
+    construction_material_window_frame_source_type: {
+        category: Category.ConstructionDesign,
+        title: "Source type",
+        tooltip: null,
+        example: "",
+        items: commonSourceTypes
+    },
+    construction_material_window_frame_source_links: {
+        category: Category.ConstructionDesign,
+        title: "Source links",
+        tooltip: null,
+        example: ["", "", ""],
     },
     size_height_apex_source_type: {
         category: Category.EnergyPerformance,
@@ -1262,9 +1306,9 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
     },
     planning_list_id: {
         category: Category.UrbanInfrastructure,
-        title: "If the building is on a national heritage register, please add the ID:",
+        title: "Please add the ID from the NHLE if the building is listed:",
         example: "121436",
-        tooltip: "e.g. National Heritage List for England (NHLE)",
+        tooltip: "National Heritage List for England (NHLE)",
     },
     planning_list_grade: {
         category: Category.UrbanInfrastructure,
@@ -1285,8 +1329,8 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
     },
     planning_world_heritage_site: {
         category: Category.UrbanInfrastructure,
-        title: "Is the building on a World Heritage Site?",
-        tooltip: "Is the building on a UNESCO <a href=\"https://www.unesco.org/en\" target=\"_blank\">World Heritage Site</a>",
+        title: "Is the building part of a World Heritage Site?",
+        tooltip: "Is the building part of a UNESCO <a href=\"https://www.unesco.org/en\" target=\"_blank\">World Heritage Site</a>",
         example: true,
     },
     planning_world_list_id: {
