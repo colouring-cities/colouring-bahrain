@@ -31,7 +31,7 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
             <LogicalDataEntry
                     title={dataFields.energy_green_roof.title}
                     slug="energy_green_roof"
-                    value={props.building?.energy_green_roof}
+                    value={props.building.energy_green_roof}
                     mode={props.mode}
                     copy={props.copy}
                     onChange={props.onChange}
@@ -39,18 +39,18 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
                 />
                 <Verification
                     slug="energy_green_roof"
-                    allow_verify={props.user !== undefined && props.building?.energy_green_roof !== null && !props.edited}
+                    allow_verify={props.user !== undefined && props.building.energy_green_roof !== null && !props.edited}
                     onVerify={props.onVerify}
                     user_verified={props.user_verified.hasOwnProperty("energy_green_roof")}
                     user_verified_as={props.user_verified.energy_green_roof}
-                    verified_count={props.building?.verified?.energy_green_roof}
+                    verified_count={props.building.verified.energy_green_roof}
                     />
-                {props.building?.energy_green_roof == null ? <></> :
+                {props.building.energy_green_roof == null ? <></> :
                     <>
                         <SelectDataEntry
                             title={dataFields.energy_green_roof_source_type.title}
                             slug="energy_green_roof_source_type"
-                            value={props.building?.energy_green_roof_source_type}
+                            value={props.building.energy_green_roof_source_type}
                             mode={props.mode}
                             copy={props.copy}
                             onChange={props.onChange}
@@ -58,14 +58,14 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
                             options={dataFields.energy_green_roof_source_type.items}
                             placeholder={dataFields.energy_green_roof_source_type.example}
                         />
-                        {(props.building?.energy_green_roof_source_type == dataFields.energy_green_roof_source_type.items[0] ||
-                            props.building?.energy_green_roof_source_type == dataFields.energy_green_roof_source_type.items[1] ||
-                            props.building?.energy_green_roof_source_type == null) ? <></> :
+                        {(props.building.energy_green_roof_source_type == dataFields.energy_green_roof_source_type.items[0] ||
+                            props.building.energy_green_roof_source_type == dataFields.energy_green_roof_source_type.items[1] ||
+                            props.building.energy_green_roof_source_type == null) ? <></> :
                             <>
                                 <MultiDataEntry
                                     title={dataFields.energy_green_roof_source_links.title}
                                     slug="energy_green_roof_source_links"
-                                    value={props.building?.energy_green_roof_source_links}
+                                    value={props.building.energy_green_roof_source_links}
                                     mode={props.mode}
                                     copy={props.copy}
                                     onChange={props.onChange}
@@ -83,7 +83,7 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
                 <LogicalDataEntry
                     title={dataFields.context_front_garden.title}
                     slug="context_front_garden"
-                    value={props.building?.context_front_garden}
+                    value={props.building.context_front_garden}
                     mode={props.mode}
                     copy={props.copy}
                     onChange={props.onChange}
@@ -91,16 +91,16 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
                     />
                 <Verification
                     slug="context_front_garden"
-                    allow_verify={props.user !== undefined && props.building?.context_front_garden !== null && !props.edited}
+                    allow_verify={props.user !== undefined && props.building.context_front_garden !== null && !props.edited}
                     onVerify={props.onVerify}
                     user_verified={props.user_verified.hasOwnProperty("context_front_garden")}
                     user_verified_as={props.user_verified.context_front_garden}
-                    verified_count={props.building?.verified?.context_front_garden}
+                    verified_count={props.building.verified.context_front_garden}
                     />
                 <LogicalDataEntry
                     title={dataFields.context_back_garden.title}
                     slug="context_back_garden"
-                    value={props.building?.context_back_garden}
+                    value={props.building.context_back_garden}
                     mode={props.mode}
                     copy={props.copy}
                     onChange={props.onChange}
@@ -108,16 +108,16 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
                     />
                 <Verification
                     slug="context_back_garden"
-                    allow_verify={props.user !== undefined && props.building?.context_back_garden !== null && !props.edited}
+                    allow_verify={props.user !== undefined && props.building.context_back_garden !== null && !props.edited}
                     onVerify={props.onVerify}
                     user_verified={props.user_verified.hasOwnProperty("context_back_garden")}
                     user_verified_as={props.user_verified.context_back_garden}
-                    verified_count={props.building?.verified?.context_back_garden}
+                    verified_count={props.building.verified.context_back_garden}
                     />
                 <LogicalDataEntry
                     title={dataFields.context_flats_garden.title}
                     slug="context_flats_garden"
-                    value={props.building?.context_flats_garden}
+                    value={props.building.context_flats_garden}
                     mode={props.mode}
                     copy={props.copy}
                     onChange={props.onChange}
@@ -125,16 +125,16 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
                     />
                 <Verification
                     slug="context_flats_garden"
-                    allow_verify={props.user !== undefined && props.building?.context_flats_garden !== null && !props.edited}
+                    allow_verify={props.user !== undefined && props.building.context_flats_garden !== null && !props.edited}
                     onVerify={props.onVerify}
                     user_verified={props.user_verified.hasOwnProperty("context_flats_garden")}
                     user_verified_as={props.user_verified.context_flats_garden}
-                    verified_count={props.building?.verified?.context_flats_garden}
+                    verified_count={props.building.verified.context_flats_garden}
                     />
                 <SelectDataEntry
                     title={dataFields.context_garden_source_type.title}
                     slug="context_garden_source_type"
-                    value={props.building?.context_garden_source_type}
+                    value={props.building.context_garden_source_type}
                     mode={props.mode}
                     copy={props.copy}
                     onChange={props.onChange}
@@ -142,14 +142,14 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
                     placeholder={dataFields.context_garden_source_type.example}
                     options={dataFields.context_garden_source_type.items}
                     />
-                {(props.building?.context_garden_source_type == commonSourceTypes[0] ||
-                    props.building?.context_garden_source_type == commonSourceTypes[1] ||
-                    props.building?.context_garden_source_type == null) ? <></> :
+                {(props.building.context_garden_source_type == commonSourceTypes[0] ||
+                    props.building.context_garden_source_type == commonSourceTypes[1] ||
+                    props.building.context_garden_source_type == null) ? <></> :
                     <>
                         <MultiDataEntry
                             title={dataFields.context_garden_source_links.title}
                             slug="context_garden_source_links"
-                            value={props.building?.context_garden_source_links}
+                            value={props.building.context_garden_source_links}
                             mode={props.mode}
                             copy={props.copy}
                             onChange={props.onChange}
@@ -163,7 +163,7 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
                 <hr/>
                 <NumericDataEntry
                     title={dataFields.context_green_space_distance.title}
-                    value={props.building?.context_green_space_distance}
+                    value={props.building.context_green_space_distance}
                     slug="context_green_space_distance"
                     tooltip={dataFields.context_green_space_distance.tooltip}
                     //placeholder={dataFields.context_green_space_distance.example}
@@ -175,29 +175,29 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
                 />
                 <Verification
                     slug="context_green_space_distance"
-                    allow_verify={props.user !== undefined && props.building?.context_green_space_distance !== null}
+                    allow_verify={props.user !== undefined && props.building.context_green_space_distance !== null}
                     onVerify={props.onVerify}
                     user_verified={props.user_verified.hasOwnProperty("context_green_space_distance")}
                     user_verified_as={props.user_verified.context_green_space_distance}
-                    verified_count={props.building?.verified?.context_green_space_distance}
+                    verified_count={props.building.verified.context_green_space_distance}
                     />
                 <SelectDataEntry
                     title={dataFields.context_green_space_distance_source_type.title}
                     slug="context_green_space_distance_source_type"
-                    value={props.building?.context_green_space_distance_source_type}
+                    value={props.building.context_green_space_distance_source_type}
                     options={dataFields.context_green_space_distance_source_type.items}
                     mode={props.mode}
                     copy={props.copy}
                     onChange={props.onChange}
                     tooltip={dataFields.context_green_space_distance_source_type.tooltip}
                 />
-                {(props.building?.context_green_space_distance_source_type == commonSourceTypes[0] ||
-                    props.building?.context_green_space_distance_source_type == commonSourceTypes[1] ||
-                    props.building?.context_green_space_distance_source_type == null) ? <></> :
+                {(props.building.context_green_space_distance_source_type == commonSourceTypes[0] ||
+                    props.building.context_green_space_distance_source_type == commonSourceTypes[1] ||
+                    props.building.context_green_space_distance_source_type == null) ? <></> :
                     <><MultiDataEntry
                         title={dataFields.context_green_space_distance_source_links.title}
                         slug="context_green_space_distance_source_links"
-                        value={props.building?.context_green_space_distance_source_links}
+                        value={props.building.context_green_space_distance_source_links}
                         mode={props.mode}
                         copy={props.copy}
                         onChange={props.onChange}
@@ -211,7 +211,7 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
                 <hr/>
                 <NumericDataEntry
                     title={dataFields.context_tree_distance.title}
-                    value={props.building?.context_tree_distance}
+                    value={props.building.context_tree_distance}
                     slug="context_tree_distance"
                     tooltip={dataFields.context_tree_distance.tooltip}
                     //placeholder={dataFields.context_tree_distance.example}
@@ -223,29 +223,29 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
                 />
                 <Verification
                     slug="context_tree_distance"
-                    allow_verify={props.user !== undefined && props.building?.context_tree_distance !== null}
+                    allow_verify={props.user !== undefined && props.building.context_tree_distance !== null}
                     onVerify={props.onVerify}
                     user_verified={props.user_verified.hasOwnProperty("context_tree_distance")}
                     user_verified_as={props.user_verified.context_tree_distance}
-                    verified_count={props.building?.verified?.context_tree_distance}
+                    verified_count={props.building.verified.context_tree_distance}
                     />
                 <SelectDataEntry
                     title={dataFields.context_tree_distance_source_type.title}
                     slug="context_tree_distance_source_type"
-                    value={props.building?.context_tree_distance_source_type}
+                    value={props.building.context_tree_distance_source_type}
                     options={dataFields.context_tree_distance_source_type.items}
                     mode={props.mode}
                     copy={props.copy}
                     onChange={props.onChange}
                     tooltip={dataFields.context_tree_distance_source_type.tooltip}
                 />
-                {(props.building?.context_tree_distance_source_type == commonSourceTypes[0] ||
-                    props.building?.context_tree_distance_source_type == commonSourceTypes[1] ||
-                    props.building?.context_tree_distance_source_type == null) ? <></> :
+                {(props.building.context_tree_distance_source_type == commonSourceTypes[0] ||
+                    props.building.context_tree_distance_source_type == commonSourceTypes[1] ||
+                    props.building.context_tree_distance_source_type == null) ? <></> :
                     <><MultiDataEntry
                         title={dataFields.context_tree_distance_source_links.title}
                         slug="context_tree_distance_source_links"
-                        value={props.building?.context_tree_distance_source_links}
+                        value={props.building.context_tree_distance_source_links}
                         mode={props.mode}
                         copy={props.copy}
                         onChange={props.onChange}
@@ -262,7 +262,7 @@ const WaterGreenInfrastructureView: React.FunctionComponent<CategoryViewProps> =
                     slug='planning_flood_zone'
                     title={dataFields.planning_flood_zone.title}
                     tooltip={dataFields.planning_flood_zone.tooltip}
-                    value={props.building?.planning_flood_zone}
+                    value={props.building.planning_flood_zone}
                     copy={props.copy}
                     onChange={props.onChange}
                     mode={props.mode}

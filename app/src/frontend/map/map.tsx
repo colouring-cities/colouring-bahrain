@@ -1,6 +1,5 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { AttributionControl, MapContainer, ZoomControl, useMapEvent, Pane, useMap } from 'react-leaflet';
-import { useLocation } from 'react-router';
 
 import 'leaflet/dist/leaflet.css';
 import './map.css';
@@ -11,33 +10,41 @@ import { initialMapViewport, mapBackgroundColor, MapTheme, LayerEnablementState 
 import { Building } from '../models/building';
 
 import { CityBaseMapLayer } from './layers/city-base-map-layer';
-// import { CityBoundaryLayer } from './layers/city-boundary-layer';
+import { CityBoundaryLayer } from './layers/city-boundary-layer';
 import { BoroughBoundaryLayer } from './layers/borough-boundary-layer';
 import { BoroughLabelLayer } from './layers/borough-label-layer';
 import { ParcelBoundaryLayer } from './layers/parcel-boundary-layer';
 import { HistoricDataLayer } from './layers/historic-data-layer';
+import { HistoricMapLayer } from './layers/historic-map-layer';
 import { FloodBoundaryLayer } from './layers/flood-boundary-layer';
 import { ConservationAreaBoundaryLayer } from './layers/conservation-boundary-layer';
+import { WorldHeritageSitesLayer } from './layers/world-heritage-sites-layer';
 import { VistaBoundaryLayer } from './layers/vista-boundary-layer';
-import { GovernorateBoundaryLayer } from './layers/governorate-boundary-layer';
-import { ArchaeologicalSitesLayer } from './layers/archaeological-sites-layer';
-import { UrbanHeritageLayer } from './layers/urban-heritage-layer';
+import { HousingBoundaryLayer } from './layers/housing-boundary-layer';
+import { CreativeBoundaryLayer } from './layers/creative-boundary-layer';
 import { BuildingBaseLayer } from './layers/building-base-layer';
 import { BuildingDataLayer } from './layers/building-data-layer';
 import { BuildingNumbersLayer } from './layers/building-numbers-layer';
 import { BuildingHighlightLayer } from './layers/building-highlight-layer';
 
 import { Legend } from './legend';
-import { Logo } from '../components/logo';
 import SearchBox from './search-box';
 import ThemeSwitcher from './theme-switcher';
 import DataLayerSwitcher from './data-switcher';
-import { SimpleLayerButton } from './simple-layer-button';
+import { BoroughSwitcher } from './borough-switcher';
+import { ParcelSwitcher } from './parcel-switcher';
+import { FloodSwitcher } from './flood-switcher';
+import { ConservationAreaSwitcher } from './conservation-switcher';
+import { WorldHeritageSitesSwitcher } from './world-heritage-sites-switcher';
+import { HistoricDataSwitcher } from './historic-data-switcher';
+import { HistoricMapSwitcher } from './historic-map-switcher';
+import { VistaSwitcher } from './vista-switcher';
+import { CreativeSwitcher } from './creative-switcher';
+import { HousingSwitcher } from './housing-switcher';
+import { EditableBuildingsSwitcher } from './editable-buildings-switcher';
 import { BuildingMapTileset } from '../config/tileserver-config';
 import { useDisplayPreferences } from '../displayPreferences-context';
 import { CategoryMapDefinition } from '../config/category-maps-config';
-
-import './legend.css';
 
 interface ColouringMapProps {
     selectedBuildingId: number;
@@ -59,20 +66,10 @@ export const ColouringMap : FC<ColouringMapProps> = ({
     categoryMapDefinitions,
     children
 }) => {
-    const { darkLightTheme, darkLightThemeSwitch, showLayerSelection, governoratesSwitchOnClick, parcelSwitchOnClick, conservationSwitchOnClick, editableBuildingsSwitchOnClick, parcel, conservation, editableBuildings, governorates, vista, flood, borough, historicData, boroughSwitchOnClick } = useDisplayPreferences();
+    const { darkLightTheme, darkLightThemeSwitch, showLayerSelection } = useDisplayPreferences();
     const [position, setPosition] = useState(initialMapViewport.position);
     const [zoom, setZoom] = useState(initialMapViewport.zoom);
-    const [comingSoonTitle, setComingSoonTitle] = useState<string | null>(null);
-    const location = useLocation();
 
-    const toggleComingSoon = useCallback((title: string) => {
-        setComingSoonTitle((current) => (current === title ? null : title));
-    }, []);
-
-    // Clear layer Coming soon when navigating sidebar categories (e.g. Green / Water)
-    useEffect(() => {
-        setComingSoonTitle(null);
-    }, [location.pathname]);
 
     const handleLocate = useCallback(
         (lat: number, lng: number, zoom: number) => {
@@ -116,6 +113,14 @@ export const ColouringMap : FC<ColouringMapProps> = ({
                     <BuildingBaseLayer theme={darkLightTheme} />
                 </Pane>
 
+                <Pane
+                    name='cc-overlay-pane-shown-behind-buildings'
+                    style={{zIndex: 199}}
+                >
+                    <ConservationAreaBoundaryLayer/>
+                    <WorldHeritageSitesLayer/>
+                </Pane>
+
                 {
                     mapColourScale &&
                         <BuildingDataLayer
@@ -128,22 +133,15 @@ export const ColouringMap : FC<ColouringMapProps> = ({
                     name='cc-overlay-pane'
                     style={{zIndex: 300}}
                 >
-                    {/* <CityBoundaryLayer/> */}
-                    {historicData === 'enabled' && <HistoricDataLayer revisionId={revisionId} />}
-                    {borough === 'enabled' && <BoroughBoundaryLayer/>}
-                    {parcel === 'enabled' && <ParcelBoundaryLayer/>}
-                    {flood === 'enabled' && <FloodBoundaryLayer/>}
-                    {vista === 'enabled' && <VistaBoundaryLayer/>}
-                    {governorates === 'enabled' && <GovernorateBoundaryLayer/>}
-                    {/* Protection Zones above buildings so they are visible */}
-                    {conservation === 'enabled' && <ConservationAreaBoundaryLayer/>}
-                    {/* Historic Area Classifications: Urban Heritage A/B/C parcels + archaeological sites */}
-                    {mapColourScale === 'historic_area_classifications' && (
-                        <>
-                            <UrbanHeritageLayer/>
-                            <ArchaeologicalSitesLayer/>
-                        </>
-                    )}
+                    <CityBoundaryLayer/>
+                    <HistoricDataLayer revisionId={revisionId} />
+                    <HistoricMapLayer revisionId={revisionId} />
+                    <BoroughBoundaryLayer/>
+                    <ParcelBoundaryLayer/>
+                    <FloodBoundaryLayer/>
+                    <VistaBoundaryLayer/>
+                    <HousingBoundaryLayer/>
+                    <CreativeBoundaryLayer/>
                     <BuildingNumbersLayer revisionId={revisionId} />
                     {
                         selectedBuildingId &&
@@ -164,22 +162,10 @@ export const ColouringMap : FC<ColouringMapProps> = ({
                 <AttributionControl prefix=""/>
             </MapContainer>
             {
-                // Layer Coming soon must show on welcome (basic) and view/edit modes
-                comingSoonTitle ? (
-                    <div className="map-legend coming-soon-legend">
-                        <Logo variant="default" />
-                        <h4 className="h4">{comingSoonTitle}</h4>
-                        <p className="data-intro">Coming soon…</p>
-                    </div>
-                ) : (
-                    mode !== 'basic' && (
-                        <Legend
-                            mapColourScaleDefinitions={categoryMapDefinitions}
-                            mapColourScale={mapColourScale}
-                            onMapColourScale={onMapColourScale}
-                        />
-                    )
-                )
+                mode !== 'basic' &&
+                <>
+                    <Legend mapColourScaleDefinitions={categoryMapDefinitions} mapColourScale={mapColourScale} onMapColourScale={onMapColourScale}/>
+                </>
             }
             <div className="switchers-of-layers-map-menu">
                 <ThemeSwitcher onSubmit={darkLightThemeSwitch} currentTheme={darkLightTheme} />
@@ -187,21 +173,17 @@ export const ColouringMap : FC<ColouringMapProps> = ({
                 {
                     (showLayerSelection == "enabled") ?
                     <>
-                        <SimpleLayerButton label="Parcel Overlay" state={parcel} onClick={parcelSwitchOnClick} />
-                        <SimpleLayerButton label="Governorates" state={governorates} onClick={governoratesSwitchOnClick} />
-                        <SimpleLayerButton label="Protection Zones" state={conservation} onClick={conservationSwitchOnClick} />
-                        <SimpleLayerButton
-                            label="MOH Zone"
-                            comingSoon
-                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleComingSoon('MOH Zone'); }}
-                        />
-                        <SimpleLayerButton
-                            label="Historic Aerial Photos"
-                            comingSoon
-                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleComingSoon('Historic Aerial Photos'); }}
-                        />
-                        <SimpleLayerButton label="Editable Building" state={editableBuildings} onClick={editableBuildingsSwitchOnClick} />
-                        <SimpleLayerButton label="OpenStreetMap" state={borough} onClick={boroughSwitchOnClick} />
+                        <BoroughSwitcher/>
+                        <ParcelSwitcher/>
+                        <FloodSwitcher/>
+                        <ConservationAreaSwitcher/>
+                        <WorldHeritageSitesSwitcher/>
+                        { /* <HistoricMapSwitcher/> */ }
+                        { /* <HistoricDataSwitcher/> */ }
+                        <VistaSwitcher />
+                        <HousingSwitcher />
+                        <CreativeSwitcher />
+                        <EditableBuildingsSwitcher />
                     </>
                     : <></>
                 }

@@ -12,33 +12,39 @@ const Welcome = () => (
         <Categories mode="view"/>
         <h1 className="h3">Welcome to Colouring {config.cityName}!</h1>
         <p>
-            Colouring {config.cityName} is a free knowledge exchange platform designed to provide open data
-            on Historic Cities buildings, to help make them more sustainable.
+
+            Colouring {config.cityName}  is a research-led, free public resource, providing open spatial data 
+            on {config.cityName}'s buildings and natural environment. It is also an open knowledge initiative, built collectively by, 
+            and for, academia, communities, government, industry and the third sector. 
+            Any information you can add to our open platform is greatly appreciated.
+            New data and features are added all the time.
         </p>
         <p>
-            Colouring {config.cityName} is part of the Colouring Cities Research programme based at the
-            Alan Turing Institute. The programme <strong>collaborates</strong> with local, regional,
-            national and international partners to develop open platform code also of relevance to other cities.
+            Colouring {config.cityName} is managed by {config.institution}.
+            It forms part of the <a href="https://colouringcities.org/">Colouring Cities Research Programme</a> (CCRP), which brings together academic institutions worldwide, interested in co-working on a global network
+            of interoperable open data platforms. These provide spatial data on buildings, and the built and natural infrastructure, and support cross-sector knowledge and resource sharing.
+            The CCRP works to improve environmental quality, resilience and sustainability, and to accelerate progress towards net zero, and other United Nations Sustainable Development Goals.
+            It is overseen by an informal international academic consortium, made up of representatives from CCRP expert groups and Global Hubs.
         </p>
         <p>
-            New datasets and features are added regularly, and we greatly appreciate any information you
-            contribute. All submissions are carefully reviewed by the Colouring {config.cityName} team
-            before being shared on the platform.
-        </p>
-        <p>
-            All our data and code are free to download, use and share under our open licence terms.
+            All data collected (e.g <a href="/data-extracts.html">data-extracts</a>) 
+            and <a href="https://github.com/colouring-cities/colouring-core">code</a> are free to download, 
+            use and share under open licence terms. Our <a href="https://github.com/colouring-cities/manual/wiki">
+            open manual</a> provides non-technical information for anyone interested in our research. We also have a <a href="https://github.com/colouring-cities/ccrp-technical-manual/wiki">Technical Manual</a>, and an <a href="https://colouringcities.org/impact-studies">Impact Studies Section</a> which shows how the data from the platform can be used.
         </p>
         <Link to="/view/categories"
             className="btn btn-outline-dark btn-lg btn-block">
             Start Colouring Here!
         </Link>
         <div className="image-row">
-            <img className="cl-logo" src="/images/logo-cc.jpg?v=2" alt="Colouring Cities Research Programme"></img>
-            <img className="turing-logo" src="/images/logo-turing.jpg?v=2" alt="Alan Turing Institute"></img>
+            <img className="cl-logo" src="images/logo-cc.jpg" alt="Colouring Cities Research Programme"></img>
+            <img className="turing-logo" src="images/logo-turing.jpg" alt="Alan Turing Institute"></img>
         </div>
         <div className="image-row">
-            <img className="baca-logo" src="/images/logo-baca.png?v=1" alt="Bahrain Authority for Culture & Antiquities"></img>
-            <img className="uob-logo" src="/images/logo-uob.png?v=1" alt="University of Bahrain"></img>
+            <img src="images/supporter-logos.png" alt="Colouring Cities collaborating organisations: The Bartlett UCL, Ordnance Survey, Historic England, Greater London Authority" />
+        </div>
+        <div className="image-row">
+            <img src="images/logo-loughborough.png" alt="Colouring Cities collaborating organisations: Loughborough University" />
         </div>
     </div>
 );

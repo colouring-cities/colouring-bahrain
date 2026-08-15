@@ -1,7 +1,6 @@
 import { GeoJsonObject } from 'geojson';
 import React, { useEffect, useState } from 'react';
 import { GeoJSON } from 'react-leaflet';
-import { getGeometryLayerRequestPath } from '../../config/geometry-layer-urls';
 import { apiGet } from '../../apiHelpers';
 import { useDisplayPreferences } from '../../displayPreferences-context';
 
@@ -10,15 +9,8 @@ export function FloodBoundaryLayer() {
     const { flood } = useDisplayPreferences();
 
     useEffect(() => {
-        apiGet(getGeometryLayerRequestPath('flood'))
-            .then(data => {
-                if (data && data.type === 'FeatureCollection') {
-                    setBoundaryGeojson(data as GeoJsonObject);
-                } else {
-                    setBoundaryGeojson(null);
-                }
-            })
-            .catch(() => setBoundaryGeojson(null));
+        apiGet('/geometries/flood_zones_simplified.geojson')
+            .then(data => setBoundaryGeojson(data as GeoJsonObject));
     }, []);
 
     if(flood == "enabled") {

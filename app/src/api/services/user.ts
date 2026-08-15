@@ -9,8 +9,6 @@ import db from '../../db';
 import { validatePassword, validateUsername, ValidationError } from '../validation';
 
 
-// --- user.ts (Backend File) ---
-
 async function createUser(user) {
     try {
         validateUsername(user.username);
@@ -34,31 +32,26 @@ async function createUser(user) {
                 $1,
                 $2,
                 crypt($3, gen_salt('bf'))
-            ) RETURNING user_id, username, email, date_trunc('minute', registered) as registered, api_key
-            `, [ // <-- CRITICAL CHANGE IS ON THE RETURNING LINE ABOVE
+            ) RETURNING user_id
+            `, [
                 user.username,
                 user.email,
                 user.password
             ]
         );
     } catch(error) {
-        // Log the raw error for debugging
-        console.error('Error:', error); 
+        console.error('Error:', error);
 
-        // Check for the specific unique constraint violation code (23505)
-        if (error.code === '23505') {
-            if (error.detail && error.detail.includes('already exists')) {
-                if (error.detail.includes('username')) {
-                    return { error: 'Username already registered' };
-                } else if (error.detail.includes('email')) {
-                    return { error: 'Email already registered' };
-                }
+        if (error.detail.includes('already exists')) {
+            if (error.detail.includes('username')) {
+                return { error: 'Username already registered' };
+            } else if (error.detail.includes('email')) {
+                return { error: 'Email already registered' };
             }
         }
         return { error: 'Database error' };
     }
 }
-// ... (rest of the file remains the same)
 
 async function authUser(username: string, password: string) {
     const user = await db.oneOrNone(

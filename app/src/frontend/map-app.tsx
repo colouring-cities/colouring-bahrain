@@ -134,9 +134,7 @@ export const MapApp: React.FC<MapAppProps> = props => {
 
     const categoryMapDefinitions = useMemo(() => categoryMapsConfig[displayCategory], [displayCategory]);
     const availableMapStyles = useMemo(() => categoryMapDefinitions.map(x => x.mapStyle), [categoryMapDefinitions]);
-    // Set default to first available map style so buildings are colored by default
-    const defaultMapStyle = availableMapStyles.length > 0 ? availableMapStyles[0] : undefined;
-    const [mapColourScale, setMapColourScale] = useStateWithOptions<BuildingMapTileset>(defaultMapStyle, availableMapStyles);
+    const [mapColourScale, setMapColourScale] = useStateWithOptions<BuildingMapTileset>(undefined, availableMapStyles);
 
     return (
         <>

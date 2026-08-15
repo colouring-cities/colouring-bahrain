@@ -16,27 +16,17 @@ import LandUseContainer from '../building/data-containers/land-use';
 import { DataContainerType } from '../building/data-container';
 
 export const categoryUiConfig: {[key in Category]: DataContainerType} = {
-    [Category.Mapping]: LocationContainer,
-    [Category.AgeHistory]: AgeHistoryContainer,
-    [Category.Morphology]: TypologySizeContainer,
-    [Category.ConstructionDesign]: ConstructionDesignContainer,
-    [Category.LandUse]: LandUseContainer,
-    [Category.Conservation]: PlanningConservationContainer,
-    [Category.Assessment]: RetrofitConditionContainer,
-    [Category.InvestmentEngagement]: CommunityContainer,
-    [Category.DisasterManagement]: DisasterManagementContainer,
-    // Coming Soon categories - mapped to placeholder containers
-    [Category.GreenUrbanInfrastructure]: WaterGreenInfrastructureContainer,
-    [Category.CommerceActivity]: LandUseContainer,
-    [Category.Social]: CommunityContainer,
-    // Legacy categories kept for backward compatibility
     [Category.Location]: LocationContainer,
+    [Category.LandUse]: LandUseContainer,
     [Category.TypologySize]: TypologySizeContainer,
+    [Category.AgeHistory]: AgeHistoryContainer,
+    [Category.ConstructionDesign]: ConstructionDesignContainer,
     [Category.PlanningConservation]: PlanningConservationContainer,
     [Category.RetrofitCondition]: RetrofitConditionContainer,
     [Category.EnergyPerformance]: EnergyPerformanceContainer,
     [Category.UrbanInfrastructure]: UrbanInfrastructureContainer,
     [Category.WaterGreenInfrastructure]: WaterGreenInfrastructureContainer,
+    [Category.DisasterManagement]: DisasterManagementContainer,
     [Category.Community]: CommunityContainer,
 };
 

@@ -25,10 +25,8 @@ const handleTileRequest = asyncController(async function (req: express.Request, 
         res.writeHead(200, { 'Content-Type': 'image/png' });
         res.end(im);
     } catch(err) {
-        console.error('Tile rendering error:', err);
-        // Return a proper error response instead of crashing
-        const errorMessage = err instanceof Error ? err.message : String(err);
-        res.status(500).json({ error: 'Tile rendering failed', message: errorMessage });
+        console.error(err);
+        res.status(500).send({ error: err });
     }
 });
 

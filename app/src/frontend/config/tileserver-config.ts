@@ -4,7 +4,9 @@
  */
 
 export type BuildingMapTileset = 
+    'age_amalgamated' |
     'date_year' | 
+    'age_inferred' |
     'cladding_year' | 
     'extension_year' | 
     'retrofit_year' | 
@@ -17,7 +19,9 @@ export type BuildingMapTileset =
     'construction_foundation' |
     'construction_roof_shape' |
     'construction_roof_covering' |
+    'construction_material_window_frame' |
     'location' |
+    'count_crowdsourced' |
     'is_domestic' |
     'likes' |
     'typology_likes' |
@@ -36,8 +40,7 @@ export type BuildingMapTileset =
     'planning_applications_status_recent' |
     'planning_applications_status_very_recent' |
     'planning_combined' |
-    'protection_zones' |
-    'historic_area_classifications' |
+    'planning_world_heritage_buildings' |
     'sust_dec' |
     'building_attachment_form' |
     'landuse' |

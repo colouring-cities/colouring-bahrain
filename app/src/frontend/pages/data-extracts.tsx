@@ -1,11 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
-import { CCConfig } from '../../cc-config';
 import { dateReviver } from '../../helpers';
 import { apiGet } from '../apiHelpers';
-
-let config: CCConfig = require('../../cc-config.json');
 
 
 interface ExtractViewModel {
@@ -45,26 +42,22 @@ export default class DataExtracts extends React.Component<{}, DataExtractsState>
                 <section className="main-col">
                     <h1 className="h2">Open data extracts</h1>
                     <p>
-                        Choose one of the links below to download an archive containing the open data
-                        collected on the Colouring {config.cityName} platform.
+                    Choose one of the links below to download an archive containing the open data collected on the Colouring Cities platform
                     </p>
                     <p>
-                        Colouring {config.cityName} contributions are open data, licensed under the{' '}
-                        <a href="http://opendatacommons.org/licenses/odbl/">Open Data Commons Open Database License</a>{' '}
-                        (ODbL) by Colouring {config.cityName} contributors.
+                    Colouring Cities contributions are open data, licensed under the <a href="http://opendatacommons.org/licenses/odbl/">Open Data Commons Open Database License</a> (ODbL) by Colouring Cities contributors.
                     </p>
                     <p>
-                        You are free to copy, distribute, transmit and adapt our data, as long as you credit
-                        Colouring {config.cityName} and our contributors. If you alter or build upon our data, you may
-                        distribute the result only under the same license.
+                    You are free to copy, distribute, transmit and adapt our data, as long as you credit Colouring Cities and our contributors. If you alter or build upon our data, you may distribute the result only under the same licence.
                     </p>
                     <p>
-                        Choose one of the links below to download an archive containing the open data
-                        collected on the Colouring {config.cityName} platform.
+                    Choose one of the links below to download an archive containing the open data collected on the Colouring Cities platform.
                     </p>
                     <p>
-                        By downloading data extracts from this site, you agree to the{' '}
-                        <Link to="/data-accuracy.html">data accuracy agreement</Link>.
+                    By downloading data extracts from this site, you agree to the <Link to="/data-accuracy.html">data accuracy agreement</Link>.
+                    </p>
+                    <p>
+                    Please note that certain datasets including building footprint geometries are not currently included as we are still undertaking assessment of these. Improvements to the download section will be made over the next six months.
                     </p>
 
                     {
@@ -72,7 +65,7 @@ export default class DataExtracts extends React.Component<{}, DataExtractsState>
                             <p>Loading extracts...</p> :
                             (
                                 this.state.extracts.length === 0 ?
-                                    <p>No extracts available.</p> :
+                                    <p>No extracts available</p> :
                                     null
                             )
                     }

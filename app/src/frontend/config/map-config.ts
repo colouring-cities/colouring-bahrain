@@ -11,10 +11,6 @@ export const initialMapViewport: MapViewport = {
   zoom: config.initialZoomLevel,
 };
 
-// expose configured min/max zoom so map consumers can use them
-export const minZoom: number = typeof config.minZoom === 'number' ? config.minZoom : 9;
-export const maxZoom: number = typeof config.maxZoom === 'number' ? config.maxZoom : 18;
-
 export type MapTheme = 'light' | 'night' | 'night_outlines' | 'boroughs';
 
 export type LayerEnablementState = 'enabled' | 'disabled';

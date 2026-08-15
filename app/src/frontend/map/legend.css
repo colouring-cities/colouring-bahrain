@@ -60,7 +60,7 @@
     font-size: 17px;
     border: 1px solid;
     border-radius: 4px;
-    min-height: 1.2em;
+    min-height: 2.2em;
 }
 
 .map-legend .h4,
@@ -89,11 +89,12 @@
 
 .data-legend .key {
     display: inline-block;
-    width: 14px;
-    height: 14px;
-    margin-right: 3px;
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-right: 0.3rem;
     vertical-align: middle;
     overflow: hidden;
+    border: solid 1px #ddd;
     flex-shrink: 0;
 }
 
