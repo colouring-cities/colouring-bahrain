@@ -1,0 +1,86 @@
+================================================================================
+ALL MAP LAYERS — what each button needs to work (Colouring Bahrain / this fork)
+================================================================================
+
+Prerequisites (once):
+  • PostgreSQL + PostGIS, app env: PGHOST PGPORT PGDATABASE PGUSER PGPASSWORD
+  • Migration 058 applied → creates map_parcels, map_protection_zones,
+    map_moh_zones, map_green_water_infrastructure
+  • Table governorates exists (your Bahrain import) for Governorates layer
+  • File public/geometries/boroughs.geojson (copied to build/public on build)
+    for “OpenStreetMap” outline toggle — OR add geometryLayerUrls.borough API later
+  • After changing DB data for tiles: rm -rf tilecache/* and restart app
+
+How to test APIs (replace password/db as needed):
+  curl -s "http://localhost:3000/api/map-layers/moh-zones" | head -c 200
+  curl -s "http://localhost:3000/api/governorates" | head -c 200
+
+--------------------------------------------------------------------------------
+LAYER BUTTON          | DATA SOURCE
+--------------------------------------------------------------------------------
+Parcel Overlay        | POSTGIS map_parcels → GET /api/map-layers/parcels
+Governorates          | POSTGIS governorates → GET /api/governorates
+Protection Zones      | POSTGIS map_protection_zones → /api/map-layers/protection-zones
+MOH Zone              | POSTGIS map_moh_zones → /api/map-layers/moh-zones
+Green/Water Infra.    | POSTGIS map_green_water_infrastructure → /api/map-layers/green-water
+Historic Aerial Photos| cc-config historicMapTileUrl (empty = off for Bahrain)
+Editable Building     | POSTGIS buildings + /tiles/... (needs PG*, Mapnik, tilecache)
+OpenStreetMap (label) | Static /geometries/boroughs.geojson (admin outline, not basemap)
+--------------------------------------------------------------------------------
+
+cc-config.json (already set for Bahrain):
+  geometryLayerApiPaths → parcel, conservation, housing, creative use API paths above.
+  geometryLayerUrls.borough → /geometries/boroughs.geojson
+
+--------------------------------------------------------------------------------
+TO MAKE POSTGIS LAYERS SHOW SHAPES (Parcel, Protection, MOH, Green/Water)
+--------------------------------------------------------------------------------
+
+1) Load polygons in WGS84 (EPSG:4326). Example with ogr2ogr:
+   ogr2ogr -f PostgreSQL "PG:host=localhost dbname=YOUR_DB user=YOUR_USER password=XXX" \
+     your_moh.shp -nln map_moh_zones -lco GEOMETRY_NAME=geom \
+     -t_srs EPSG:4326 -overwrite
+
+2) Check rows:
+   psql ... -c "SELECT count(*), bool_and(ST_IsValid(geom)) FROM map_moh_zones;"
+
+3) If you see a giant orange “frame” on the map: geometry is often one huge polygon
+   with a hole, or wrong CRS. Re-export as 4326, or split features, or run:
+   UPDATE map_moh_zones SET geom = ST_MakeValid(geom) WHERE NOT ST_IsValid(geom);
+
+4) Empty table → API returns "features":[] → toggle works but nothing draws.
+   That is normal until you load data.
+
+--------------------------------------------------------------------------------
+GOVERNORATES
+--------------------------------------------------------------------------------
+
+Needs rows in table `governorates` with column `geom` (geometry, 4326).
+If API 500s, check server logs and that the table exists.
+
+--------------------------------------------------------------------------------
+BOROUGHS / “OpenStreetMap” BUTTON
+--------------------------------------------------------------------------------
+
+Puts red outline from boroughs.geojson. Ensure file exists:
+  app/public/geometries/boroughs.geojson
+Rebuild so it appears under build/public/geometries/.
+
+--------------------------------------------------------------------------------
+EDITABLE BUILDING (coloured footprints)
+--------------------------------------------------------------------------------
+
+Needs buildings.geometry_id → geometries, and tile fields set (e.g. date_year).
+See maintenance/fill_demo_map_colours.sql and clear tilecache after SQL.
+
+--------------------------------------------------------------------------------
+HISTORIC AERIAL
+--------------------------------------------------------------------------------
+
+Set in cc-config.json, for example:
+  "historicMapTileUrl": "https://example.com/tiles/{z}/{x}/{y}.png",
+  "historicMapAttribution": "© Your source"
+
+Empty string = layer toggle does nothing (intentional for Bahrain until you have tiles).
+
+================================================================================
