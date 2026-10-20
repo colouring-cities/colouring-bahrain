@@ -4,7 +4,7 @@ import './legend.css';
 
 import { DownIcon, UpIcon } from '../components/icons';
 import { Logo } from '../components/logo';
-import { CategoryMapDefinition, LegendConfig } from '../config/category-maps-config';
+import { CategoryMapDefinition } from '../config/category-maps-config';
 import { BuildingMapTileset } from '../config/tileserver-config';
 
 interface LegendProps {
@@ -59,8 +59,8 @@ export const Legend : FC<LegendProps> = ({
                 mapColourScaleDefinitions.length > 1 ?
                     <select className='style-select' onChange={e => onMapColourScale(e.target.value as BuildingMapTileset)} value={mapColourScale}>
                         {
-                            mapColourScaleDefinitions.map(def => 
-                                <option key={def.mapStyle} value={def.mapStyle}>{def.legend.title}</option>    
+                            mapColourScaleDefinitions.map(def =>
+                                <option key={def.mapStyle} value={def.mapStyle}>{def.legend.title}</option>
                             )
                         }
                     </select> :
@@ -68,7 +68,7 @@ export const Legend : FC<LegendProps> = ({
             }
             {
                 elements.length > 0 &&
-                    <button className="expander-button btn btn-outline-secondary btn-sm" type="button" onClick={handleToggle} >
+                    <button className="expander-button btn btn-sm" type="button" onClick={handleToggle} >
                         {
                             collapseList ?
                                 <UpIcon /> :
@@ -81,7 +81,7 @@ export const Legend : FC<LegendProps> = ({
             }
             {
                 elements.length === 0 ?
-                    ( disclaimer ? <ul className={collapseList ? 'collapse data-legend' : 'data-legend'} ><p className='legend-disclaimer'>{disclaimer}</p></ul> : <p className="data-intro">Coming soon…</p>) :
+                    ( disclaimer ? <ul className={collapseList ? 'collapse data-legend' : 'data-legend'} ><p className='legend-disclaimer'>{disclaimer}</p></ul> : null) :
                     <ul className={collapseList ? 'collapse data-legend' : 'data-legend'} >
                         {
                             disclaimer && <p className='legend-disclaimer'>{disclaimer}</p>
@@ -96,8 +96,49 @@ export const Legend : FC<LegendProps> = ({
                                     content = <h6>{item.subtitle}</h6>;
                                 } else {
                                     key = `${item.text}-${item.color}`;
+                                    const symbol = item.symbol ?? 'swatch';
+                                    let keyStyle: React.CSSProperties;
+                                    if (item.hatch) {
+                                        keyStyle = {
+                                            backgroundImage: `repeating-linear-gradient(
+                                                -45deg,
+                                                transparent,
+                                                transparent 2px,
+                                                ${item.color} 2px,
+                                                ${item.color} 3.5px
+                                            )`,
+                                            backgroundColor: 'transparent',
+                                            border: `1.5px solid ${item.color}`,
+                                            borderRadius: 0,
+                                            width: '16px',
+                                            height: '16px',
+                                        };
+                                    } else if (symbol === 'dashed-line') {
+                                        keyStyle = {
+                                            background: 'transparent',
+                                            border: 'none',
+                                            borderTop: `3px dashed ${item.color}`,
+                                            width: '22px',
+                                            height: 0,
+                                            marginTop: '6px',
+                                            borderRadius: 0,
+                                        };
+                                    } else if (symbol === 'solid-line') {
+                                        keyStyle = {
+                                            background: 'transparent',
+                                            border: 'none',
+                                            borderTop: `2px solid ${item.color}`,
+                                            width: '22px',
+                                            height: 0,
+                                            marginTop: '6px',
+                                            borderRadius: 0,
+                                        };
+                                    } else {
+                                        // Default + former 'circle' symbols: solid colour boxes
+                                        keyStyle = { background: item.color, border: item.border, borderRadius: 0 };
+                                    }
                                     content = <>
-                                        <div className="key" style={ { background: item.color, border: item.border } } />
+                                        <div className="key" style={keyStyle} />
                                         { item.text }
                                     </>;
                                 }

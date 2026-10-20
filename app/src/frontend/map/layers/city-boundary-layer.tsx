@@ -9,9 +9,24 @@ export function CityBoundaryLayer() {
 
     useEffect(() => {
         apiGet('/geometries/boundary-detailed.geojson')
-            .then(data => setBoundaryGeojson(data as GeoJsonObject));
+            .then(data => {
+                if (data && data.type === 'FeatureCollection') {
+                    setBoundaryGeojson(data as GeoJsonObject);
+                } else {
+                    setBoundaryGeojson(null);
+                }
+            })
+            .catch(() => setBoundaryGeojson(null));
     }, []);
 
-    return boundaryGeojson &&
-        <GeoJSON data={boundaryGeojson} style={{color: '#bbb', fill: false}}/>;
+    // Force no fill - return null to completely disable this layer
+    return null;
+    
+    // Original code commented out to prevent any rendering
+    // return boundaryGeojson &&
+    //     <GeoJSON 
+    //         data={boundaryGeojson} 
+    //         style={{color: '#bbb', fill: false, fillOpacity: 0, weight: 1}}
+    //         pathOptions={{fill: false, fillOpacity: 0}}
+    //     />;
 }

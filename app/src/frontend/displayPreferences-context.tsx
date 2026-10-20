@@ -26,10 +26,6 @@ interface DisplayPreferencesContextState {
     conservationSwitch: (e: React.FormEvent<HTMLFormElement>) => void;
     conservationSwitchOnClick: React.MouseEventHandler<HTMLButtonElement>;
 
-    worldHeritageSites: LayerEnablementState;
-    worldHeritageSitesSwitch: (e: React.FormEvent<HTMLFormElement>) => void;
-    worldHeritageSitesSwitchOnClick: React.MouseEventHandler<HTMLButtonElement>;
-
     parcel: LayerEnablementState;
     parcelSwitch: (e: React.FormEvent<HTMLFormElement>) => void;
     parcelSwitchOnClick: React.MouseEventHandler<HTMLButtonElement>;
@@ -41,14 +37,27 @@ interface DisplayPreferencesContextState {
     historicData: LayerEnablementState;
     historicDataSwitch: (e: React.FormEvent<HTMLFormElement>) => void;
     historicDataSwitchOnClick: React.MouseEventHandler<HTMLButtonElement>;
+    /** Force historic-data mode on/off (e.g. when switching map colour scale) */
+    setHistoricDataState: (state: LayerEnablementState) => void;
 
     historicMap: LayerEnablementState;
     historicMapSwitch: (e: React.FormEvent<HTMLFormElement>) => void;
     historicMapSwitchOnClick: React.MouseEventHandler<HTMLButtonElement>;
+    setHistoricMapState: (state: LayerEnablementState) => void;
 
     editableBuildings: LayerEnablementState;
     editableBuildingsSwitch: (e: React.FormEvent<HTMLFormElement>) => void;
     editableBuildingsSwitchOnClick: React.MouseEventHandler<HTMLButtonElement>;
+    /** Programmatically enable/disable the Editable Building layer (e.g. Coming soon categories) */
+    setEditableBuildingsState: (state: LayerEnablementState) => void;
+
+    governorates: LayerEnablementState;
+    governoratesSwitch: (e: React.FormEvent<HTMLFormElement>) => void;
+    governoratesSwitchOnClick: React.MouseEventHandler<HTMLButtonElement>;
+
+    archaeological: LayerEnablementState;
+    archaeologicalSwitch: (e: React.FormEvent<HTMLFormElement>) => void;
+    archaeologicalSwitchOnClick: React.MouseEventHandler<HTMLButtonElement>;
 
     darkLightTheme: MapTheme;
     darkLightThemeSwitch: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -87,10 +96,6 @@ export const DisplayPreferencesContext = createContext<DisplayPreferencesContext
     conservationSwitch: stub,
     conservationSwitchOnClick: undefined,
 
-    worldHeritageSites: undefined,
-    worldHeritageSitesSwitch: stub,
-    worldHeritageSitesSwitchOnClick: undefined,
-
     parcel: undefined,
     parcelSwitch: stub,
     parcelSwitchOnClick: undefined,
@@ -102,14 +107,25 @@ export const DisplayPreferencesContext = createContext<DisplayPreferencesContext
     historicData: undefined,
     historicDataSwitch: stub,
     historicDataSwitchOnClick: undefined,
+    setHistoricDataState: stub as any,
 
     historicMap: undefined,
     historicMapSwitch: stub,
     historicMapSwitchOnClick: undefined,
+    setHistoricMapState: stub as any,
 
     editableBuildings: undefined,
     editableBuildingsSwitch: stub,
     editableBuildingsSwitchOnClick: undefined,
+    setEditableBuildingsState: stub,
+
+    governorates: undefined,
+    governoratesSwitch: stub,
+    governoratesSwitchOnClick: undefined,
+
+    archaeological: undefined,
+    archaeologicalSwitch: stub,
+    archaeologicalSwitchOnClick: undefined,
 
     darkLightTheme: undefined,
     darkLightThemeSwitch: stub,
@@ -130,10 +146,11 @@ export const DisplayPreferencesProvider: React.FC<{}> = ({children}) => {
     const defaultBorough = 'enabled'
     const defaultParcel = 'disabled'
     const defaultConservation = 'disabled'
-    const defaultWorldHeritageSites = 'disabled'
     const defaultHistoricData = 'disabled'
     const defaultHistoricMap = 'disabled'
     const defaultEditableBuildings = 'enabled'
+    const defaultGovernorates = 'disabled'
+    const defaultArchaeological = 'disabled'
     const defaultShowLayerSelection = 'disabled'
     const [vista, setVista] = useState<LayerEnablementState>(defaultVista);
     const [flood, setFlood] = useState<LayerEnablementState>(defaultFlood);
@@ -142,10 +159,11 @@ export const DisplayPreferencesProvider: React.FC<{}> = ({children}) => {
     const [borough, setBorough] = useState<LayerEnablementState>(defaultBorough);
     const [parcel, setParcel] = useState<LayerEnablementState>(defaultParcel);
     const [conservation, setConservation] = useState<LayerEnablementState>(defaultConservation);
-    const [worldHeritageSites, setWorldHeritageSites] = useState<LayerEnablementState>(defaultWorldHeritageSites);
     const [historicData, setHistoricData] = useState<LayerEnablementState>(defaultHistoricData);
     const [historicMap, setHistoricMap] = useState<LayerEnablementState>(defaultHistoricMap);
     const [editableBuildings, setEditableBuildings] = useState<LayerEnablementState>(defaultEditableBuildings);
+    const [governorates, setGovernorates] = useState<LayerEnablementState>(defaultGovernorates);
+    const [archaeological, setArchaeological] = useState<LayerEnablementState>(defaultArchaeological);
     const [darkLightTheme, setDarkLightTheme] = useState<MapTheme>('night');
     const [showLayerSelection, setShowLayerSelection] = useState<LayerEnablementState>(defaultShowLayerSelection);
 
@@ -165,10 +183,11 @@ export const DisplayPreferencesProvider: React.FC<{}> = ({children}) => {
             setBorough(defaultBorough)
             setParcel(defaultParcel);
             setConservation(defaultConservation);
-            setWorldHeritageSites(defaultWorldHeritageSites);
             setHistoricData(defaultHistoricData);
             setHistoricMap(defaultHistoricMap);
             setEditableBuildings(defaultEditableBuildings)
+            setGovernorates(defaultGovernorates);
+            setArchaeological(defaultArchaeological);
             setShowLayerSelection(defaultShowLayerSelection); // reset layers + hiding this panel is integrated into one action
             //setDarkLightTheme('night'); // reset only layers
     },
@@ -197,9 +216,6 @@ export const DisplayPreferencesProvider: React.FC<{}> = ({children}) => {
         if(conservation != defaultConservation) {
             return true;
         }
-        if(worldHeritageSites != defaultWorldHeritageSites) {
-            return true;
-        }
         if(historicData != defaultHistoricData) {
             return true;
         }
@@ -209,7 +225,12 @@ export const DisplayPreferencesProvider: React.FC<{}> = ({children}) => {
         if(editableBuildings != defaultEditableBuildings) {
             return true;
         }
-        setEditableBuildings
+        if(governorates != defaultGovernorates) {
+            return true;
+        }
+        if(archaeological != defaultArchaeological) {
+            return true;
+        }
         //darkLightTheme not handled here
         return false;
     }
@@ -319,21 +340,6 @@ export const DisplayPreferencesProvider: React.FC<{}> = ({children}) => {
         setConservation(newConservation);
     }
 
-    const worldHeritageSitesSwitch = useCallback(
-        (e) => {
-            flipWorldHeritageSites(e)
-        },
-        [worldHeritageSites],
-    )
-    const worldHeritageSitesSwitchOnClick = (e) => {
-        flipWorldHeritageSites(e)
-    }
-    function flipWorldHeritageSites(e) {
-        e.preventDefault();
-        const newWorldHeritageSites = (worldHeritageSites === 'enabled')? 'disabled' : 'enabled';
-        setWorldHeritageSites(newWorldHeritageSites);
-    }
-
     const historicDataSwitch = useCallback(
         (e) => {
             if (historicMap === 'enabled') {
@@ -351,6 +357,9 @@ export const DisplayPreferencesProvider: React.FC<{}> = ({children}) => {
         const newHistoric = (historicData === 'enabled')? 'disabled' : 'enabled';
         setHistoricData(newHistoric);
     }
+    const setHistoricDataState = useCallback((state: LayerEnablementState) => {
+        setHistoricData(state);
+    }, []);
 
     const historicMapSwitch = useCallback(
         (e) => {
@@ -369,6 +378,9 @@ export const DisplayPreferencesProvider: React.FC<{}> = ({children}) => {
         const newHistoric = (historicMap === 'enabled')? 'disabled' : 'enabled';
         setHistoricMap(newHistoric);
     }
+    const setHistoricMapState = useCallback((state: LayerEnablementState) => {
+        setHistoricMap(state);
+    }, []);
 
     const editableBuildingsSwitch = useCallback(
         (e) => {
@@ -383,6 +395,39 @@ export const DisplayPreferencesProvider: React.FC<{}> = ({children}) => {
         e.preventDefault();
         const newValue = (editableBuildings === 'enabled')? 'disabled' : 'enabled';
         setEditableBuildings(newValue);
+    }
+    const setEditableBuildingsState = useCallback((state: LayerEnablementState) => {
+        setEditableBuildings(state);
+    }, []);
+
+    const governoratesSwitch = useCallback(
+        (e) => {
+            flipGovernorates(e)
+        },
+        [governorates],
+    )
+    const governoratesSwitchOnClick = (e) => {
+        flipGovernorates(e)
+    }
+    function flipGovernorates(e) {
+        e.preventDefault();
+        const newValue = (governorates === 'enabled')? 'disabled' : 'enabled';
+        setGovernorates(newValue);
+    }
+
+    const archaeologicalSwitch = useCallback(
+        (e) => {
+            flipArchaeological(e)
+        },
+        [archaeological],
+    )
+    const archaeologicalSwitchOnClick = (e) => {
+        flipArchaeological(e)
+    }
+    function flipArchaeological(e) {
+        e.preventDefault();
+        const newValue = (archaeological === 'enabled')? 'disabled' : 'enabled';
+        setArchaeological(newValue);
     }
 
     const darkLightThemeSwitch = useCallback(
@@ -436,9 +481,6 @@ export const DisplayPreferencesProvider: React.FC<{}> = ({children}) => {
             conservation,
             conservationSwitch,
             conservationSwitchOnClick,
-            worldHeritageSites,
-            worldHeritageSitesSwitch,
-            worldHeritageSitesSwitchOnClick,
             parcel,
             parcelSwitch,
             parcelSwitchOnClick,
@@ -450,14 +492,25 @@ export const DisplayPreferencesProvider: React.FC<{}> = ({children}) => {
             historicData,
             historicDataSwitch,
             historicDataSwitchOnClick,
+            setHistoricDataState,
 
             historicMap,
             historicMapSwitch,
             historicMapSwitchOnClick,
+            setHistoricMapState,
 
             editableBuildings,
             editableBuildingsSwitch,
             editableBuildingsSwitchOnClick,
+            setEditableBuildingsState,
+
+            governorates,
+            governoratesSwitch,
+            governoratesSwitchOnClick,
+
+            archaeological,
+            archaeologicalSwitch,
+            archaeologicalSwitchOnClick,
 
             darkLightTheme,
             darkLightThemeSwitch,

@@ -87,6 +87,10 @@ export const buildingAttributesConfig = valueType<DataFieldConfig>()({ /* eslint
         edit: true,
         verify: true
     },
+    location_parcel_number: {
+        edit: true,
+        verify: true
+    },
     location_address_source: {
         edit: true,
         verify: true
@@ -112,6 +116,10 @@ export const buildingAttributesConfig = valueType<DataFieldConfig>()({ /* eslint
         verify: true
     },
     location_alternative_footprint_links: {
+        edit: true,
+        verify: true
+    },
+    building_footprint_issues: {
         edit: true,
         verify: true
     },
@@ -144,18 +152,6 @@ export const buildingAttributesConfig = valueType<DataFieldConfig>()({ /* eslint
         verify: true,
     },
     date_upper: {
-        edit: true,
-        verify: true,
-    },
-    date_year_inferred: {
-        edit: true,
-        verify: true,
-    },
-    date_year_inferred_lower: {
-        edit: true,
-        verify: true,
-    },
-    date_year_inferred_upper: {
         edit: true,
         verify: true,
     },
@@ -291,18 +287,6 @@ export const buildingAttributesConfig = valueType<DataFieldConfig>()({ /* eslint
         edit: true,
         verify: true,
     },
-    construction_material_window_frame: {
-        edit: true,
-        verify: true,
-    },
-    construction_material_window_frame_source_type: {
-        edit: true,
-        verify: true,
-    },
-    construction_material_window_frame_source_links: {
-        edit: true,
-        verify: true,
-    },
     construction_core_material: {
         edit: true,
         verify: true,
@@ -430,7 +414,30 @@ export const buildingAttributesConfig = valueType<DataFieldConfig>()({ /* eslint
         edit: true,
         verify: true,
     },
-
+    construction_windows_material: {
+        edit: true,
+        verify: true,
+    },
+    construction_windows_material_source_type: {
+        edit: true,
+        verify: true,
+    },
+    construction_windows_material_source_links: {
+        edit: true,
+        verify: true,
+    },
+    construction_door_material: {
+        edit: true,
+        verify: true,
+    },
+    construction_door_material_source_type: {
+        edit: true,
+        verify: true,
+    },
+    construction_door_material_source_links: {
+        edit: true,
+        verify: true,
+    },
 
     planning_portal_link: {
         edit: true,
@@ -517,6 +524,18 @@ export const buildingAttributesConfig = valueType<DataFieldConfig>()({ /* eslint
         verify: true,
     },
     planning_historic_area_assessment_url: {
+        edit: true,
+        verify: true,
+    },
+    conservation_designation: {
+        edit: true,
+        verify: true,
+    },
+    planning_listing_criteria: {
+        edit: true,
+        verify: true,
+    },
+    heritage_value: {
         edit: true,
         verify: true,
     },
@@ -1021,6 +1040,10 @@ export const buildingAttributesConfig = valueType<DataFieldConfig>()({ /* eslint
         edit: true,
         verify: true
     },
+    disaster_collapse_risk: {
+        edit: true,
+        verify: true,
+    },
     disaster_assessment_method: {
         edit: true,
         verify: true
@@ -1036,6 +1059,34 @@ export const buildingAttributesConfig = valueType<DataFieldConfig>()({ /* eslint
     disaster_end_date : {
         edit: true,
         verify: true
+    },
+    heritage_assessment_criteria: {
+        edit: true,
+        verify: true,
+    },
+    inspection_undergone: {
+        edit: true,
+        verify: true,
+    },
+    inspection_date: {
+        edit: true,
+        verify: true,
+    },
+    inspection_purpose: {
+        edit: true,
+        verify: true,
+    },
+    engagement_full_name: {
+        edit: true,
+        verify: true,
+    },
+    engagement_ownership_evidence: {
+        edit: true,
+        verify: true,
+    },
+    engagement_attachments: {
+        edit: true,
+        verify: true,
     },
     context_front_garden : {
         edit: true,
@@ -1190,6 +1241,14 @@ export const buildingAttributesConfig = valueType<DataFieldConfig>()({ /* eslint
         verify: true
     },
     typology_classification : {
+        edit: true,
+        verify: true
+    },
+    size_floors_category : {
+        edit: true,
+        verify: true
+    },
+    staircase_connected_to_facade: {
         edit: true,
         verify: true
     },

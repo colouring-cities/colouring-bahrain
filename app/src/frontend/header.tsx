@@ -19,7 +19,7 @@ interface MenuLink {
 }
 
 
-function getCurrentMenuLinks(username: string): MenuLink[][] {
+function getCurrentMenuLinks(username?: string): MenuLink[][] {
     return [
         [
             ...(
@@ -34,10 +34,6 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
                         {
                             to: "/login.html",
                             text: "Log in"
-                        },
-                        {
-                            to: "/sign-up.html",
-                            text: "Sign up"
                         }
                     ]
             )
@@ -58,12 +54,6 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
             {
                 to: "https://github.com/colouring-cities/manual/wiki",
                 text: "Colouring Cities Open Manual/Wiki",
-                disabled: false,
-                external: true
-            },
-            {
-                to: config.githubURL,
-                text: "Open code",
                 external: true
             },
             {
@@ -79,35 +69,18 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
                 external: true
             },
             {
-                to: config.manualURL,
+                to: "/about.html",
                 text: "About the Colouring " + config.cityName + " Project",
-                external: true
             },
             {
-                to: "https://github.com/colouring-cities/manual/wiki/M3.1-News",
-                text: "Colouring Cities development news",
-                external: true
-            },
-            {
-                to: "https://github.com/colouring-cities/manual/wiki/How‐to‐use-Platform-Guides",
-                text: "How to Use",
-                external: true
-            },
-            {
-                to: "https://github.com/colouring-cities/manual/wiki/E1.--DATA",
+                to: "/data-categories.html",
                 text: "Data Categories",
-                external: true
-            },
-            {
-                to: "https://github.com/colouring-cities/manual/wiki/M3.2-Colouring-Britain:-Who's-Involved%3F",
-                text: "Who's Involved?",
-                external: true
             },
             {
                 to: "https://github.com/colouring-cities/manual/wiki/ETHICAL-FRAMEWORK",
                 text: "Ethical Framework",
                 external: true
-            }
+            },
         ],
         [
             {
@@ -115,41 +88,27 @@ function getCurrentMenuLinks(username: string): MenuLink[][] {
                 text: "Top Contributors"
             },
             {
-                to: config.githubURL+"/discussions",
+                to: config.githubURL + "/discussions",
                 text: "Discussion Forum (GitHub)",
                 external: true
             },
-            // {
-            //     to: "https://discuss.colouring.london/c/blog/9",
-            //     text: "Blog",
-            //     external: true
-            // },
         ],
         [
             {
-                to: "https://github.com/colouring-cities/manual/wiki/F2.-PROTOCOLS-&-CODES-OF-CONDUCT#ccrp-contributor-privacy-policy",
+                to: "/privacy-policy.html",
                 text: "Privacy Policy",
-                external: true
             },
             {
-                to: "https://github.com/colouring-cities/manual/wiki/F2.-PROTOCOLS-&-CODES-OF-CONDUCT#ccrp-contributor--data-user-data-accuracy--ethical-use-agreement",
-                text: "Contributor & Data User Data Accuracy & Ethical Use Agreement",
-                external: true
+                to: "/data-accuracy.html",
+                text: "The Data Accuracy Agreement",
             },
             {
-                to: "https://github.com/colouring-cities/manual/wiki/F2.-PROTOCOLS-&-CODES-OF-CONDUCT#ccrp-contributor-code-of-conduct",
+                to: "/code-of-conduct.html",
                 text: "Code of Conduct",
-                external: true
             },
             {
-                to: "https://github.com/colouring-cities/manual/wiki/F2.-PROTOCOLS-&-CODES-OF-CONDUCT#ccrp-equality-diversity-and-inclusion-policy",
-                text: "Equality, Diversity and Inclusion",
-                external: true
-            },
-            {
-                to: "https://github.com/colouring-cities/manual/wiki/F2.-PROTOCOLS-&-CODES-OF-CONDUCT#ccrp-protocols-for-international-academic-partners",
-                text: "CCRP Academic Partner Protocols",
-                external: true
+                to: "/contributor-agreement.html",
+                text: "Contributor Agreement",
             },
         ],
         [
@@ -173,7 +132,7 @@ const Menu: React.FC<{ onNavigate: () => void }> = ({ onNavigate }) => {
                         <li className='nav-item' key={`${item.to}-${item.text}`}>
                             {
                                 item.disabled ?
-                                    <LinkStub note={item.note}>{item.text}</LinkStub> :
+                                    <LinkStub note={item.note ?? ''}>{item.text}</LinkStub> :
                                     item.external ?
                                         <ExternalNavLink to={item.to}>{item.text}</ExternalNavLink> :
                                         <InternalNavLink to={item.to} onClick={onNavigate}>{item.text}</InternalNavLink>
@@ -193,7 +152,7 @@ const InternalNavLink: React.FC<{to: string; onClick: () => void}> = ({ to, onCl
 );
 
 const ExternalNavLink: React.FC<{to: string}> = ({ to, children }) => (
-    <a className="nav-link" href={to} target="_blank">
+    <a className="nav-link" href={to} target="_blank" rel="noopener noreferrer">
         {children}
     </a>
 );

@@ -1,7 +1,7 @@
 import { GeoJsonObject } from 'geojson';
 import React, { useEffect, useState } from 'react';
 import { GeoJSON } from 'react-leaflet';
-import { LayerEnablementState } from '../../config/map-config';
+import { getGeometryLayerRequestPath } from '../../config/geometry-layer-urls';
 import { apiGet } from '../../apiHelpers';
 import { useDisplayPreferences } from '../../displayPreferences-context';
 
@@ -10,20 +10,28 @@ export function ParcelBoundaryLayer() {
     const { parcel } = useDisplayPreferences();
 
     useEffect(() => {
-        apiGet('/geometries/parcels_city_of_london.geojson')
-            .then(data => setBoundaryGeojson(data as GeoJsonObject));
-    }, []);
+        // The complete parcel layer is several MB; load it only when requested.
+        if (parcel !== 'enabled' || boundaryGeojson) return;
 
-    if(parcel == "enabled") {
-        return boundaryGeojson &&
-        <GeoJSON 
-        attribution='Parcel boundary from <a href=https://use-land-property-data.service.gov.uk/datasets/inspire/download>Index polygons spatial data (INSPIRE)</a> - <a href=www.nationalarchives.gov.uk/doc/open-government-licence/version/3/>Open Government Licence v3</a>'
-        data={boundaryGeojson}
-        style={{color: '#ff0', fill: false, weight: 1}}
-       /* minNativeZoom={17}*/
-    />;
-    } else {
-        return <div></div>
+        apiGet(getGeometryLayerRequestPath('parcel'))
+            .then(data => {
+                if (data && data.type === 'FeatureCollection') {
+                    setBoundaryGeojson(data as GeoJsonObject);
+                } else {
+                    setBoundaryGeojson(null);
+                }
+            })
+            .catch(() => setBoundaryGeojson(null));
+    }, [parcel, boundaryGeojson]);
+
+    if (parcel == "enabled" && boundaryGeojson) {
+        return (
+            <GeoJSON
+                attribution='Parcel boundaries — Colouring Bahrain'
+                data={boundaryGeojson}
+                style={{ color: '#ff0', fill: false, weight: 1 }}
+            />
+        );
     }
+    return <div></div>;
 }
-

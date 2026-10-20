@@ -23,6 +23,18 @@ import { defaultMapCategory, categoryMapsConfig } from './config/category-maps-c
 import { useMultiEditData } from './hooks/use-multi-edit-data';
 import { useAuth } from './auth-context';
 import { sendBuildingUpdate } from './api-data/building-update';
+import { useDisplayPreferences } from './displayPreferences-context';
+
+/** Coming soon category tiles that should hide Editable Buildings + clear selection */
+const COMING_SOON_HIDE_BUILDINGS: Category[] = [
+    Category.GreenUrbanInfrastructure,
+    Category.CommerceActivity,
+    Category.Social,
+];
+
+function isComingSoonHideBuildingsCategory(cat: Category | undefined): boolean {
+    return cat != undefined && COMING_SOON_HIDE_BUILDINGS.includes(cat);
+}
 
 /**
  * Load and render ColouringMap component on client-side only.
@@ -71,6 +83,7 @@ function useStateWithOptions<T>(defaultValue: T, options: T[]): [T, (x: T) => vo
 
 export const MapApp: React.FC<MapAppProps> = props => {
     const { user } = useAuth();
+    const { setEditableBuildingsState, setHistoricDataState, setHistoricMapState } = useDisplayPreferences();
     const [categoryUrlParam] = useUrlCategoryParam();
 
     const [currentCategory, setCategory] = useState<Category>();
@@ -87,6 +100,20 @@ export const MapApp: React.FC<MapAppProps> = props => {
     useEffect(() => {
         updateRevisionId(building?.revision_id)
     }, [building]);
+
+    // Coming soon categories: turn off Editable Buildings and deselect any building
+    useEffect(() => {
+        if (isComingSoonHideBuildingsCategory(currentCategory)) {
+            setEditableBuildingsState('disabled');
+            if (selectedBuildingId != undefined) {
+                updateBuilding(undefined);
+                setSelectedBuildingId(undefined);
+            }
+        } else if (currentCategory != undefined) {
+            // Restore buildings when leaving a Coming soon category
+            setEditableBuildingsState('enabled');
+        }
+    }, [currentCategory]); // eslint-disable-line react-hooks/exhaustive-deps -- only react to category change
     
     const [mode] = useUrlModeParam();
     const viewEditMode = unless(mode, 'multi-edit');
@@ -94,10 +121,14 @@ export const MapApp: React.FC<MapAppProps> = props => {
     const [multiEditData, multiEditError] = useMultiEditData();
 
     const selectBuilding = useCallback((selectedBuilding: Building) => {
+        // Don't select buildings while on Coming soon categories (Editable Buildings off)
+        if (isComingSoonHideBuildingsCategory(currentCategory)) {
+            return;
+        }
         const currentId = selectedBuildingId;
         updateBuilding(selectedBuilding);
         setSelectedBuildingId(setOrToggle(currentId, selectedBuilding?.building_id));
-    }, [selectedBuildingId, setSelectedBuildingId, updateBuilding, building]);
+    }, [selectedBuildingId, setSelectedBuildingId, updateBuilding, building, currentCategory]);
 
     const colourBuilding = useCallback(async (building: Building) => {
         const buildingId = building?.building_id;
@@ -134,7 +165,18 @@ export const MapApp: React.FC<MapAppProps> = props => {
 
     const categoryMapDefinitions = useMemo(() => categoryMapsConfig[displayCategory], [displayCategory]);
     const availableMapStyles = useMemo(() => categoryMapDefinitions.map(x => x.mapStyle), [categoryMapDefinitions]);
-    const [mapColourScale, setMapColourScale] = useStateWithOptions<BuildingMapTileset>(undefined, availableMapStyles);
+    // Set default to first available map style so buildings are colored by default
+    const defaultMapStyle = availableMapStyles.length > 0 ? availableMapStyles[0] : undefined;
+    const [mapColourScale, setMapColourScale] = useStateWithOptions<BuildingMapTileset>(defaultMapStyle, availableMapStyles);
+
+    /** Legend / panel colour scale switch — avoid Survival historic overlay sticking onto Period built */
+    const handleMapColourScale = useCallback((style: BuildingMapTileset) => {
+        setMapColourScale(style);
+        if (style === 'date_year') {
+            setHistoricDataState('disabled');
+            setHistoricMapState('disabled');
+        }
+    }, [setMapColourScale, setHistoricDataState, setHistoricMapState]);
 
     return (
         <>
@@ -162,7 +204,7 @@ export const MapApp: React.FC<MapAppProps> = props => {
                                     onBuildingUpdate={handleBuildingUpdate}
                                     onUserVerifiedUpdate={handleUserVerifiedUpdate}
                                     mapColourScale={mapColourScale}
-                                    onMapColourScale={setMapColourScale}
+                                    onMapColourScale={handleMapColourScale}
                                 />
                             </Route>
                         </Switch>
@@ -178,7 +220,7 @@ export const MapApp: React.FC<MapAppProps> = props => {
                 revisionId={revisionId}
                 onBuildingAction={mode === 'multi-edit' ? colourBuilding : selectBuilding}
                 mapColourScale={mapColourScale}
-                onMapColourScale={setMapColourScale}
+                onMapColourScale={handleMapColourScale}
                 categoryMapDefinitions={categoryMapDefinitions}
             />
         </>

@@ -36,13 +36,6 @@ const LAYER_QUERIES = {
         FROM
             buildings
         WHERE building_id = !@highlight!`,
-    age_amalgamated: `
-        SELECT
-            geometry_id,
-            COALESCE(date_year, date_year_inferred, (date_year_inferred_upper + date_year_inferred_lower)/2) AS date_year
-        FROM
-            buildings
-        WHERE COALESCE(date_year, date_year_inferred, date_year_inferred_upper + date_year_inferred_lower) IS NOT NULL`,
     date_year: `
         SELECT
             geometry_id,
@@ -50,13 +43,6 @@ const LAYER_QUERIES = {
         FROM
             buildings
         WHERE date_year IS NOT NULL`,
-    age_inferred: `
-        SELECT
-            geometry_id,
-            COALESCE(date_year_inferred, (date_year_inferred_upper + date_year_inferred_lower)/2) AS date_year
-        FROM
-            buildings
-        WHERE COALESCE(date_year_inferred, date_year_inferred_upper + date_year_inferred_lower) IS NOT NULL`,
     date_year_completed: `
         SELECT
             geometry_id,
@@ -99,11 +85,29 @@ const LAYER_QUERIES = {
     size_height: `
         SELECT
             geometry_id,
-            size_height_apex AS size_height
+            (
+                COALESCE(
+                    size_height_apex,
+                    CASE size_floors_category
+                        WHEN 'GF' THEN 3.2
+                        WHEN 'GF+ Mezzanine' THEN 5.5
+                        WHEN 'GF+1' THEN 7.5
+                        WHEN 'GF+ Mezzanine+1' THEN 9.5
+                        WHEN 'GF+2' THEN 11.5
+                        WHEN 'GF+ Mezzanine+2' THEN 13.5
+                        WHEN 'GF+3' THEN 15.5
+                        WHEN 'GF+ Mezzanine+3' THEN 18.0
+                        WHEN 'GF+4' THEN 22.0
+                        WHEN 'More than GF+ 4' THEN 35.0
+                        ELSE NULL
+                    END
+                )
+            )::real AS size_height
         FROM
             buildings
         WHERE
-            size_height_apex IS NOT NULL`,
+            size_height_apex IS NOT NULL
+            OR size_floors_category IS NOT NULL`,
     size_total_floors: `
         SELECT
             geometry_id,
@@ -116,6 +120,14 @@ const LAYER_QUERIES = {
             size_storeys_attic IS NOT NULL 
             AND
             size_storeys_basement IS NOT NULL`,
+    size_floors_category: `
+        SELECT
+            geometry_id,
+            size_floors_category
+        FROM
+            buildings
+        WHERE
+            size_floors_category IS NOT NULL`,
     size_storeys_basement: `
         SELECT
             geometry_id,
@@ -176,14 +188,6 @@ const LAYER_QUERIES = {
             buildings
         WHERE
             construction_roof_covering IS NOT NULL`,
-    construction_material_window_frame: `
-        SELECT
-            geometry_id,
-            construction_material_window_frame
-        FROM
-            buildings
-        WHERE
-            construction_material_window_frame IS NOT NULL`,
     location: `
         SELECT blds_with_data.* 
         FROM (
@@ -205,231 +209,14 @@ const LAYER_QUERIES = {
                     buildings
             ) AS blds_with_data
         WHERE blds_with_data.location_info_count > 0`,
-    count_crowdsourced: `
-        SELECT blds_with_data.* 
-        FROM (
-            SELECT
-                    geometry_id,
-                    (
-                        case when jsonb_array_length(demolished_buildings) = 0 then 0 else 1 end +
-
-                        case when community_type_worth_keeping_total > 0 THEN 1 else 0 end +
-                        case when community_local_significance_total > 0 THEN 1 else 0 end +
-                        case when likes_total > 0 THEN 1 else 0 end +
-                        case when community_expected_planning_application_total > 0 THEN 1 else 0 end +
-                        case when community_building_hominess_count > 0 THEN 1 else 0 end +
-                        case when community_building_coherence_count > 0 THEN 1 else 0 end +
-                        case when community_building_fascination_count > 0 THEN 1 else 0 end +
-                        case when community_streetscape_hominess_count > 0 THEN 1 else 0 end +
-                        case when community_streetscape_coherence_count > 0 THEN 1 else 0 end +
-                        case when community_streetscape_fascination_count > 0 THEN 1 else 0 end +
-
-                        case when COALESCE(planning_heritage_at_risk_url, '') = '' then 0 else 1 end +
-                        case when COALESCE(planning_in_apa_url, '') = '' then 0 else 1 end +
-                        case when COALESCE(planning_local_list_url, '') = '' then 0 else 1 end +
-                        case when COALESCE(planning_historic_area_assessment_url, '') = '' then 0 else 1 end +
-                        case when COALESCE(planning_glher_url, '') = '' then 0 else 1 end +
-                        case when COALESCE(planning_crowdsourced_planning_id, '') = '' then 0 else 1 end +
-                        case when COALESCE(planning_in_conservation_area_id, '') = '' then 0 else 1 end +
-                        case when COALESCE(planning_conservation_area_name, '') = '' then 0 else 1 end +
-
-                        case when location_name IS NULL then 0 else 1 end +
-                        case when location_name_link IS NULL then 0 else 1 end +
-                        case when location_residential_name_link IS NULL then 0 else 1 end +
-                        case when location_number IS NULL then 0 else 1 end +
-                        case when location_street IS NULL then 0 else 1 end +
-                        case when location_line_two IS NULL then 0 else 1 end +
-                        case when location_town IS NULL then 0 else 1 end +
-                        case when location_postcode IS NULL then 0 else 1 end +
-                        case when location_address_source IS NULL then 0 else 1 end +
-                        case when location_address_links IS NULL then 0 else 1 end +
-                        case when location_alternative_footprint_links IS NULL then 0 else 1 end +
-                        case when location_subdivisions_source_type IS NULL then 0 else 1 end +
-                        case when location_subdivisions_source_links IS NULL then 0 else 1 end +
-                        case when current_landuse_group IS NULL then 0 else 1 end +
-                        case when current_landuse_source IS NULL then 0 else 1 end +
-                        case when current_landuse_source_detail IS NULL then 0 else 1 end +
-                        case when current_landuse_link IS NULL then 0 else 1 end +
-                        case when building_attachment_source_type IS NULL then 0 else 1 end +
-                        case when building_attachment_source_links IS NULL then 0 else 1 end +
-                        case when building_residential_typology_description IS NULL then 0 else 1 end +
-                        case when date_year IS NULL then 0 else 1 end +
-                        case when date_year_completed IS NULL then 0 else 1 end +
-                        case when date_lower IS NULL then 0 else 1 end +
-                        case when date_upper IS NULL then 0 else 1 end +
-                        case when facade_year IS NULL then 0 else 1 end +
-                        case when date_source_type IS NULL then 0 else 1 end +
-                        case when date_source_links IS NULL then 0 else 1 end +
-                        case when size_storeys_source_type IS NULL then 0 else 1 end +
-                        case when size_storeys_source_links IS NULL then 0 else 1 end +
-                        case when construction_material_window_frame IS NULL then 0 else 1 end +
-                        case when construction_material_window_frame_source_type IS NULL then 0 else 1 end +
-                        case when construction_material_window_frame_source_links IS NULL then 0 else 1 end +
-                        case when size_height_eaves IS NULL then 0 else 1 end +
-                        case when size_height_eaves_source_type IS NULL then 0 else 1 end +
-                        case when size_height_eaves_source_links IS NULL then 0 else 1 end +
-                        case when size_parcel_geometry IS NULL then 0 else 1 end +
-                        case when size_parcel_geometry_source_type IS NULL then 0 else 1 end +
-                        case when size_parcel_geometry_source_links IS NULL then 0 else 1 end +
-                        case when construction_core_material IS NULL then 0 else 1 end +
-                        case when construction_core_material_source_type IS NULL then 0 else 1 end +
-                        case when construction_core_material_source_links IS NULL then 0 else 1 end +
-                        case when construction_secondary_materials IS NULL then 0 else 1 end +
-                        case when construction_roof_covering IS NULL then 0 else 1 end +
-                        case when construction_roof_covering_source_type IS NULL then 0 else 1 end +
-                        case when construction_roof_covering_source_links IS NULL then 0 else 1 end +
-                        case when construction_structural_system IS NULL then 0 else 1 end +
-                        case when construction_structural_system_source_type IS NULL then 0 else 1 end +
-                        case when construction_structural_system_source_links IS NULL then 0 else 1 end +
-                        case when construction_foundation IS NULL then 0 else 1 end +
-                        case when construction_foundation_source_type IS NULL then 0 else 1 end +
-                        case when construction_foundation_source_links IS NULL then 0 else 1 end +
-                        case when construction_roof_shape IS NULL then 0 else 1 end +
-                        case when construction_roof_shape_source_type IS NULL then 0 else 1 end +
-                        case when construction_roof_shape_source_links IS NULL then 0 else 1 end +
-                        case when construction_irregularities IS NULL then 0 else 1 end +
-                        case when construction_irregularities_source_type IS NULL then 0 else 1 end +
-                        case when construction_irregularities_source_links IS NULL then 0 else 1 end +
-                        case when construction_decorative_features IS NULL then 0 else 1 end +
-                        case when construction_decorative_feature_materials IS NULL then 0 else 1 end +
-                        case when construction_decorative_feature_source_type IS NULL then 0 else 1 end +
-                        case when construction_decorative_feature_source_links IS NULL then 0 else 1 end +
-                        case when construction_internal_wall IS NULL then 0 else 1 end +
-                        case when construction_internal_wall_source_type IS NULL then 0 else 1 end +
-                        case when construction_internal_wall_source_links IS NULL then 0 else 1 end +
-                        case when construction_external_wall IS NULL then 0 else 1 end +
-                        case when construction_external_wall_source_type IS NULL then 0 else 1 end +
-                        case when construction_external_wall_source_links IS NULL then 0 else 1 end +
-                        case when construction_ground_floor IS NULL then 0 else 1 end +
-                        case when construction_ground_floor_source_type IS NULL then 0 else 1 end +
-                        case when construction_ground_floor_source_links IS NULL then 0 else 1 end +
-                        case when survival_status IS NULL then 0 else 1 end +
-                        case when survival_source IS NULL then 0 else 1 end +
-                        case when survival_source_links IS NULL then 0 else 1 end +
-                        case when planning_crowdsourced_site_completion_status IS NULL then 0 else 1 end +
-                        case when planning_crowdsourced_site_completion_year IS NULL then 0 else 1 end +
-                        case when planning_crowdsourced_site_completion_source_type IS NULL then 0 else 1 end +
-                        case when planning_crowdsourced_site_completion_source_links IS NULL then 0 else 1 end +
-                        case when planning_in_conservation_area IS NULL then 0 else 1 end +
-                        case when planning_listed IS NULL then 0 else 1 end +
-                        case when planning_list_id IS NULL then 0 else 1 end +
-                        case when planning_world_heritage_site IS NULL then 0 else 1 end +
-                        case when planning_world_list_id IS NULL then 0 else 1 end +
-                        case when planning_in_apa IS NULL then 0 else 1 end +
-                        case when planning_local_list IS NULL then 0 else 1 end +
-                        case when planning_historic_area_assessment IS NULL then 0 else 1 end +
-                        case when planning_missing_data IS NULL then 0 else 1 end +
-                        case when planning_missing_data_links IS NULL then 0 else 1 end +
-                        case when planning_heritage_at_risk IS NULL then 0 else 1 end +
-                        case when planning_scientific_interest IS NULL then 0 else 1 end +
-                        case when planning_scientific_interest_source_type IS NULL then 0 else 1 end +
-                        case when planning_scientific_interest_source_links IS NULL then 0 else 1 end +
-                        case when planning_flood_zone IS NULL then 0 else 1 end +
-                        case when planning_housing_zone IS NULL then 0 else 1 end +
-                        case when planning_enterprise_zone IS NULL then 0 else 1 end +
-                        case when planning_protected_vista IS NULL then 0 else 1 end +
-                        case when is_domestic IS NULL then 0 else 1 end +
-                        case when is_domestic_source IS NULL then 0 else 1 end +
-                        case when is_domestic_links IS NULL then 0 else 1 end +
-                        case when community_activities_current IS NULL then 0 else 1 end +
-                        case when community_activities IS NULL then 0 else 1 end +
-                        case when community_activities_always IS NULL then 0 else 1 end +
-                        case when community_public_ownership IS NULL then 0 else 1 end +
-                        case when community_public_ownership_source_type IS NULL then 0 else 1 end +
-                        case when community_public_ownership_sources IS NULL then 0 else 1 end +
-                        case when dynamics_has_demolished_buildings IS NULL then 0 else 1 end +
-                        case when has_extension IS NULL then 0 else 1 end +
-                        case when extension_year IS NULL then 0 else 1 end +
-                        case when extension_source_type IS NULL then 0 else 1 end +
-                        case when extension_source_links IS NULL then 0 else 1 end +
-                        case when developer_type IS NULL then 0 else 1 end +
-                        case when developer_name IS NULL then 0 else 1 end +
-                        case when developer_links IS NULL then 0 else 1 end +
-                        case when developer_source_type IS NULL then 0 else 1 end +
-                        case when developer_source_link IS NULL then 0 else 1 end +
-                        case when extension_developer_type IS NULL then 0 else 1 end +
-                        case when extension_developer_name IS NULL then 0 else 1 end +
-                        case when extension_developer_links IS NULL then 0 else 1 end +
-                        case when extension_developer_source_type IS NULL then 0 else 1 end +
-                        case when extension_developer_source_link IS NULL then 0 else 1 end +
-                        case when landowner IS NULL then 0 else 1 end +
-                        case when landowner_links IS NULL then 0 else 1 end +
-                        case when landowner_source_type IS NULL then 0 else 1 end +
-                        case when landowner_source_link IS NULL then 0 else 1 end +
-                        case when designers IS NULL then 0 else 1 end +
-                        case when designers_links IS NULL then 0 else 1 end +
-                        case when designers_source_type IS NULL then 0 else 1 end +
-                        case when designers_source_link IS NULL then 0 else 1 end +
-                        case when lead_designer_type IS NULL then 0 else 1 end +
-                        case when extension_designers IS NULL then 0 else 1 end +
-                        case when extension_designers_links IS NULL then 0 else 1 end +
-                        case when extension_designers_source_type IS NULL then 0 else 1 end +
-                        case when extension_designers_source_link IS NULL then 0 else 1 end +
-                        case when extension_lead_designer_type IS NULL then 0 else 1 end +
-                        case when designer_awards IS NULL then 0 else 1 end +
-                        case when awards_source_link IS NULL then 0 else 1 end +
-                        case when builder IS NULL then 0 else 1 end +
-                        case when builder_links IS NULL then 0 else 1 end +
-                        case when builder_source_type IS NULL then 0 else 1 end +
-                        case when builder_source_link IS NULL then 0 else 1 end +
-                        case when extension_builder IS NULL then 0 else 1 end +
-                        case when extension_builder_links IS NULL then 0 else 1 end +
-                        case when extension_builder_source_type IS NULL then 0 else 1 end +
-                        case when extension_builder_source_link IS NULL then 0 else 1 end +
-                        case when other_team IS NULL then 0 else 1 end +
-                        case when other_team_source_link IS NULL then 0 else 1 end +
-                        case when building_client IS NULL then 0 else 1 end +
-                        case when building_client_source_type IS NULL then 0 else 1 end +
-                        case when building_client_source_link IS NULL then 0 else 1 end +
-                        case when extension_client IS NULL then 0 else 1 end +
-                        case when extension_client_source_type IS NULL then 0 else 1 end +
-                        case when extension_client_source_link IS NULL then 0 else 1 end +
-                        case when disaster_type IS NULL then 0 else 1 end +
-                        case when disaster_severity IS NULL then 0 else 1 end +
-                        case when disaster_assessment_method IS NULL then 0 else 1 end +
-                        case when disaster_source_link IS NULL then 0 else 1 end +
-                        case when disaster_start_date IS NULL then 0 else 1 end +
-                        case when disaster_end_date IS NULL then 0 else 1 end +
-                        case when context_front_garden IS NULL then 0 else 1 end +
-                        case when context_back_garden IS NULL then 0 else 1 end +
-                        case when context_flats_garden IS NULL then 0 else 1 end +
-                        case when context_garden_source_type IS NULL then 0 else 1 end +
-                        case when context_garden_source_links IS NULL then 0 else 1 end +
-                        case when age_cladding_date IS NULL then 0 else 1 end +
-                        case when age_cladding_date_source_type IS NULL then 0 else 1 end +
-                        case when age_cladding_date_source_links IS NULL then 0 else 1 end +
-                        case when age_extension_date IS NULL then 0 else 1 end +
-                        case when age_extension_date_source_type IS NULL then 0 else 1 end +
-                        case when age_extension_date_source_links IS NULL then 0 else 1 end +
-                        case when age_retrofit_date IS NULL then 0 else 1 end +
-                        case when age_retrofit_date_source_type IS NULL then 0 else 1 end +
-                        case when age_retrofit_date_source_links IS NULL then 0 else 1 end +
-                        case when age_historical_raster_map_links IS NULL then 0 else 1 end +
-                        case when age_historical_vectorised_footprint_links IS NULL then 0 else 1 end +
-                        case when energy_solar IS NULL then 0 else 1 end +
-                        case when energy_solar_source_type IS NULL then 0 else 1 end +
-                        case when energy_solar_source_links IS NULL then 0 else 1 end +
-                        case when energy_green_roof IS NULL then 0 else 1 end +
-                        case when energy_green_roof_source_type IS NULL then 0 else 1 end +
-                        case when energy_green_roof_source_links IS NULL then 0 else 1 end +
-                        case when typology_classification IS NULL then 0 else 1 end +
-                        case when typology_classification_source_type IS NULL then 0 else 1 end +
-                        case when typology_classification_source_links IS NULL then 0 else 1 end +
-                        case when typology_style_period IS NULL then 0 else 1 end +
-                        case when typology_style_period_source_type IS NULL then 0 else 1 end +
-                        case when typology_style_period_source_links IS NULL then 0 else 1 end +
-                        case when typology_dynamic_classification IS NULL then 0 else 1 end +
-                        case when typology_dynamic_classification_source_type IS NULL then 0 else 1 end +
-                        case when typology_dynamic_classification_source_links IS NULL then 0 else 1 end +
-                        case when typology_original_use IS NULL then 0 else 1 end +
-                        case when typology_original_use_order IS NULL then 0 else 1 end +
-                        case when typology_original_use_source_type IS NULL then 0 else 1 end +
-                        case when typology_original_use_source_links IS NULL then 0 else 1 end
-                    ) AS location_info_count
-                FROM
-                    buildings
-            ) AS blds_with_data
-        WHERE blds_with_data.location_info_count > 0`,
+    building_footprint_issues: `
+        SELECT
+            geometry_id,
+            building_footprint_issues
+        FROM
+            buildings
+        WHERE
+            building_footprint_issues IS NOT NULL`,
     team: `
         SELECT blds_with_data.* 
         FROM (
@@ -708,19 +495,22 @@ const LAYER_QUERIES = {
             OR planning_heritage_at_risk_url <> ''
             OR planning_in_apa_url <> ''
             `,
-    planning_world_heritage_buildings: `
+    conservation_designation: `
         SELECT
             geometry_id,
-            (
-                CASE
-                    WHEN planning_world_list_id IS NOT NULL THEN 'In World Heritage Site'
-                    ELSE 'None'
-                END
-            ) AS listing_type
-        FROM buildings
+            conservation_designation
+        FROM
+            buildings
         WHERE
-            planning_world_list_id IS NOT NULL
-            `,
+            conservation_designation IS NOT NULL`,
+    heritage_value: `
+        SELECT
+            geometry_id,
+            heritage_value
+        FROM
+            buildings
+        WHERE
+            heritage_value IS NOT NULL`,
     team_known_designer: `
             SELECT
                 geometry_id,
@@ -734,7 +524,7 @@ const LAYER_QUERIES = {
             FROM buildings
             WHERE
                 designers IS NOT NULL
-                OR designers IS NOT NULL
+                OR designers_links IS NOT NULL
                 `,
     conservation_area: `
         SELECT
@@ -785,6 +575,23 @@ const LAYER_QUERIES = {
         FROM
             buildings
         WHERE disaster_severity IS NOT NULL`,
+    /**
+     * Heritage at Risk — real DB field only (no random/mock colouring).
+     * Categories: At Risk | Vulnerable | Secure when client supplies full taxonomy.
+     * Today only boolean planning_heritage_at_risk exists in most rows.
+     */
+    heritage_at_risk: `
+        SELECT
+            geometry_id,
+            CASE
+                WHEN planning_heritage_at_risk = true THEN 'At Risk'
+                WHEN planning_heritage_at_risk = false THEN 'Secure'
+                ELSE NULL
+            END AS heritage_at_risk
+        FROM
+            buildings
+        WHERE
+            planning_heritage_at_risk IS NOT NULL`,
     dynamics_demolished_count: `
         SELECT
             geometry_id,
@@ -835,6 +642,30 @@ const LAYER_QUERIES = {
         FROM
             buildings
         WHERE designer_awards IS NOT NULL`,
+    renovation: `
+        SELECT
+            geometry_id,
+            renovation_status AS renovation
+        FROM
+            buildings
+        WHERE renovation_status IS NOT NULL`,
+    operation: `
+        SELECT
+            geometry_id,
+            operation_status AS operation
+        FROM
+            buildings
+        WHERE operation_status IS NOT NULL`,
+    rent_sale: `
+        SELECT
+            geometry_id,
+            CASE
+                WHEN rent_sale_status ILIKE 'completed' THEN 'Transacted'
+                ELSE rent_sale_status
+            END AS rent_sale
+        FROM
+            buildings
+        WHERE rent_sale_status IS NOT NULL`,
     energy_solar: `
         SELECT
             geometry_id,
@@ -895,6 +726,10 @@ function getDataConfig(tileset: string): DataConfig {
         JOIN
             external_data_borough_boundary AS b
         ON d.geometry_id = b.geometry_id
+        WHERE
+            ST_Area(g.geometry_geom) <= 1000000
+            AND (ST_XMax(ST_Envelope(g.geometry_geom)) - ST_XMin(ST_Envelope(g.geometry_geom))) <= 10000
+            AND (ST_YMax(ST_Envelope(g.geometry_geom)) - ST_YMin(ST_Envelope(g.geometry_geom))) <= 10000
     ) AS data
         `;
     
@@ -918,7 +753,11 @@ function getDataConfig(tileset: string): DataConfig {
             buildings AS b
         ON d.geometry_id = b.geometry_id
         WHERE
-            b.latest_demolish_date IS NULL
+            ST_Area(g.geometry_geom) <= 1000000
+            AND (ST_XMax(ST_Envelope(g.geometry_geom)) - ST_XMin(ST_Envelope(g.geometry_geom))) <= 10000
+            AND (ST_YMax(ST_Envelope(g.geometry_geom)) - ST_YMin(ST_Envelope(g.geometry_geom))) <= 10000
+       /* WHERE
+    b.latest_demolish_date IS NULL */
     ) AS data
     `;
 

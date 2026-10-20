@@ -83,6 +83,7 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
             this.handleVerify = this.handleVerify.bind(this);
             this.handleSaveAdd = this.handleSaveAdd.bind(this);
             this.handleSaveChange = this.handleSaveChange.bind(this);
+            this.handleSaveEdits = this.handleSaveEdits.bind(this);
 
             this.toggleCopying = this.toggleCopying.bind(this);
             this.toggleCopyAttribute = this.toggleCopyAttribute.bind(this);
@@ -214,6 +215,19 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
             event.preventDefault();
             
             this.doSubmit(this.state.buildingEdits);
+        }
+
+        /**
+         * Same behaviour as the top "Save edits" button, optionally merging a patch
+         * (used by attachment Upload so selected files are saved in one step).
+         */
+        async handleSaveEdits(patch: Record<string, any> = {}) {
+            const edits = Object.assign({}, this.state.buildingEdits, patch);
+            if (_.isEmpty(edits)) {
+                return;
+            }
+            this.setState({ error: undefined, buildingEdits: edits });
+            await this.doSubmit(edits);
         }
 
         async handleSaveAdd(slug: string, newItem: any) {
@@ -364,14 +378,16 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
                 }
                 </ContainerHeader>
                 <div className="section-body">
-                <InfoBox>
-                    {this.props.intro}&nbsp;
-                    {(this.props.title !== "Community") ? 
-                        "Can you help us capture and verify this information?" 
-                        : 
-                        "" 
-                    }
-                </InfoBox>
+                {!this.props.inactive && (
+                    <InfoBox>
+                        {this.props.intro}&nbsp;
+                        {(this.props.title !== "Community") ? 
+                            "Can you help us capture and verify this information?" 
+                            : 
+                            "" 
+                        }
+                    </InfoBox>
+                )}
                 <EditHistoryLatest
                     building={this.props.building}
                 />
@@ -388,6 +404,7 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
                                 onVerify={undefined}
                                 onSaveAdd={undefined}
                                 onSaveChange={undefined}
+                                onSaveEdits={undefined}
                                 user_verified={[]}
                                 mapColourScale={undefined}
                                 onMapColourScale={undefined}
@@ -443,6 +460,7 @@ const withCopyEdit: (wc: React.ComponentType<CategoryViewProps>) => DataContaine
                                     onVerify={this.handleVerify}
                                     onSaveAdd={this.handleSaveAdd}
                                     onSaveChange={this.handleSaveChange}
+                                    onSaveEdits={this.handleSaveEdits}
                                     user_verified={this.props.user_verified}
                                     user={this.props.user}
                                     mapColourScale={this.props.mapColourScale}

@@ -324,15 +324,15 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         example: "https://en.wikipedia.org/wiki/221B_Baker_Street",
     },
     location_number: {
-        category: Category.Location,
-        title: "Building number",
+        category: Category.Mapping,
+        title: "Building Number",
         example: '12b',
         tooltip: 'Numbers with an optional lowercase letter are accepted, e.g. 141 or 12b'
     },
     location_street: {
-        category: Category.Location,
-        title: "Street name",
-        example: "Gower Street",
+        category: Category.Mapping,
+        title: "Street Number",
+        example: "12",
         tooltip: freeTextDisclaimer,
     },
     location_line_two: {
@@ -342,16 +342,22 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         tooltip: freeTextDisclaimer,
     },
     location_town: {
-        category: Category.Location,
+        category: Category.Mapping,
         title: "Town/City",
-        example: "London",
+        example: "Muharraq",
         tooltip: freeTextDisclaimer,
     },
     location_postcode: {
-        category: Category.Location,
-        title: "Area code/"+ccconfig.postcode,
-        example: "W1W 6TR",
-        tooltip: "Correctly formatted UK postcode, i.e. NW1 2FB",
+        category: Category.Mapping,
+        title: "Area code/Postcode",
+        example: "123",
+        tooltip: "Area code or postcode for this building.",
+    },
+    location_parcel_number: {
+        category: Category.Mapping,
+        title: "Parcel Number",
+        example: "215",
+        tooltip: "Land parcel / block parcel number for this building.",
     },
     location_address_source: {
         category: Category.Location,
@@ -377,6 +383,17 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         title: "Alternative open building footprint links",
         tooltip: "Links to alternative building footprint datasets (include the direct link to the footprint of this building where possible).",
         example: ["", "", ""],
+    },
+    building_footprint_issues: {
+        category: Category.Mapping,
+        title: "Select what is wrong with building footprint:",
+        tooltip: "Report inaccuracies with this building footprint.",
+        items: [
+            "Split",
+            "Merged",
+            "Unregistered",
+        ],
+        example: "Split",
     },
     location_subdivided: {
         category: Category.Location,
@@ -457,14 +474,14 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
     },
     current_landuse_group: {
         category: Category.LandUse,
-        title: "Current land use(s)",
-        tooltip: "Land use Groups as classified by [NLUD](https://www.gov.uk/government/statistics/national-land-use-database-land-use-and-land-cover-classification)",
+        title: "Current land use",
+        tooltip: "Select the Bahrain land use category for this building/parcel (same options as the map legend).",
         example: ["", ""],
     },
     current_landuse_order: {
         category: Category.LandUse,
         title: "This land use is shown on the map as:",
-        tooltip: "Land use Order as classified by [NLUD](https://www.gov.uk/government/statistics/national-land-use-database-land-use-and-land-cover-classification). Derived automatically from the data above.",
+        tooltip: "Derived automatically from the land use categories above.",
         example: "",
     },
     current_landuse_source: {
@@ -556,7 +573,7 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
     date_year_completed: {
         category: Category.AgeHistory,
         title: "Year construction completed if known",
-        tooltip: null,
+        tooltip: "Best estimate for the year that construction completed on this building, if known.",
         example: 1925,
     },
     date_lower: {
@@ -568,26 +585,8 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
     date_upper: {
         category: Category.AgeHistory,
         title: "Latest possible start year",
-        tooltip: "This should be the latest year in which construction could have started.",
+        tooltip: "This should be the latest year in which building could have started.",
         example: 2000,
-    },
-    date_year_inferred: {
-        category: Category.AgeHistory,
-        title: "Year construction started (automatically inferred from other data)",
-        tooltip: null,
-        example: 1924,
-    },
-    date_year_inferred_lower: {
-        category: Category.AgeHistory,
-        title: "Best estimate for the earliest year in which construction could have started (automatically inferred from other data)",
-        tooltip: null,
-        example: 1920,
-    },
-    date_year_inferred_upper: {
-        category: Category.AgeHistory,
-        title: "This should be the latest year in which construction could have started (automatically inferred from other data)",
-        tooltip: null,
-        example: 1935,
     },
     facade_year: {
         category: Category.AgeHistory,
@@ -604,15 +603,39 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
     },
     date_source_links: {
         category: Category.AgeHistory,
-        title: "Additional Source link(s)",
+        title: "Alternative Source link(s)",
         tooltip: null,
         example: ["", "", ""],
     },
     size_storeys_core: {
-        category: Category.ConstructionDesign,
+        category: Category.Morphology,
         title: "Core number of floors",
         tooltip: "How many floors are there between the pavement and start of roof?",
         example: 10,
+    },
+    size_floors_category: {
+        category: Category.Morphology,
+        title: "Number of Floors/Storeys",
+        tooltip: "Select the floor category that best describes this building.",
+        example: "GF+1",
+        items: [
+            'GF',
+            'GF+ Mezzanine',
+            'GF+1',
+            'GF+ Mezzanine+1',
+            'GF+2',
+            'GF+ Mezzanine+2',
+            'GF+3',
+            'GF+ Mezzanine+3',
+            'GF+4',
+            'More than GF+ 4',
+        ]
+    },
+    staircase_connected_to_facade: {
+        category: Category.Morphology,
+        title: "Is the staircase room connected to the facade?",
+        tooltip: "Whether the staircase room is connected to the building facade.",
+        example: true,
     },
     size_storeys_attic: {
         category: Category.ConstructionDesign,
@@ -640,36 +663,10 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         example: ["", "", ""],
     },
     size_height_apex: {
-        category: Category.ConstructionDesign,
-        title: "Height to apex (m)",
+        category: Category.Morphology,
+        title: "Total building height (m)",
         example: 100.5,
-        tooltip: "i.e. the highest part of the roof (in meters).",
-    },
-    construction_material_window_frame: {
-        category: Category.ConstructionDesign,
-        title: "What is the material used for most of the window frames?",
-        tooltip: null,
-        example: "Wood",
-        items: [
-            "Wood",
-            "Metal",
-            "Plastic",
-            "Other",
-            "No windows"
-        ]
-    },
-    construction_material_window_frame_source_type: {
-        category: Category.ConstructionDesign,
-        title: "Source type",
-        tooltip: null,
-        example: "",
-        items: commonSourceTypes
-    },
-    construction_material_window_frame_source_links: {
-        category: Category.ConstructionDesign,
-        title: "Source links",
-        tooltip: null,
-        example: ["", "", ""],
+        tooltip: "Total building height in metres (to the highest part of the roof).",
     },
     size_height_apex_source_type: {
         category: Category.EnergyPerformance,
@@ -821,9 +818,9 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         items: [
             'Wood',
             'Stone',
+            'Concrete',
             'Brick',
             'Steel',
-            'Reinforced Concrete',
             'Other Metal',
             'Other Natural Material',
             'Other Man-Made Material'
@@ -1112,6 +1109,56 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         tooltip: null,
         example: ["", "", ""],
     },
+    construction_windows_material: {
+        category: Category.ConstructionDesign,
+        title: "What is the material used for most of the windows?",
+        tooltip: "The main material used for the majority of windows.",
+        example: "Wood",
+        items: [
+            'Wood',
+            'Steel',
+            'Aluminium',
+            'Other',
+        ]
+    },
+    construction_windows_material_source_type: {
+        category: Category.ConstructionDesign,
+        title: "Source type",
+        tooltip: null,
+        example: "",
+        items: commonSourceTypes
+    },
+    construction_windows_material_source_links: {
+        category: Category.ConstructionDesign,
+        title: "Source links",
+        tooltip: null,
+        example: ["", "", ""],
+    },
+    construction_door_material: {
+        category: Category.ConstructionDesign,
+        title: "What is the material used for most of the doors?",
+        tooltip: "The main material used for the majority of doors.",
+        example: "Wood",
+        items: [
+            'Wood',
+            'Steel',
+            'Aluminium',
+            'Other',
+        ]
+    },
+    construction_door_material_source_type: {
+        category: Category.ConstructionDesign,
+        title: "Source type",
+        tooltip: null,
+        example: "",
+        items: commonSourceTypes
+    },
+    construction_door_material_source_links: {
+        category: Category.ConstructionDesign,
+        title: "Source links",
+        tooltip: null,
+        example: ["", "", ""],
+    },
 
     sust_breeam_rating: {
         category: Category.WaterGreenInfrastructure,
@@ -1202,7 +1249,7 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         tooltip: "Survival and Loss tracked using Historical Maps",
         items: [
             "Same as Historical Map (Unchanged)",
-            "Similar to Historical Map (Some Changes)",
+            "Similar to Historical Map (some Changes)",
             "Historical Building(s) Demolished",
             "Current Building on Previous Green Space"
         ],
@@ -1299,16 +1346,16 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         //tooltip: ,
     },
     planning_listed: {
-        category: Category.UrbanInfrastructure,
+        category: Category.Conservation,
         title: "Is this a listed building?",
-        tooltip: "Is the building a listed building according to <a href=\"https://historicengland.org.uk/advice/hpg/has/whs/\" target=\"_blank\">Historic England</a>",
+        tooltip: "Is this building a listed / protected heritage building?",
         example: true,
     },
     planning_list_id: {
         category: Category.UrbanInfrastructure,
-        title: "Please add the ID from the NHLE if the building is listed:",
+        title: "If the building is on a national heritage register, please add the ID:",
         example: "121436",
-        tooltip: "National Heritage List for England (NHLE)",
+        tooltip: "e.g. National Heritage List for England (NHLE)",
     },
     planning_list_grade: {
         category: Category.UrbanInfrastructure,
@@ -1328,10 +1375,44 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         example: "",
     },
     planning_world_heritage_site: {
-        category: Category.UrbanInfrastructure,
+        category: Category.Conservation,
         title: "Is the building part of a World Heritage Site?",
-        tooltip: "Is the building part of a UNESCO <a href=\"https://www.unesco.org/en\" target=\"_blank\">World Heritage Site</a>",
+        tooltip: "Is the building part of a UNESCO World Heritage Site?",
         example: true,
+    },
+    conservation_designation: {
+        category: Category.Conservation,
+        title: "What is its protection rating?",
+        tooltip: "Select the designation / protection level that applies to this building (same options as the Designation / Protection map legend).",
+        example: "National Heritage",
+        items: [
+            'World Heritage',
+            'Regional Heritage',
+            'National Heritage',
+        ]
+    },
+    planning_listing_criteria: {
+        category: Category.Conservation,
+        title: "Site / building listing Criteria",
+        tooltip: "Describe the listing criteria for this site or building.",
+        example: "",
+    },
+    heritage_value: {
+        category: Category.Conservation,
+        title: "Heritage Value",
+        tooltip: "Select the heritage value classification for this building.",
+        example: "Traditional",
+        items: [
+            'Traditional',
+            'Transitional',
+            'Modern Heritage',
+            'Combination (Traditional/Transitional)',
+            'Combination (Transitional/Modern Heritage)',
+            'Combination (Heritage/Contemporary Architecture)',
+            'Combination (Heritage/Non-Significant)',
+            'Contemporary Architecture',
+            'Non-Significant',
+        ]
     },
     planning_world_list_id: {
         category: Category.UrbanInfrastructure,
@@ -1346,9 +1427,9 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         //tooltip: ,
     },
     planning_in_apa: {
-        category: Category.UrbanInfrastructure,
-        title: "Is the building in an area of archaeological priority?",
-        tooltip: "If the building is in an area of archaeological priority, select 'yes'.",
+        category: Category.Conservation,
+        title: "Is the building in an area of archaeological priority for excavation?",
+        tooltip: "If the building is in an area of archaeological priority for excavation, select 'yes'.",
         example: true,
     },
     planning_in_apa_url: {
@@ -1627,7 +1708,7 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
     },
 
     dynamics_has_demolished_buildings: {
-        category: Category.DisasterManagement,
+        category: Category.AgeHistory,
         title: 'Were any other buildings ever built on this site?',
         example: true,
     },
@@ -1800,32 +1881,32 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         example: ["", "", ""],
     },
     designers: {
-        category: Category.EnergyPerformance,
-        title: "Who were the main designer(s)?",
+        category: Category.ConstructionDesign,
+        title: "Designer name(s)",
         tooltip: "Who were the designers/architects involved in the original construction of the main building." + freeTextDisclaimer,
         example: ["", "", ""],
     },
     designers_links: {
-        category: Category.EnergyPerformance,
+        category: Category.ConstructionDesign,
         title: "Designer link(s)",
         tooltip: "Link(s) to webpage(s) explaining who designed the building.",
         example: ["", "", ""],
     },
     designers_source_type: {
-        category: Category.EnergyPerformance,
+        category: Category.ConstructionDesign,
         title: "Source type",
         tooltip: null,
         example: "",
         items: commonSourceTypes
     },
     designers_source_link: {
-        category: Category.EnergyPerformance,
+        category: Category.ConstructionDesign,
         title: "Source links for designer(s)",
         tooltip: null,
         example: ["", "", ""],
     },
     lead_designer_type: {
-        category: Category.EnergyPerformance,
+        category: Category.ConstructionDesign,
         title: "Which title best describes the lead designer?",
         tooltip: "The original designer/architect involved in the construction of the main building.",
         example: "",
@@ -1839,7 +1920,7 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         ]
     },
     extension_designers: {
-        category: Category.EnergyPerformance,
+        category: Category.ConstructionDesign,
         title: "Who were the main designer(s) of the extension?",
         tooltip: "Designer(s)/Architect(s) of the extension to the property." + freeTextDisclaimer,
         example: ["", "", ""],
@@ -1878,13 +1959,13 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         ]
     },
     designer_awards: {
-        category: Category.EnergyPerformance,
+        category: Category.ConstructionDesign,
         title: "Has the building won any awards?",
         tooltip: "Any design awards or other awards that have been awarded to the building or any of the developers.",
         example: false
     },
     awards_source_link: {
-        category: Category.EnergyPerformance,
+        category: Category.ConstructionDesign,
         title: "Source link(s) for building award(s)",
         tooltip: null,
         example: ["", "", ""],
@@ -2005,8 +2086,8 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
     },
     disaster_severity: {
         category: Category.DisasterManagement,
-        title: "How severe do you assess the damage to be?",
-        tooltip: "What is your best estimate for the severity of damage to the building",
+        title: "General condition of the building",
+        tooltip: "Select the general condition / damage severity of the building (same options as the Damage Severity map legend).",
         example: "Building destroyed",
         items: [
             'Building destroyed',
@@ -2016,6 +2097,12 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
             'Minimal',
             'No damage visible',
         ]
+    },
+    disaster_collapse_risk: {
+        category: Category.DisasterManagement,
+        title: "Is there a visible risk of collapse?",
+        tooltip: "Select yes if there is a visible risk of the building collapsing.",
+        example: true,
     },
     disaster_assessment_method: {
         category: Category.DisasterManagement,
@@ -2041,6 +2128,58 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         title: "End date",
         tooltip: "What was the end date of the disaster? (if different to start date)",
         example: "03/04/2023"
+    },
+
+    inspection_undergone: {
+        category: Category.Assessment,
+        title: "Has the building undergone an inspection?",
+        tooltip: "Select yes if this building has undergone an inspection.",
+        example: true,
+    },
+    inspection_date: {
+        category: Category.Assessment,
+        title: "Inspection date",
+        tooltip: "Date of the inspection.",
+        example: "2024-01-15",
+    },
+    inspection_purpose: {
+        category: Category.Assessment,
+        title: "Purpose of the Inspection",
+        tooltip: "Describe the purpose of the inspection.",
+        example: "",
+    },
+
+    engagement_full_name: {
+        category: Category.InvestmentEngagement,
+        title: "Full Name",
+        tooltip: "Full name of the person providing information about this building.",
+        example: "",
+    },
+    engagement_ownership_evidence: {
+        category: Category.InvestmentEngagement,
+        title: "Property Ownership / Supporting Evidence (CPR)",
+        tooltip: "Property ownership details or supporting evidence (e.g. CPR reference).",
+        example: "",
+    },
+    engagement_attachments: {
+        category: Category.InvestmentEngagement,
+        title: "Attachments",
+        tooltip: "Supporting documents, plans, photos or recordings related to this building.",
+        example: [],
+    },
+    rent_sale_status: {
+        category: Category.InvestmentEngagement,
+        title: "Rent/Sale status",
+        tooltip: "Whether the property is available or has already been transacted for rent or sale.",
+        example: "Available",
+        items: ['Available', 'Transacted'],
+    },
+    heritage_assessment_criteria: {
+        category: Category.Assessment,
+        title: "Current status of heritage assessment",
+        tooltip: "Select the current stage of heritage assessment for this building.",
+        example: "Completed",
+        items: ['Sorting', 'Evaluation', 'Study', 'Completed'],
     },
 
     context_front_garden: {
@@ -2285,20 +2424,17 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
     },
 
     typology_classification: {
-        category: Category.TypologySize,
-        title: "Which dropdown option best suits the building and its context?",
-        tooltip: "Adapted from building type classifications developed in urban morphology. See <a href=\"https://www.smog.chalmers.se/\">https://www.smog.chalmers.se/</a> 'Space Matrix' for further information.",
-        example: "8+ storeys: Detached",
+        category: Category.Morphology,
+        title: "Typology",
+        tooltip: "Select the typology that best describes this building.",
+        example: "Single House",
         items: [
-            'Low-rise: Not part of a group/cluster (1-3 core floors- excluding extensions)',
-            'Low-rise: Part of dense block/row/terrace',
-            'Low-rise: Part of group of widely spaced blocks (includes semi-detached houses)',
-            'Mid-rise: Not part of a group/cluster (4-7 core floors)',
-            'Mid-rise: Part of group of densely spaced blocks',
-            'Mid-rise: Part of group of widely spaced blocks',
-            'High rise: Not part of a group/cluster',
-            'High-rise: Part of group of densely spaced blocks (8 + core floors)',
-            'High-rise: Part of group of widely spaced blocks',
+            'Public Building',
+            'Single House',
+            'Multistorey Building',
+            'Single Shops',
+            'Amarat',
+            'Utility',
         ]
     },
     typology_classification_source_type: {
@@ -2371,9 +2507,9 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         example: ["", "", ""],
     },
     typology_original_use: {
-        category: Category.TypologySize,
+        category: Category.LandUse,
         title: "Which land use best describes the purpose for which the building was originally built?",
-        tooltip: "Land use Groups as classified by [NLUD](https://www.gov.uk/government/statistics/national-land-use-database-land-use-and-land-cover-classification).\n\nNote: Homes used as offices for working from home should be classified as residential.",
+        tooltip: "Select the original land use category (same options as the map legend).",
         example: ["", ""],
     },
     typology_original_use_verified: {
@@ -2382,20 +2518,20 @@ export const dataFields = { /* eslint-disable @typescript-eslint/camelcase */
         example: true,
     },
     typology_original_use_order: {
-        category: Category.TypologySize,
+        category: Category.LandUse,
         title: "Original land use (order)",
-        tooltip: "Land use Order as classified by [NLUD](https://www.gov.uk/government/statistics/national-land-use-database-land-use-and-land-cover-classification). Derived automatically from the data above.",
+        tooltip: "Derived automatically from the original land use selected above.",
         example: "",
     },
     typology_original_use_source_type: {
-        category: Category.TypologySize,
+        category: Category.LandUse,
         title: "Source type",
         tooltip: null,
         example: "",
         items: commonSourceTypes
     },
     typology_original_use_source_links: {
-        category: Category.TypologySize,
+        category: Category.LandUse,
         title: "Source link(s)",
         tooltip: null,
         example: ["", "", ""],

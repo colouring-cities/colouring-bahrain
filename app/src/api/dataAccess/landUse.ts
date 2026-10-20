@@ -33,7 +33,7 @@ export async function getLandUseOrderFromGroup(groups: string[]): Promise<string
     if(orders.length === 1) {
         return orders[0];
     } else if (orders.length > 1) {
-        return 'Mixed Use';
+        return 'Mixed Used (Residential / Commercial)';
     } else return null;
 }
 

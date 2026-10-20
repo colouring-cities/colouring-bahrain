@@ -179,7 +179,6 @@ const EnergyPerformanceView: React.FunctionComponent<CategoryViewProps> = (props
             <DataEntryGroup name="Energy Systems" collapsed={subcat==null || subcat!="7"}>
                 <InfoBox type='info'>
                     This section is under development.
-                    Please let us know your suggestions on the <a href="https://github.com/colouring-cities/colouring-core/discussions">discussion forum</a>! (external link - save your edits first)
                 </InfoBox>
                 <DataEntryGroup name="Solar Panels" collapsed={subcat==null || subcat!="4"}>
                     <LogicalDataEntry

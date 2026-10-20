@@ -5,6 +5,10 @@ export type LegendElement = {
     color: string;
     border?: string;
     text: string;
+    /** BACA-style diagonal hatch swatch (protection zones) */
+    hatch?: boolean;
+    /** Boundary / fill symbols (boxes by default; lines for borders) */
+    symbol?: 'swatch' | 'circle' | 'dashed-line' | 'solid-line'; // 'circle' kept for compat, rendered as box
 } | {
     subtitle: string;
 };
@@ -19,103 +23,55 @@ export interface LegendConfig {
 export interface CategoryMapDefinition {
     mapStyle: BuildingMapTileset;
     legend: LegendConfig;
+    /** When false, show legend only — do not colour buildings on the map */
+    mapPopulate?: boolean;
+}
+
+/** Whether this map style should load building colour tiles */
+export function doesMapStyleColourBuildings(
+    mapStyle: BuildingMapTileset | undefined,
+    definitions: CategoryMapDefinition[]
+): boolean {
+    if (!mapStyle) return false;
+    const def = definitions.find(d => d.mapStyle === mapStyle);
+    if (def?.mapPopulate === false) return false;
+    return true;
 }
 
 export const defaultMapCategory = Category.AgeHistory;
 
-export const ageLegend = [
-    { color: '#fff9b8', text: '>2020' },
-    { color: '#fae269', text: '2000-2019' },
-    { color: '#fbaf27', text: '1980-1999' },
-    { color: '#e6711d', text: '1960-1979' },
-    { color: '#cc1212', text: '1940-1959' },
-    { color: '#8f0303', text: '1920-1939' },
-    { color: '#8f5385', text: '1900-1919' },
-    { color: '#c3e1eb', text: '1880-1899' },
-    { color: '#6a9dba', text: '1860-1879' },
-    { color: '#3b74a3', text: '1840-1859' },
-    { color: '#95ded8', text: '1820-1839' },
-    { color: '#68aba5', text: '1800-1819' },
-    { color: '#acc98f', text: '1750-1799' },
-    { color: '#6d8a51', text: '1700-1749' },
-    { color: '#d0c291', text: '<1700' },
-]
+export const periodBuiltLegend = [
+    { color: '#c3e1eb', text: 'after 2000s' },
+    { color: '#68aba5', text: '1980s - 2000s' },
+    { color: '#8f5385', text: '1950s - 1970s' },
+    { color: '#3b74a3', text: '1870s - 1940s' },
+];
+
+export const ageLegend = periodBuiltLegend;
 
 export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = {
     [Category.AgeHistory]: [
         {
-            mapStyle: 'age_amalgamated',
-            legend: {
-                disclaimer: 'This map prioritises crowdsourced age data, provided mainly by local historians. It also uses automatically inferred data, and official data to fill in gaps.',
-                title: 'Age (Amalgamated methods)',
-                elements: ageLegend,
-            },
-        },
-        {
             mapStyle: 'date_year',
             legend: {
-                title: 'Age (Crowdsourced)',
-                elements: ageLegend,
-            },
-        },
-        {
-            mapStyle: 'age_inferred',
-            legend: {
-                disclaimer: 'This map shows age data that has been automatically inferred from other kinds of data. For example, for London, historical street networks data are used.',
-                title: 'Age (Automatically inferred)',
-                elements: ageLegend,
-            },
-        },
-        {
-            mapStyle: 'typology_style_period',
-            legend: {
-                disclaimer: 'This shows data automatically derived from our "Age (Amalgamated methods)" map, and grouped into historical periods. Contributors can also directly choose an historical period to represent the age of a given building if the exact date is not known.',
-                title: 'Historical Period',
+                title: 'Period built',
                 elements: [
-                    { color: '#fae269', text: '2000-2025 (Early C21)' },
-                    { color: '#fbaf27', text: '1980-1999 (Late C20)' },
-                    { color: '#cc1212', text: '1946-1979 (Post war)' },
-                    { color: '#8f5385', text: '1914-1945 (WWI-WWII)' },
-                    { color: '#c3e1eb', text: '1901-1914 (Edwardian)' },
-                    { color: '#6a9dba', text: '1837-1901 (Victorian)' },
-                    { color: '#acc98f', text: '1714-1837 (Georgian)' },
-                    { color: '#6d8a51', text: '1603-1714 (Stuart)' },
-                    { color: '#d0c291', text: '1485-1603 (Tudor)' },
-                    { color: '#a9a695', text: '410-1485 (Medieval)' },
-                    { color: '#dadada', text: '43AD-410 (Roman)' },
-                ]
-            }
-        },
-        {
-            mapStyle: 'cladding_year',
-            legend: {
-                title: 'Cladding Date',
-                elements: ageLegend,
-            },
-        },
-        {
-            mapStyle: 'extension_year',
-            legend: {
-                title: 'Extension Date',
-                elements: ageLegend,
-            },
-        },
-        {
-            mapStyle: 'retrofit_year',
-            legend: {
-                title: 'Retrofit Date',
-                elements: ageLegend,
+                    { color: '#c3e1eb', text: 'after 2000s' },
+                    { color: '#68aba5', text: '1980s - 2000s' },
+                    { color: '#8f5385', text: '1950s - 1970s' },
+                    { color: '#3b74a3', text: '1870s - 1940s' },
+                ],
             },
         },
         {
             mapStyle: 'survival_status',
             legend: {
-                title: 'Survival status',
+                title: 'Survival data',
                 elements: [
                     { color: '#6ded45', text: 'Same as Historical Map (Unchanged)' },
-                    { color: '#f7c725', text: 'Similar to Historical Map (Some Changes)' },
+                    { color: '#f7c725', text: 'Similar to Historical Map (some Changes)' },
                     { color: '#ff2121', text: 'Historical Building(s) Demolished' },
-                    { color: '#CF26DF', text: 'Current Building on Previous Green Space' },
+                    { color: '#cf26df', text: 'Current Building on Previous Green Space' },
                 ]
             }
         },
@@ -124,102 +80,61 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
         {
             mapStyle: 'construction_core_material',
             legend: {
-                title: 'Core material',
+                title: 'Core Material',
                 elements: [
-                    { color: "#b5a859", text: "Wood" },
-                    { color: "#ffffe3", text: "Stone" },
-                    { color: "#f5d96b", text: "Brick" },
-                    { color: "#beffe8", text: "Steel" },
-                    { color: "#fca89d", text: "Reinforced Concrete" },
-                    { color: "#8fc3a0", text: "Other Metal" },
-                    { color: "#96613b", text: "Other Natural Material" },
-                    { color: "#c48a85", text: "Other Man-Made Material" }
+                    { color: '#b5a859', text: 'Wood' },
+                    { color: '#ffffe3', text: 'Stone' },
+                    { color: '#fca89d', text: 'Concrete' },
+                    { color: '#f5d96b', text: 'Brick' },
+                    { color: '#beffe8', text: 'Steel' },
+                    { color: '#5c8970', text: 'Other Metal' },
+                    { color: '#96613b', text: 'Other Natural Material' },
+                    { color: '#c48a85', text: 'Other Man-Made Material' },
                 ]
             },
         },
         {
-            mapStyle: 'construction_structural_system',
+            mapStyle: 'construction_door_material',
+            mapPopulate: false,
             legend: {
-                title: 'Structural system',
+                title: 'Door Material',
                 elements: [
-                    { color: "#b5a859", text: "Solid masonry walls supporting the roof" },
-                    { color: "#ffffe3", text: "A lateral load resisting structure (e.g. concrete or wooden frame)" },
-                    { color: "#f5d96b", text: "Other" },
+                    { color: '#b5a859', text: 'Wood' },
+                    { color: '#beffe8', text: 'Steel' },
+                    { color: '#c0c0c0', text: 'Aluminium' },
+                    { color: '#c48a85', text: 'Other' },
                 ]
             },
         },
         {
-            mapStyle: 'construction_foundation',
+            mapStyle: 'construction_windows_material',
+            mapPopulate: false,
             legend: {
-                title: 'Foundations',
+                title: 'Windows Material',
                 elements: [
-                    { color: "#b5a859", text: "Shallow foundations with no lateral support" },
-                    { color: "#ffffe3", text: "Shallow foundations with lateral support" },
-                    { color: "#f5d96b", text: "Deep foundations with no lateral support" },
-                    { color: "#beffe8", text: "Deep Foundations with lateral support" },
-                    { color: "#fca89d", text: "Other" },
+                    { color: '#b5a859', text: 'Wood' },
+                    { color: '#beffe8', text: 'Steel' },
+                    { color: '#c0c0c0', text: 'Aluminium' },
+                    { color: '#c48a85', text: 'Other' },
                 ]
             },
         },
         {
-            mapStyle: 'construction_roof_shape',
+            mapStyle: 'architectural_elements',
+            mapPopulate: false,
             legend: {
-                title: 'Roof shape',
-                elements: [
-                    { color: "#b5a859", text: "Flat" },
-                    { color: "#ffffe3", text: "Pitched with gable ends" },
-                    { color: "#f5d96b", text: "Pitched and hipped" },
-                    { color: "#beffe8", text: "Pitched with dormers" },
-                    { color: "#fca89d", text: "Monopitch" },
-                    { color: "#5c8970", text: "Sawtooth" },
-                    { color: "#96613b", text: "Curved" },
-                    { color: "#c48a85", text: "Complex regular" },
-                    { color: "#7bccc4", text: "Complex irregular" },
-                    { color: "#bae4bc", text: "Other" }
-                ]
+                title: 'Architectural Elements',
+                disclaimer: 'Coming soon',
+                elements: []
             },
         },
         {
-            mapStyle: 'construction_roof_covering',
+            mapStyle: 'architectural_style',
+            mapPopulate: false,
             legend: {
-                title: 'Roof covering',
-                elements: [
-                    { color: "#b5a859", text: "Wood" },
-                    { color: "#ffffe3", text: "Stone" },
-                    { color: "#f5d96b", text: "Brick" },
-                    { color: "#beffe8", text: "Steel" },
-                    { color: "#fca89d", text: "Reinforced Concrete" },
-                    { color: "#8fc3a0", text: "Other Metal" },
-                    { color: "#96613b", text: "Other Natural Material" },
-                    { color: "#c48a85", text: "Other Man-Made Material" }
-                ]
-            },
-        },
-        {
-            mapStyle: 'construction_material_window_frame',
-            legend: {
-                title: 'Window frame material',
-                elements: [
-                    { color: "#b5a859", text: "Wood" },
-                    { color: "#8fc3a0", text: "Metal" },
-                    { color: "#ff3939", text: "Plastic" },
-                    { color: "#8080ff", text: "Other" },
-                    { color: "#ffffff", text: "No windows" }
-                ]
-            },
-        },
-        {
-            mapStyle: 'team',
-            legend: {
-                title: 'Team',
-                description: '% data collected',
-                elements: [
-                    { color: '#994d00', text: '≥80%' },
-                    { color: '#e67300', text: '60–80%' },
-                    { color: '#ff9933', text: '40–60%' },
-                    { color: '#ffbf80', text: '20–40%' },
-                    { color: '#ffe6cc', text: '<20%' }
-                ]
+                title: 'Architectural Style',
+                disclaimer: 'Coming soon',
+                elements: []
             },
         },
         {
@@ -228,17 +143,17 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
                 title: 'Awards',
                 description: 'Has the building won any awards?',
                 elements: [
-                    {color: '#f7ec25', text: 'Yes'},
+                    { color: '#f7ec25', text: 'Yes' },
                 ]
             },
         },
         {
             mapStyle: 'team_known_designer',
             legend: {
-                title: 'Known designer',
-                description: 'Buildings with a known architect/designer',
+                title: 'Known Designer',
+                description: 'Buildings with a known architect/designer?',
                 elements: [
-                    {color: '#6bb1e3', text: 'Yes'},
+                    { color: '#6bb1e3', text: 'Yes' },
                 ]
             },
         },
@@ -247,7 +162,7 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
         {
             mapStyle: 'sust_aggregate_estimate_epc',
             legend: {
-                title: 'Energy rating (residential)',
+                title: 'Energy rating (EPC)',
                 description: 'Residential energy rating (EPC Rating)',
                 disclaimer: 'This map shows official 2025 EPC data, required for new, sold and rented buildings. Please note EPC ratings may be out-of-date, as retrofit may have occurred since certification.',
                 elements: [
@@ -258,15 +173,15 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
                     { color: "#f7af1d", text: 'E' },
                     { color: "#ed6823", text: 'F' },
                     { color: "#e31d23", text: 'G' },
-                    { color: "#909090", text: 'No EPC identified or non-residential.' },
+                    { color: "#c0c0c0", text: 'No EPC identified' },
                 ]
             },
         },
         {
             mapStyle: 'sust_dec',
             legend: {
-                title: 'Energy rating (non-residential)',
-                description: 'Non-residential energy rating (DEC Rating)',
+                title: 'Energy rating (DEC)',
+                description: 'Non-domestic energy rating (DEC Rating)',
                 elements: [
                     { color: "#007f3d", text: 'A' },
                     { color: "#2c9f29", text: 'B' },
@@ -357,27 +272,11 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
         {
             mapStyle: 'planning_combined',
             legend: {
-                title: 'Designation/protection (official and crowdsourced data)',
-                disclaimer: 'All data relating to designated buildings should be checked against the National Heritage List for England and local authority websites. Designation data is currently incomplete.',
+                title: 'Designation / Protection',
                 elements: [
-                    { color: '#95beba', text: 'In Conservation Area'},
-                    { color: '#c72e08', text: 'Grade I Listed'},
-                    { color: '#e75b42', text: 'Grade II* Listed'},
-                    { color: '#ffbea1', text: 'Grade II Listed'},
-                    { color: '#85ffd4', text: 'Heritage at Risk'},
-                    { color: '#858ed4', text: 'Locally Listed'},
-                    { color: '#0bbf12', text: 'In World Heritage Site'},
-                    { color: '#8500d4', text: 'In Archaeological Priority Area'},
-                ]
-            },
-        },
-        {
-            mapStyle: 'planning_world_heritage_buildings',
-            legend: {
-                title: 'Buildings in World Heritage Sites (official and crowdsourced data)',
-                disclaimer: 'All data relating to designated buildings should be checked against the National Heritage List for England and local authority websites. Designation data is currently incomplete.',
-                elements: [
-                    { color: '#0bbf12', text: 'In World Heritage Site'},
+                    { color: '#00467c', text: 'World Heritage' },
+                    { color: '#85e6d7', text: 'Regional Heritage' },
+                    { color: '#C27364', text: 'National Heritage' },
                 ]
             },
         },
@@ -413,24 +312,6 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
         },
     }],
     [Category.Community]: [
-        {
-            mapStyle: 'count_crowdsourced',
-            legend: {
-                title: 'Community help',
-                description: 'crowdsourced entries',
-                elements: [
-                    { color: '#ff006e', text: '9+' },
-                    { color: '#fb5607', text: '8' },
-                    { color: '#ff9500', text: '7' },
-                    { color: '#ffbe0b', text: '6' },
-                    { color: '#ffe566', text: '5' },
-                    { color: '#caffbf', text: '4' },
-                    { color: '#9bf6ff', text: '3' },
-                    { color: '#74b9ff', text: '2' },
-                    { color: '#a29bfe', text: '1' },
-                ]
-            },
-        },
         /*
         {
             mapStyle: 'likes',
@@ -643,7 +524,7 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
         {
             mapStyle: 'typology_classification',
             legend: {
-                title: 'Block/Density Classification',
+                title: 'National Historical Description',
                 elements: [
                     { color: '#0311AB', text: '1-3 storeys: Detached' },
                     { color: '#3845D4', text: '1-3 storeys: Tightly grouped' },
@@ -727,14 +608,13 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
             legend: {
                 title: 'Height to apex',
                 elements: [
-                    { color: '#f7f4f9', text: '0-5.55'},
-                    { color: '#e7e1ef', text: '5.55-7.73'},
-                    { color: '#d4b9da', text: '7.73-11.38'},
-                    { color: '#c994c7', text: '11.38-18.45'},
-                    { color: '#df65b0', text: '18.45-35.05'},
-                    { color: '#e7298a', text: '35.05-89.30'},
-                    { color: '#ce1256', text: '89.30-152'},
-                    { color: '#980043', text: '≥152'}
+                    { color: '#f6f3f9', text: '0 - 4'},
+                    { color: '#d5cbe1', text: '> 4 - 8'},
+                    { color: '#c793c2', text: '> 8 - 11'},
+                    { color: '#d867a6', text: '> 11 - 14'},
+                    { color: '#e52a89', text: '> 14 - 17'},
+                    { color: '#cd1d58', text: '> 17 - 30'},
+                    { color: '#971a46', text: '≥ 30'}
                 ]
             },
         },
@@ -789,35 +669,55 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
             legend: {
                 title: 'Land Use',
                 elements: [
-                    { color: '#e5050d', text: 'Mixed Use' },
-                    { subtitle: 'Single use:'},
-                    { color: '#252aa6', text: 'Residential (unverified)' },
-                    { color: '#7025a6', text: 'Residential (verified)' },
-                    { color: '#ff8c00', text: 'Retail' },
-                    { color: '#f5f58f', text: 'Industry & Business' },
-                    { color: '#fa667d', text: 'Community Services' },
-                    { color: '#ffbfbf', text: 'Recreation & Leisure' },
-                    { color: '#b3de69', text: 'Transport' },
-                    { color: '#cccccc', text: 'Utilities & Infrastructure' },
-                    { color: '#898944', text: 'Defence' },
-                    { color: '#73ccd1', text: 'Agriculture' },
-                    { color: '#45cce3', text: 'Minerals' },
-                    { color: '#ffffff', text: 'Vacant & Derelict' },
-                    { color: '#6c6f8e', text: 'Unclassified, presumed non-residential' }
+                    { color: '#b8d8c0', text: 'Residential' },
+                    { color: '#b7308a', text: 'Commercial' },
+                    { color: '#b5bcdf', text: 'Mixed Used (Residential / Commercial)' },
+                    { color: '#e5050d', text: 'Government buildings, Public Administration' },
+                    { color: '#68b8c1', text: 'Educational' },
+                    { color: '#ff8e5d', text: 'Cultural' },
+                    { color: '#97dfff', text: 'Healthcare Facilities' },
+                    { color: '#af7c85', text: 'Hospitality' },
+                    { color: '#ffbfbf', text: 'Recreational' },
+                    { color: '#6a3f5a', text: 'Storage' },
+                    { color: '#f9d849', text: 'Religious' },
+                    { color: '#6c6f8e', text: 'Parking' },
+                    { color: '#036b6b', text: 'Utility' },
+                    { color: '#a0a0a0', text: 'Formal Parking' },
+                    { color: '#dddddd', text: 'Informal Parking' },
+                    { color: '#252aa6', text: 'Informal Community Space' },
+                    { color: '#b3de69', text: 'Public Square' },
+                    { color: '#f6eed4', text: 'Unused land' },
+                    { color: '#ffffff', border: '1px solid #000000', text: 'Unidentified' },
                 ]
             },
         },
         {
-            mapStyle: 'is_domestic',
+            mapStyle: 'original_landuse',
             legend: {
-                title: 'Residential building',
+                title: 'Original (Historical) Land Use',
                 elements: [
-                    { color: '#f7ec25', text: 'Residential' },
-                    { color: '#fc9b2a', text: 'Mixed' },
-                    { color: '#ff2121', text: 'Non-residential' },
+                    { color: '#b8d8c0', text: 'Residential' },
+                    { color: '#b7308a', text: 'Commercial' },
+                    { color: '#b5bcdf', text: 'Mixed Used (Residential / Commercial)' },
+                    { color: '#e5050d', text: 'Government buildings, Public Administration' },
+                    { color: '#68b8c1', text: 'Educational' },
+                    { color: '#ff8e5d', text: 'Cultural' },
+                    { color: '#97dfff', text: 'Healthcare Facilities' },
+                    { color: '#af7c85', text: 'Hospitality' },
+                    { color: '#ffbfbf', text: 'Recreational' },
+                    { color: '#6a3f5a', text: 'Storage' },
+                    { color: '#f9d849', text: 'Religious' },
+                    { color: '#6c6f8e', text: 'Parking' },
+                    { color: '#036b6b', text: 'Utility' },
+                    { color: '#a0a0a0', text: 'Formal Parking' },
+                    { color: '#dddddd', text: 'Informal Parking' },
+                    { color: '#252aa6', text: 'Informal Community Space' },
+                    { color: '#b3de69', text: 'Public Square' },
+                    { color: '#f6eed4', text: 'Unused land' },
+                    { color: '#ffffff', border: '1px solid #000000', text: 'Unidentified' },
                 ]
-            }
-        }
+            },
+        },
     ],
     [Category.RetrofitCondition]: [
         
@@ -825,66 +725,250 @@ export const categoryMapsConfig: {[key in Category]: CategoryMapDefinition[]} = 
     [Category.DisasterManagement]: [
         {
             mapStyle: 'disaster_severity',
+            mapPopulate: false,
             legend: {
-                title: 'Damage severity',
-                description: 'Severity of damage to building',
+                title: 'Damage Severity',
                 elements: [
-                    {
-                        text: 'Building destroyed',
-                        color: '#bd0026',
-                    }, {
-                        text: 'Very severe',
-                        color: '#e31a1c',
-                    }, {
-                        text: 'Severe',
-                        color: '#fc4e2a',
-                    }, {
-                        text: 'Moderate',
-                        color: '#fd8d3c',
-                    }, {
-                        text: 'Minimal ',
-                        color: '#feb24c',
-                    }, {
-                        text: 'No damage visible',
-                        color: '#fed976',
-                    },
+                    { color: '#bd0026', text: 'Building destroyed' },
+                    { color: '#e31a1c', text: 'Very severe' },
+                    { color: '#fc4e2a', text: 'Severe' },
+                    { color: '#fd8d3c', text: 'Moderate' },
+                    { color: '#feb24c', text: 'Minimal' },
+                    { color: '#fed976', text: 'No damage visible' },
                 ],
             },
         },
         {
-            mapStyle: 'dynamics_demolished_count',
+            mapStyle: 'heritage_at_risk',
             legend: {
-                title: 'Resilience',
-                description: 'Demolished buildings on the same site',
+                title: 'Heritage at Risk',
+                description: 'Demo colours until risk assessments are collected.',
                 elements: [
-                    {
-                        text: '7+',
-                        color: '#bd0026',
-                    }, {
-                        text: '6',
-                        color: '#e31a1c',
-                    }, {
-                        text: '5',
-                        color: '#fc4e2a',
-                    }, {
-                        text: '4',
-                        color: '#fd8d3c',
-                    }, {
-                        text: '3',
-                        color: '#feb24c',
-                    }, {
-                        text: '2',
-                        color: '#fed976',
-                    }, {
-                        text: '1',
-                        color: '#ffe8a9',
-                    }, {
-                        text: 'None',
-                        color: '#0C7BDC'
-                    }
+                    { color: '#bd0026', text: 'At Risk' },
+                    { color: '#fd8d3c', text: 'Vulnerable' },
+                    { color: '#abc178', text: 'Secure' },
                 ],
             },
-        }
-    ]
+        },
+    ],
+    [Category.Mapping]: [
+        {
+            mapStyle: 'location',
+            legend: {
+                title: '% data collected',
+                elements: [
+                    { color: '#084081', text: '>80%' },
+                    { color: '#0868ac', text: '60 - 80%' },
+                    { color: '#43a2ca', text: '40-60%' },
+                    { color: '#7bccc4', text: '20-40%' },
+                    { color: '#bae4bc', text: '<20%' }
+                ]
+            },
+        },
+        {
+            mapStyle: 'building_footprint_issues' as BuildingMapTileset,
+            legend: {
+                title: 'Building footprint issues',
+                description: 'Please let us know of any inaccuracies here.',
+                elements: [
+                    { color: '#00ff00', text: 'Split' },
+                    { color: '#ff0000', text: 'Merged' },
+                    { color: '#08e8de', text: 'Unregistered' },
+                ]
+            },
+        },
+    ],
+    [Category.Morphology]: [
+        {
+            mapStyle: 'typology_classification',
+            legend: {
+                title: 'Typology',
+                elements: [
+                    { color: '#5d5d93', text: 'Public Building' },
+                    { color: '#b6d5d8', text: 'Single House' },
+                    { color: '#6a9dba', text: 'Multistorey Building' },
+                    { color: '#1a4568', text: 'Single Shops' },
+                    { color: '#fc604f', text: 'Amarat' },
+                    { color: '#056b6b', text: 'Utility' }
+                ]
+            }
+        },
+        {
+            mapStyle: 'size_floors_category',
+            legend: {
+                title: 'Number of Floors',
+                elements: [
+                    { color: '#f5f5fa', text: 'GF' },
+                    { color: '#d9e1f2', text: 'GF+ Mezzanine' },
+                    { color: '#b4c6e7', text: 'GF+1' },
+                    { color: '#8ea9db', text: 'GF+ Mezzanine+1' },
+                    { color: '#7896c4', text: 'GF+2' },
+                    { color: '#677ca3', text: 'GF+ Mezzanine+2' },
+                    { color: '#7274b5', text: 'GF+3' },
+                    { color: '#484b99', text: 'GF+ Mezzanine+3' },
+                    { color: '#353d77', text: 'GF+4' },
+                    { color: '#242e5b', text: 'More than GF+ 4' }
+                ]
+            }
+        },
+        {
+            mapStyle: 'size_height',
+            legend: {
+                title: 'Height (m)',
+                elements: [
+                    { color: '#f6f3f9', text: '0 - 4' },
+                    { color: '#d5cbe1', text: '> 4 - 8' },
+                    { color: '#c793c2', text: '> 8 - 11' },
+                    { color: '#d867a6', text: '> 11 - 14' },
+                    { color: '#e52a89', text: '> 14 - 17' },
+                    { color: '#cd1d58', text: '> 17 - 30' },
+                    { color: '#971a46', text: '≥ 30' },
+                ]
+            }
+        },
+    ],
+    [Category.Conservation]: [
+        {
+            mapStyle: 'conservation_designation',
+            legend: {
+                title: 'Designation / Protection',
+                elements: [
+                    { color: '#00467c', text: 'World Heritage' },
+                    { color: '#85e6d7', text: 'Regional Heritage' },
+                    { color: '#C27364', text: 'National Heritage' }
+                ]
+            },
+        },
+        {
+            mapStyle: 'heritage_value',
+            legend: {
+                title: 'Heritage Value',
+                elements: [
+                    { color: '#c72e08', text: 'Traditional' },
+                    { color: '#ffbea1', text: 'Transitional' },
+                    { color: '#95beba', text: 'Modern Heritage' },
+                    { color: '#e75b42', text: 'Combination (Traditional/Transitional)' },
+                    { color: '#597c78', text: 'Combination (Transitional/Modern Heritage)' },
+                    { color: '#e2896f', text: 'Combination (Heritage/Contemporary Architecture)' },
+                    { color: '#8f0303', text: 'Combination (Heritage/Non-Significant)' },
+                    { color: '#344891', text: 'Contemporary Architecture' },
+                    { color: '#ede6df', text: 'Non-Significant' }
+                ]
+            },
+        },
+        {
+            mapStyle: 'historic_area_classifications',
+            mapPopulate: false,
+            legend: {
+                title: 'Historic Area Classifications',
+                elements: [
+                    { color: '#DFEFEE', text: 'Urban Heritage A (UHA)' },
+                    { color: '#A1BAB8', text: 'Urban Heritage B (UHB)' },
+                    { color: '#638481', text: 'Urban Heritage C (UHC)' },
+                    { color: '#C27364', text: 'National Heritage Building (NHB)' },
+                    { color: '#E8C992', text: 'Archaeological Site (ARC)' },
+                    { color: '#BCC493', text: 'Heritage Garden (HG)' },
+                ]
+            },
+        },
+    ],
+    [Category.Assessment]: [
+        {
+            mapStyle: 'heritage_assessment_criteria',
+            mapPopulate: false,
+            legend: {
+                title: 'Heritage Assessment Criteria',
+                elements: [
+                    { color: '#6b8cae', text: 'Sorting' },
+                    { color: '#dbba77', text: 'Evaluation' },
+                    { color: '#d37d84', text: 'Study' },
+                    { color: '#7a9e7e', text: 'Completed' },
+                ]
+            },
+        },
+        {
+            mapStyle: 'inspection_requests',
+            mapPopulate: false,
+            legend: {
+                title: 'Inspection Requests',
+                elements: [
+                    { color: '#c3d4ca', text: 'Inspected' },
+                    { color: '#f58e81', text: 'Not Inspected' },
+                ]
+            },
+        },
+    ],
+    [Category.InvestmentEngagement]: [
+        {
+            mapStyle: 'renovation',
+            legend: {
+                title: 'Renovation',
+                elements: [
+                    { color: '#65c298', text: 'Available' },
+                    { color: '#9b85be', text: 'Completed' },
+                ]
+            },
+        },
+        {
+            mapStyle: 'operation',
+            legend: {
+                title: 'Operation',
+                elements: [
+                    { color: '#65c298', text: 'Available' },
+                    { color: '#ffc067', text: 'Active' },
+                ]
+            },
+        },
+        {
+            mapStyle: 'rent_sale',
+            legend: {
+                title: 'Rent/Sale',
+                elements: [
+                    { color: '#65c298', text: 'Available' },
+                    { color: '#9b4166', text: 'Transacted' },
+                ]
+            },
+        },
+        {
+            mapStyle: 'engagement',
+            mapPopulate: false,
+            legend: {
+                title: 'Engagement',
+                disclaimer: 'Coming soon',
+                elements: []
+            },
+        },
+    ],
+    // Coming Soon categories - placeholder map configs
+    [Category.GreenUrbanInfrastructure]: [
+        {
+            mapStyle: 'location',
+            legend: {
+                title: 'Green / Water Infrastructure',
+                disclaimer: 'Coming soon',
+                elements: []
+            },
+        },
+    ],
+    [Category.CommerceActivity]: [
+        {
+            mapStyle: 'location',
+            legend: {
+                title: 'Commerce & Activity',
+                disclaimer: 'Coming soon',
+                elements: []
+            },
+        },
+    ],
+    [Category.Social]: [
+        {
+            mapStyle: 'location',
+            legend: {
+                title: 'Social',
+                disclaimer: 'Coming soon',
+                elements: []
+            },
+        },
+    ],
     
 };

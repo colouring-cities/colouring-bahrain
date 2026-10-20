@@ -1,17 +1,20 @@
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 
 import { useAuth } from '../auth-context';
 import ErrorBox from '../components/error-box';
 import { SpinnerIcon } from '../components/icons';
 import InfoBox from '../components/info-box';
 import SupporterLogos from '../components/supporter-logos';
+import { registerSecretUnlockClick } from './signup-access';
 
 import { CCConfig } from '../../cc-config';
 let config: CCConfig = require('../../cc-config.json')
 
 export const Login: React.FC = () => {
     const {isLoading, login } = useAuth();
+    const history = useHistory();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -26,18 +29,25 @@ export const Login: React.FC = () => {
         login({ username, password }, setError);
     }, [username, password]);
 
+    const onSecretHeadingClick = useCallback(() => {
+        if (registerSecretUnlockClick()) {
+            history.push('/sign-up.html');
+        }
+    }, [history]);
+
     const msgText = `Welcome to Colouring ${config.cityName}. You're one of the first people to use the site!`;
-    const issuesURL = config.githubURL + "/issues";
-    const discussURL = config.githubURL + "/discussions";
 
     return (
         <article>
             <section className="main-col">
-                <h1 className="h2">Log in</h1>
-                <InfoBox msg={msgText}>
-                    <br/>Please <a href={discussURL}>discuss suggestions for improvements</a> and {' '}
-                    <a href={issuesURL}>report issues or problems</a>.
-                </InfoBox>
+                <h1
+                    className="h2"
+                    onClick={onSecretHeadingClick}
+                    style={{ cursor: 'default', userSelect: 'none' }}
+                >
+                    Log in
+                </h1>
+                <InfoBox msg={msgText} />
                 <ErrorBox msg={error} />
                 <form onSubmit={onSubmit}>
                     <label htmlFor="username">Username*</label>
@@ -69,12 +79,6 @@ export const Login: React.FC = () => {
                     <div className="buttons-container with-space">
                         <input type="submit" disabled={isLoading} value="Log In" className="btn btn-primary" />
                         {isLoading && <span><SpinnerIcon />Logging in...</span>}
-                    </div>
-
-                    Would you like to create an account instead?
-
-                    <div className="buttons-container with-space">
-                        <Link to="sign-up.html" className="btn btn-outline-dark">Sign Up</Link>
                     </div>
                 </form>
             </section>

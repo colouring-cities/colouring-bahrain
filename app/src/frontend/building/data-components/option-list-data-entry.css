@@ -1,0 +1,36 @@
+.option-list-data-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin: 0 0 0.75rem 0;
+}
+
+.option-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid #d0d5da;
+    border-radius: 0.25rem;
+    background: #fff;
+    font-size: 0.9rem;
+    line-height: 1.35;
+    cursor: pointer;
+}
+
+.option-list-item input {
+    margin: 0.2rem 0 0 0;
+    flex: 0 0 auto;
+}
+
+.option-list-item.is-selected {
+    border-color: #222;
+    background: #f3f6f8;
+    font-weight: 500;
+}
+
+.option-list-item.is-disabled {
+    cursor: default;
+    opacity: 0.85;
+}

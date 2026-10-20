@@ -4,9 +4,7 @@
  */
 
 export type BuildingMapTileset = 
-    'age_amalgamated' |
     'date_year' | 
-    'age_inferred' |
     'cladding_year' | 
     'extension_year' | 
     'retrofit_year' | 
@@ -14,14 +12,18 @@ export type BuildingMapTileset =
     'size_total_floors' |
     'size_storeys_basement' |
     'size_floor_area_ground' |
+    'size_floors_category' |
     'construction_core_material' |
+    'construction_door_material' |
+    'construction_windows_material' |
+    'architectural_elements' |
+    'architectural_style' |
     'construction_structural_system' |
     'construction_foundation' |
     'construction_roof_shape' |
     'construction_roof_covering' |
-    'construction_material_window_frame' |
     'location' |
-    'count_crowdsourced' |
+    'building_footprint_issues' |
     'is_domestic' |
     'likes' |
     'typology_likes' |
@@ -40,13 +42,24 @@ export type BuildingMapTileset =
     'planning_applications_status_recent' |
     'planning_applications_status_very_recent' |
     'planning_combined' |
-    'planning_world_heritage_buildings' |
+    'protection_zones' |
+    'historic_area_classifications' |
+    'conservation_designation' |
+    'heritage_value' |
+    'heritage_assessment_criteria' |
+    'inspection_requests' |
+    'investment' |
+    'renovation' |
+    'operation' |
+    'rent_sale' |
+    'engagement' |
     'sust_dec' |
     'building_attachment_form' |
     'landuse' |
     'original_landuse' |
     'dynamics_demolished_count' |
     'disaster_severity' |
+    'heritage_at_risk' |
     'team' |
     'team_known_designer' |
     'survival_status'|

@@ -1,27 +1,47 @@
 /**
- * Logos
+ * Partner logos — login / sign-up footer
  */
-.logo-list {
+.partner-logos-heading {
     text-align: center;
-    padding: 0;
-    list-style: none;
+    margin: 1rem 0 0.35rem;
 }
-.logo-list li {
-    display: inline-block;
-    padding: 0 0.25em;
-    vertical-align: middle;
+
+.partner-logos {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem 1.75rem;
+    margin: 0.25rem auto 1rem;
+    padding: 0 0.5rem;
+    max-width: 52rem;
 }
-.logo-list a {
-    opacity: 1;
-    transition: opacity 0.2s;
-}
-.logo-list a:hover,
-.logo-list a:focus,
-.logo-list a:active {
-    opacity: 0.6;
-    outline: none;
-}
-.logo-list img {
+
+.partner-logo {
+    display: block;
     width: auto;
-    height: 5.25rem;
+    height: 3.75rem;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.partner-logo-uob {
+    height: 4.5rem;
+}
+
+@media (max-width: 640px) {
+    .partner-logos {
+        gap: 0.65rem 0.85rem;
+        overflow-x: auto;
+    }
+
+    .partner-logo {
+        height: 2.75rem;
+        flex-shrink: 0;
+    }
+
+    .partner-logo-uob {
+        height: 3.25rem;
+    }
 }

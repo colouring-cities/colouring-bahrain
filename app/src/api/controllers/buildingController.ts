@@ -6,6 +6,7 @@ import { parseBooleanExact } from '../../helpers';
 import { parsePositiveIntParam, processParam } from '../parameters';
 import asyncController from '../routes/asyncController';
 import * as buildingService from '../services/building/base';
+import { sendEngagementSubmission } from '../services/engagementSubmission';
 import * as userService from '../services/user';
 
 
@@ -212,6 +213,42 @@ const verifyBuildingAttributes = asyncController(async (req: express.Request, re
     }    
 });
 
+const submitEngagement = asyncController(async (req: express.Request, res: express.Response) => {
+    if (!req.session.user_id) {
+        return res.status(401).send({ error: 'Must be logged in' });
+    }
+
+    const buildingId = processParam(req.params, 'building_id', parsePositiveIntParam, true);
+    const uploadedFiles = (req.files ?? {}) as { [fieldname: string]: Express.Multer.File[] };
+    const ownershipEvidence = uploadedFiles.ownershipEvidence ?? [];
+    const attachments = uploadedFiles.attachments ?? [];
+
+    if (ownershipEvidence.length === 0 && attachments.length === 0) {
+        return res.status(400).send({ error: 'Please upload at least one file before submitting' });
+    }
+    const totalSize = [...ownershipEvidence, ...attachments]
+        .reduce((size, file) => size + file.size, 0);
+    if (totalSize > 20 * 1024 * 1024) {
+        return res.status(400).send({ error: 'The combined files must be 20 MB or less' });
+    }
+
+    try {
+        await sendEngagementSubmission({
+            buildingId,
+            fullName: typeof req.body.fullName === 'string' ? req.body.fullName.trim() : '',
+            ownershipEvidence,
+            attachments,
+        });
+        res.send({ success: true });
+    } catch (error) {
+        console.error('Engagement email submission failed:', error);
+        const message = error instanceof Error && error.message.includes('not configured')
+            ? error.message
+            : 'Email submission could not be sent';
+        res.status(503).send({ error: message });
+    }
+});
+
 // GET latest revision id of any building
 const getLatestRevisionId = asyncController(async (req: express.Request, res: express.Response) => {
     try {
@@ -231,6 +268,7 @@ export default {
     getBuildingPlanningDataById,
     getUserVerifiedAttributes,
     verifyBuildingAttributes,
+    submitEngagement,
     getBuildingEditHistoryById,
     getLatestRevisionId,
     getBuildingUserAttributesById

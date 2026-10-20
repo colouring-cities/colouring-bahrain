@@ -22,7 +22,11 @@ export const MultiDataEntry: React.FC<MultiDataEntryProps> = ({
 }) => {
     const [newValue, setNewValue] = useState<string>();
 
-    const values = useMemo(() => props.value ?? [], [props.value]);
+    /* Tolerate a non-array value (e.g. a legacy text column) so the page still renders */
+    const values = useMemo(() => {
+        if (props.value == undefined) return [];
+        return Array.isArray(props.value) ? props.value : [String(props.value)];
+    }, [props.value]);
 
     const edit = useCallback((index: number, value: string) => {
         const editedValues = values.slice();

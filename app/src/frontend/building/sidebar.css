@@ -1,5 +1,8 @@
 /**
  * Sidebar layout
+ *
+ * Important: do NOT use CSS transform on this container while it is visible.
+ * Transformed ancestors break native <select> dropdowns in Chromium.
  */
 .info-container {
     position: absolute;
@@ -7,9 +10,8 @@
     left: 0;
     bottom: 0;
     z-index: 1001;
-    transition: transform 0.3s;
-    transform: translateX(0);
-    
+    transition: left 0.3s;
+
     width: 65%;
     min-width: 280px;
     max-width: 95%;
@@ -19,7 +21,7 @@
 }
 
 .info-container.offscreen {
-    transform: translateX(-100%);
+    left: -100%;
 }
 
 .info-container-collapse {
@@ -38,6 +40,7 @@
         max-width: 470px;
     }
 }
+
 @media (min-width: 734px){
     .info-container {
         width: 470px;
@@ -46,7 +49,7 @@
 
 @media (min-width: 990px){
     .info-container.offscreen {
-        transform: translateX(0);
+        left: 0;
     }
 
     .info-container-collapse {
@@ -109,6 +112,36 @@
 .data-intro {
     padding: 0 0.5rem 0 0;
     margin-top: 0.5rem;
+}
+
+/* Clickable callout box (Land Use → Original land use map switcher) */
+.clickable-info-box {
+    display: block;
+    width: 100%;
+    margin: 0.5rem 0 0.75rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid #343a40;
+    border-radius: 4px;
+    background-color: #b2ebf2;
+    color: #343a40;
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer;
+    line-height: 1.35;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+.clickable-info-box:hover {
+    background-color: #9fe4ec;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.clickable-info-box:focus {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+.clickable-info-box.is-active {
+    background-color: #7fd8e3;
+    border-color: #343a40;
 }
 .data-section p {
     font-size: 1rem;
@@ -219,10 +252,16 @@ dd {
     max-width: 400px;
 }
 
+.date-picker-input {
+    max-width: 400px;
+}
+
 .date-picker-label {
-    width: 100px;
+    width: auto;
+    flex-shrink: 0;
 }
 
 .date-picker-label label {
     margin-top: 8px;
+    white-space: nowrap;
 }

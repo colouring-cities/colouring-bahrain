@@ -6,10 +6,17 @@ import { TokenVerificationError } from '../services/passwordReset';
 import * as userService from '../services/user';
 import { ValidationError } from '../validation';
 
+import { SIGNUP_ACCESS_HEADER, SIGNUP_ACCESS_TOKEN } from '../../signup-gate';
+
 const createUser = asyncController(async (req: express.Request, res: express.Response) => {
     const user = req.body;
     if (req.session.user_id) {
         return res.send({ error: 'Already signed in' });
+    }
+
+    const signupAccess = req.get(SIGNUP_ACCESS_HEADER);
+    if (signupAccess !== SIGNUP_ACCESS_TOKEN) {
+        return res.status(404).send({ error: 'Not found' });
     }
 
     if (user.email) {

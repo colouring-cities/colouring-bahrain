@@ -60,7 +60,7 @@
     font-size: 17px;
     border: 1px solid;
     border-radius: 4px;
-    min-height: 2.2em;
+    min-height: 1.2em;
 }
 
 .map-legend .h4,
@@ -89,13 +89,13 @@
 
 .data-legend .key {
     display: inline-block;
-    width: 1.3rem;
-    height: 1.3rem;
-    margin-right: 0.3rem;
+    width: 14px;
+    height: 14px;
+    margin-right: 3px;
     vertical-align: middle;
     overflow: hidden;
-    border: solid 1px #ddd;
     flex-shrink: 0;
+    border-radius: 0;
 }
 
 .data-legend h6 {
@@ -115,11 +115,18 @@
     width: 1rem;
     line-height: 0.5;
     padding: 0;
+
+    background: transparent;
+    border: none;
+    color: #343a40;
 }
 .expander-button:focus,
 .expander-button:active,
 .expander-button:hover {
     box-shadow: none;
+    background: transparent;
+    border: none;
+    color: #191b1d;
 }
 /* hides expander/hider button of legend on a small screens */
 /*

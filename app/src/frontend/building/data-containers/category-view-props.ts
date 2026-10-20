@@ -37,6 +37,9 @@ interface CategoryViewProps {
     /* Special handler for setting a value and immediately saving */
     onSaveChange: (slug: string, value: any) => void;
 
+    /* Save current edits (optionally merged with a patch) — same path as "Save edits" */
+    onSaveEdits: (patch?: Record<string, any>) => void;
+
     user_verified: any;
     user?: any;
 
